@@ -4,67 +4,23 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Inscription</title>
-    <style>
-      body {
-        font-family: "Arial", sans-serif;
-        background-color: #f7f7f7;
-        padding: 20px;
-      }
-
-      #form-inscription {
-        background-color: #ffffff;
-        max-width: 500px;
-        margin: 0 auto;
-        padding: 20px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
-      }
-
-      .form-group label {
-        display: block;
-        margin-bottom: 5px;
-        color: #333333;
-      }
-
-      .input-field {
-        width: 100%;
-        padding: 8px 10px;
-        margin-bottom: 20px;
-        border: 1px solid #cccccc;
-        border-radius: 4px;
-        box-sizing: border-box; /* Add this to include padding in the width */
-      }
-
-      #submit-btn {
-        background-color: #007bff;
-        color: white;
-        border: none;
-        padding: 10px 15px;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        font-weight: bold;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-      }
-
-      #submit-btn:hover {
-        background-color: #0056b3;
-      }
-    </style>
+    <link rel="stylesheet" href="/../Bloc3-WebSite/Assets/Style/style.css" />
   </head>
-  <body>
+  <body id="Inscription">
+    <header>
+      <h1>Inscription</h1>
+    </header>
     <form
       id="form-inscription"
       action="../Controller/inscription.php"
       method="post"
     >
       <div class="form-group">
-        <label for="nom">Nom:</label>
+        <label for="nom">Nom :</label>
         <input type="text" id="nom" class="input-field" name="nom" required />
       </div>
       <div class="form-group">
-        <label for="prenom">Prénom:</label>
+        <label for="prenom">Prénom :</label>
         <input
           type="text"
           id="prenom"
@@ -74,7 +30,7 @@
         />
       </div>
       <div class="form-group">
-        <label for="email">Adresse mail:</label>
+        <label for="email">Adresse mail :</label>
         <input
           type="email"
           id="email"
@@ -84,7 +40,7 @@
         />
       </div>
       <div class="form-group">
-        <label for="pseudo">Pseudo:</label>
+        <label for="pseudo">Pseudo :</label>
         <input
           type="text"
           id="pseudo"
@@ -94,7 +50,7 @@
         />
       </div>
       <div class="form-group">
-        <label for="password">Mot de passe:</label>
+        <label for="password">Mot de passe :</label>
         <input
           type="password"
           id="password"
@@ -104,7 +60,7 @@
         />
       </div>
       <div class="form-group">
-        <label for="confirm_password">Confirmation du mot de passe:</label>
+        <label for="confirm_password">Confirmation du mot de passe :</label>
         <input
           type="password"
           id="confirm_password"

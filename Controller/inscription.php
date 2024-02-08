@@ -9,7 +9,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $pseudo = $_POST['pseudo'];
     $password = $_POST['password'];
     $password_confirm = isset($_POST['password_confirm']) ? $_POST['password_confirm'] : '';
-    var_dump($_POST);
 
     // Vérification des données
     $errors = [];

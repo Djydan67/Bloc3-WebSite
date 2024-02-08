@@ -1,0 +1,58 @@
+/* Inscription / Connexion */
+
+#Inscription,
+#Connexion {
+  font-family: "Arial", sans-serif;
+  background-color: #3c3630;
+  color: #fff;
+  padding: 20px;
+}
+
+#Inscription h1,
+#Connexion h1 {
+  text-align: center;
+}
+
+#Inscription #form-inscription,
+#Connexion #form-connexion {
+  background-color: #2e2924;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+#Inscription .form-group label,
+#Connexion .form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+#Inscription .input-field,
+#Connexion .input-field {
+  width: 100%;
+  padding: 8px 10px;
+  margin-bottom: 20px;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+#Inscription #submit-btn,
+#Connexion #submit-btn {
+  background-color: #6aa84f;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  letter-spacing: 0.05em;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+#Inscription #submit-btn:hover,
+#Connexion #submit-btn:hover {
+  background-color: #497437;
+}
