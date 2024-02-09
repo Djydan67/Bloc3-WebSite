@@ -1,9 +1,37 @@
+:root {
+  --color-one: rgb(74, 67, 59);
+  --color-one-darken-1: #3c3630;
+  --color-one-darken-2: #2e2924;
+  --color-one-darken-3: #030302;
+  --color-one-lighten-1: #585046;
+  --color-one-lighten-2: #665d52;
+  --color-one-lighten-3: #908374;
+  --color-two: #6aa84f;
+  --color-two-darken-1: #497437;
+  --color-two-darken-2: #3e632e;
+  --color-two-darken-3: #335126;
+  --color-two-lighten-1: #95c380;
+  --color-two-lighten-2: #c0dcb4;
+  --color-two-lighten-3: #ddecd7;
+  --color-white: #d0d0d0;
+  --color-black: #333;
+  --shadow-color: 223deg 44% 3%;
+  --shadow-elevation-low: 0 1px 1px hsl(var(--shadow-color) / 0.075),
+    0 2px 2px hsl(var(--shadow-color) / 0.075),
+    0 4px 4px hsl(var(--shadow-color) / 0.075),
+    0 8px 8px hsl(var(--shadow-color) / 0.075);
+  --shadow-elevation-medium: 0.3px 0.5px 0.7px hsl(var(--shadow-color) / 0.36),
+    0.8px 1.6px 2px -0.8px hsl(var(--shadow-color) / 0.36),
+    2.1px 4.1px 5.2px -1.7px hsl(var(--shadow-color) / 0.36),
+    5px 10px 12.6px -2.5px hsl(var(--shadow-color) / 0.36);
+}
+
 /* Inscription / Connexion */
 
 #Inscription,
 #Connexion {
   font-family: "Arial", sans-serif;
-  background-color: #3c3630;
+  background-color: var(--color-one-darken-1);
   color: #fff;
   padding: 20px;
 }
@@ -15,7 +43,7 @@
 
 #Inscription #form-inscription,
 #Connexion #form-connexion {
-  background-color: #2e2924;
+  background-color: var(--color-one-darken-2);
   max-width: 500px;
   margin: 0 auto;
   padding: 20px;
@@ -41,7 +69,7 @@
 
 #Inscription #submit-btn,
 #Connexion #submit-btn {
-  background-color: #6aa84f;
+  background-color: var(--color-two);
   color: white;
   border: none;
   padding: 10px 15px;
@@ -54,5 +82,5 @@
 
 #Inscription #submit-btn:hover,
 #Connexion #submit-btn:hover {
-  background-color: #497437;
+  background-color: var(--color-two-darken-1);
 }

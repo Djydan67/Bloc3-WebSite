@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 'password' => $password_hashed
             ]);
 
-            echo "Inscription réussie !";
+            header ("location: /../Bloc3-WebSite/View/connexion.html");
         } catch (PDOException $e) {
             $errors[] = "Erreur lors de l'inscription : " . $e->getMessage();
             foreach ($errors as $error) {
