@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inscription</title>
+    <link rel="stylesheet" href="/../Assets/Style/style.css" />
+  </head>
+  <body id="Inscription">
+    <header>
+      <h1>Inscription</h1>
+    </header>
+    <form
+      id="form-inscription"
+      action="../Controller/inscription.php"
+      method="post"
+    >
+      <div class="form-group">
+        <label for="nom">Nom :</label>
+        <input type="text" id="nom" class="input-field" name="nom" required />
+      </div>
+      <div class="form-group">
+        <label for="prenom">Prénom :</label>
+        <input
+          type="text"
+          id="prenom"
+          class="input-field"
+          name="prenom"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="email">Adresse mail :</label>
+        <input
+          type="email"
+          id="email"
+          class="input-field"
+          name="email"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="pseudo">Pseudo :</label>
+        <input
+          type="text"
+          id="pseudo"
+          class="input-field"
+          name="pseudo"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="password">Mot de passe :</label>
+        <input
+          type="password"
+          id="password"
+          class="input-field"
+          name="password"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="confirm_password">Confirmation du mot de passe :</label>
+        <input
+          type="password"
+          id="confirm_password"
+          class="input-field"
+          name="password_confirm"
+          required
+        />
+      </div>
+      <input
+        type="submit"
+        id="submit-btn"
+        class="input-field"
+        value="S'inscrire"
+      />
+    </form>
+  </body>
+</html>
