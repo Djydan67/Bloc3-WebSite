@@ -50,6 +50,16 @@
     height: 100%;
     z-index: -1; /* Pour placer l'image derrière le texte */
   }
+  #background-container {
+    position: absolute;
+    background: lightblue url("../Images/dofushelp_banner.jpg") no-repeat center /
+      cover;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Pour placer l'image derrière le texte */
+  }
 
   /* Style du calque d'arrière-plan */
   #background-container::before {

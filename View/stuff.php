@@ -1,18 +1,10 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="Assets/Style/style.css">
-    <link rel="stylesheet" href="Assets/Style/Bootstrap/bootstrap.css"/>
-    <title>Equipement</title>
-</head>
-<body class="fond">
+<?php 
+    include("_partial/header.php");
+?>
     <header id="entete">
         <h1 id="title">Equipement</h1>
         <nav>
-            <div id="corps">
-                <img src="Assets/Images/logo-dofus.png" alt="Logo" id="logo"/>
+            <div id="corps">                
                 <div id="filtre">
                     <p>
                         <img src="Assets/Images/logo-amulette.png" alt="logo-amulette" id="Amulette"/>
@@ -69,9 +61,7 @@
     <main class="fond">
             <div class="row" id="listing"></div>
     </main>
-    <footer>
-
-    </footer>
     <script src="Assets/JS/stuff.js"></script>
-</body>
-</html>
+<?php 
+    include("_partial/footer.php");
+?>

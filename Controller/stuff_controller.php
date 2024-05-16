@@ -23,7 +23,7 @@
     class Stuff_Ctrl{
 
         public function equipements(){
-            //if(isset($_GET['pieces']) && !empty($_GET['pieces'])) {
+            if(isset($_GET['pieces']) && !empty($_GET['pieces'])) {
                 $strPage = "équipements";
                 $strTitleH1 = "Bibliothèque";
                 $strFirstP = "";
@@ -33,14 +33,18 @@
 
                 $objStuff = $_GET['pieces'];
                 $arrStuff = $objStuffModel->getStuff($objStuff);
-                //var_dump($sqlQuery);
-                echo json_encode($arrStuff); // Encore les données en JSON
-            // }
-            // else {
-            //     echo json_encode(['error' => 'ID not provided']);
-            // }
+                //var_dump($_GET);
+                //header('Content-Type: application/json');
+                json_encode($arrStuff); // Encode les données en JSON
+                //exit();
+                include("View/stuff.php");
+            }
+            else {
+                header('Content-Type: application/json');
+                echo json_encode(['error' => 'ID not provided']);
+                exit();
+            }
 
-            include("View/stuff.php");
 
 
         }
