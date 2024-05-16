@@ -14,7 +14,7 @@
             }
 
             // include("views/_partial/header.php");
-            include("views/".$strArgument.".php");
+            include("View/".$strArgument.".php");
             // include("views/_partial/footer.php");
         }
     }
