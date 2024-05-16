@@ -2,6 +2,8 @@
 
 /**
  * Classe mère des entités
+ * @author Théo Bance
+ *
  */
 
 class Entity {
@@ -20,16 +22,15 @@ class Entity {
     }
 
     /**
-     * Setter de l'identifiant
      * @param int $intId Identifiant
      * @return void
      */
+    
     public function setId(int $intId){
         $this->_id = $intId;
     }
 
     /**
-     * Getter de l'id
      * @return int Identifiant de l'article
      */
     public function getId(){
