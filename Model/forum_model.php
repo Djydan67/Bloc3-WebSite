@@ -6,7 +6,7 @@
 
     class Forum_model extends Bdd {
 
-        public function findbyTheme($objForum){
+        public function getbyTheme($objForum){
             // SQL request to select the messages of a specific theme
             $strQuery = 
                 "   SELECT forum_titre, forum_message, forum_date, forum_isvalid, forum_isclose, fo.user_id
