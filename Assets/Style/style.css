@@ -1,0 +1,9 @@
+#corps {
+    position: relative;
+}
+
+#filtre {
+    position: absolute;
+    top: 20px;
+    left: 10px;
+}
