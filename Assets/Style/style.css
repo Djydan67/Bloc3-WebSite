@@ -7,3 +7,59 @@
     top: 20px;
     left: 10px;
 }
+
+/* début CSS de Ilian (footer + index) */
+.footer-container {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #313131; /* Fond noir */
+    color: white; /* Texte blanc */
+    padding: 20px 0; /* Espacement intérieur du footer */
+}
+
+.footer-container .container {
+    text-align: center; /* Centrage du texte */
+}
+
+#Index{
+    #IndexText {
+        text-align: center;
+        margin-top: 100px; /* Espacement depuis le haut de la page */
+        position: relative; /* Positionnement relatif pour que z-index fonctionne */
+        z-index: 1; /* Pour placer le texte au-dessus de l'image de fond */
+        color: aliceblue; /* Couleur du texte */
+    }
+
+    #IndexText h2 {
+        font-size: 2em; /* Taille de police pour le titre */
+        margin-bottom: 20px; /* Espacement sous le titre */
+    }
+
+    #IndexText p {
+        font-size: 1.2em; /* Taille de police pour le paragraphe */
+    }
+
+    #background-container {
+        position: absolute;
+        background: lightblue url('/bloc-3/Bloc3-WebSite/Assets/Images/dofushelp_banner.jpg') no-repeat center / cover; 
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1; /* Pour placer l'image derrière le texte */
+    }
+
+    /* Style du calque d'arrière-plan */
+    #background-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.3); /* Couleur d'arrière-plan légèrement assombrie */
+        z-index: -2; /* Pour placer le calque derrière l'image */
+    }
+}
+/*fin du CSS Ilian (Index + footer)*/
