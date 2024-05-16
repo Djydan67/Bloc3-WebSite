@@ -7,7 +7,7 @@
 			try{
 				// Connexion à la base de données
 				$this->_db = new PDO(
-					"mysql:host=localhost;dbname=u751308929_dofus",  // Serveur et BDD
+					"mysql:host=193.203.168.48;dbname=u751308929_dofus",  // Serveur et BDD
 					"u751308929_root",  		//Nom d'utilisateur de la base de données
 					"Doomsday4ever!",	 	// Mot de passe de la base de données
 					array(PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC) // Mode de renvoi 
