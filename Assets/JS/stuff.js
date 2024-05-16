@@ -12,16 +12,16 @@ document.getElementById('Armes').addEventListener('click', afficheStuff);
 
 function afficheStuff(e) {
     document.getElementById('listing').innerHTML = '';
-    fetch('index.php/?ctrl=stuff&action=equipement&piece=' + encodeURIComponent(e.target.id)
+    fetch('index.php/?ctrl=stuff&action=equipements&pieces=' + encodeURIComponent(e.target.id)
     ).then(res => {            
-        //console.log(res)
+        console.log(res)
 
             if (!res.ok) {
                 throw new Error('Erreur de réseau');
             }
             return res.json();
         }).then(res => {
-            //console.log(res)
+            console.log(res.list)
             let container = document.getElementById('listing');
             res.forEach(res => {
                 console.log(res.imgPath)

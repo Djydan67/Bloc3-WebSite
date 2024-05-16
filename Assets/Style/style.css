@@ -42,7 +42,7 @@
 
     #background-container {
         position: absolute;
-        background: lightblue url('/bloc-3/Bloc3-WebSite/Assets/Images/dofushelp_banner.jpg') no-repeat center / cover; 
+        background: lightblue url('../Images/dofushelp_banner.jpg') no-repeat center / cover; 
         top: 0;
         left: 0;
         width: 100%;
