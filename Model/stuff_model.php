@@ -11,7 +11,7 @@ class Stuff_model extends Bdd {
             $strPrepare = $this->_db->prepare($sqlQuery);
             $strPrepare->bindValue(':pieceId', $objStuff, PDO::PARAM_STR);
             $strPrepare->execute();
-            //var_dump($sqlQuery);
+            //var_dump($strPrepare);
             //Retourne les amulettes
             return $strPrepare->fetchAll();
 

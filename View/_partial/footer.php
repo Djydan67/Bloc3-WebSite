@@ -13,7 +13,7 @@
     </div>
 </footer>
 
-<?php
+<!-- <?php
     if ($strPage == "blog"){
 ?>
 <script>
@@ -21,6 +21,6 @@
 </script>
 <?php
     }
-?>
+?> -->
 </body>
 </html>

@@ -35,7 +35,7 @@
                                         <a class="nav-link active" aria-current="page" href="#">Home</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="">Stuff</a>
+                                        <a class="nav-link" href="/Bloc3-WebSite/index.php?ctrl=stuff&action=equipements">Stuff</a>
                                     </li>
                                 </ul>
                             </div>
