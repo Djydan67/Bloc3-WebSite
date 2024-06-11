@@ -140,4 +140,32 @@ class User_Ctrl extends Ctrl
         // on redirige
         header("Location:index.php");
     }
+     /**
+     * Page de profil
+     * @return void, adrien 
+     */
+    public function profile() {
+        include("models/user_model.php");
+        $objUserModel = new user_model();
+
+        // Vérifier si l'utilisateur est connecté
+        if (!isset($_SESSION['user'])) {
+            header("Location: index.php?ctrl=user&action=login");
+            exit();
+        }
+
+        // Récupérer les informations de l'utilisateur connecté
+        $arrUser = $_SESSION['user'];
+
+        // Déterminer le niveau de droit de l'utilisateur
+        $userLevel = $arrUser['user_level'];
+
+        $this->_arrData['strPage']      = "profile";
+        $this->_arrData['strTitleH1']   = "Mon Profil";
+        $this->_arrData['strFirstP']    = "Page de profil";
+        $this->_arrData['arrUser']      = $arrUser;
+        $this->_arrData['userLevel']    = $userLevel;
+
+        $this->display('profile');
+    }
 }

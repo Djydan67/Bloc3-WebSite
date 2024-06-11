@@ -54,4 +54,39 @@
             return $strPrepare->fetch();
         }
 
-	}
+        public function getAllUsers(){
+            $strQuery		= "	SELECT user_mail
+                                FROM T_user
+                                WHERE droit_id not like '3'";
+            $strPrepare     = $this->_db->prepare($strQuery);
+            $query->fetchAll(PDO::FETCH_ASSOC);
+            $strPrepare->execute();
+
+
+        }
+
+	}public function updateUserRole($email, $newRole) {
+        $query = $this->_pdo->prepare("UPDATE T_user SET droit_id = :newRole WHERE email = :email");
+        $query->bindParam(':newRole', $newRole);
+        $query->bindParam(':email', $email);
+        return $query->execute();
+    }
+    
+    public function banUser($email) {
+        $query = $this->_pdo->prepare("UPDATE T_user SET user_isactif = 0 WHERE email = :email");
+        $query->bindParam(':email', $email);
+        return $query->execute();
+    }
+
+    public function getById(int $userId): array|bool {
+        $strQuery = "SELECT user_id, user_mdp, user_nom, user_prenom, user_mail, user_dob, user_creation_date, user_isactif, droit_id 
+                     FROM T_user 
+                     WHERE user_id = :user_id";
+        $strPrepare = $this->_db->prepare($strQuery);
+        $strPrepare->bindValue(":user_id", $userId, PDO::PARAM_INT);
+        $strPrepare->execute();
+
+        return $strPrepare->fetch(PDO::FETCH_ASSOC);
+    }
+
+    
