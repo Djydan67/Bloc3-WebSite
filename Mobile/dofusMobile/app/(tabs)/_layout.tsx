@@ -4,7 +4,7 @@ import React from "react";
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
-
+import FontAwesome6 from "@expo/vector-icons/build/FontAwesome6";
 export default function TabLayout() {
   const colorScheme = useColorScheme();
 
@@ -28,7 +28,19 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="profil"
+        name="stuff"
+        options={{
+          title: "Stuff",
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon
+              name={focused ? "home" : "home-outline"}
+              color={color}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="explore"
         options={{
           title: "Profil",
           tabBarIcon: ({ color, focused }) => (
@@ -36,6 +48,16 @@ export default function TabLayout() {
               name={focused ? "code-slash" : "code-slash-outline"}
               color={color}
             />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="Profil"
+        options={{
+          title: "Profil",
+          tabBarIcon: ({ color, focused }) => (
+            <FontAwesome6 name="circle-user" size={24} color="green" />
           ),
         }}
       />
