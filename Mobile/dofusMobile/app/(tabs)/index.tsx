@@ -1,26 +1,57 @@
-import React from "react";
-import { Image, StyleSheet, useWindowDimensions } from "react-native";
-
 import { HelloWave } from "@/components/HelloWave";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Link } from "expo-router";
+import React, { useEffect, useRef } from "react";
+import {
+  FlatList,
+  Image,
+  Linking,
+  Pressable,
+  StyleSheet,
+  View,
+  useWindowDimensions,
+} from "react-native";
 
-const Carousel = [
+const carousel = [
   {
     id: "image_del",
+    openinapp: false,
+    source: require("@/assets/images/dldofus.png"),
+    href: "https://www.dofus.com/fr/mmorpg/telecharger",
   },
   {
     id: "image_equip",
+    source: require("@/assets/images/stuff.png"),
+    openinapp: true,
+    // href={{
+    //   pathname: "/user/[userId]",
+    // }}
   },
   {
     id: "image_forum",
+    source: require("@/assets/images/forum.png"),
+    href: "/forum",
+    openinapp: true,
   },
 ];
 
 export default function HomeScreen() {
   const { width } = useWindowDimensions();
+  const flatListRef = useRef(null);
+  let currentIndex = 0;
+  useEffect(() => {
+    const interval = setInterval(() => {
+      currentIndex = (currentIndex + 1) % carousel.length;
+      flatListRef.current.scrollToIndex({
+        animated: true,
+        index: currentIndex,
+      });
+    }, 5000); // Change every 3 seconds
+
+    return () => clearInterval(interval);
+  }, []);
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
@@ -46,7 +77,45 @@ export default function HomeScreen() {
           />
         </Link>
       </ThemedView>
-      <ThemedView></ThemedView>
+      <ThemedView>
+        <FlatList
+          ref={flatListRef}
+          horizontal
+          data={carousel}
+          renderItem={({ item }) => {
+            if (item.openinapp) {
+              return (
+                <View style={[styles.carouselItem, { width: width * 0.8 }]}>
+                  <Image source={item.source} style={styles.carouselImage} />
+                </View>
+              );
+            }
+            return (
+              <Pressable
+                style={[styles.carouselItem, { width: width * 0.8 }]}
+                onPress={() => {
+                  Linking.openURL(
+                    "https://www.dofus.com/fr/mmorpg/telecharger"
+                  );
+                }}
+              >
+                <Image source={item.source} style={styles.carouselImage} />
+              </Pressable>
+            );
+          }}
+          keyExtractor={(item) => item.id}
+          pagingEnabled
+          snapToInterval={width * 0.8 + 20}
+          snapToAlignment="center"
+          showsHorizontalScrollIndicator={false}
+          decelerationRate="fast"
+          getItemLayout={(data, index) => ({
+            length: width * 0.8 + 20,
+            offset: (width * 0.8 + 20) * index,
+            index,
+          })}
+        />
+      </ThemedView>
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">
           Sur notre site, vous pourrez tester tout les équipements du jeux avec
@@ -88,4 +157,21 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 3, // Nécessaire pour les ombres sur Android
   },
+  carouselContainer: {
+    marginVertical: 10,
+  },
+  carouselItem: {
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 10,
+  },
+  carouselImage: {
+    width: "100%",
+    height: 180,
+    borderRadius: 10,
+    resizeMode: "cover",
+  },
 });
+function source(arg0: string) {
+  throw new Error("Function not implemented.");
+}
