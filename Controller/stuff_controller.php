@@ -36,7 +36,7 @@
                 $arrStuff = $objStuffModel->getStuff($objStuff);
                 //var_dump($arrStuff);
                 //header('Content-Type: application/json');
-                json_encode($arrStuff); // Encode les données en JSON
+                echo json_encode($arrStuff); // Encode les données en JSON
                 //exit();
                 //
                 //return $arrStuff;
@@ -46,7 +46,7 @@
                 echo json_encode(['error' => 'ID not provided']);
                 exit();
             }
-            include("View/stuff.php");
+            //include("View/stuff.php");
         }
     }
 
