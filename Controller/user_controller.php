@@ -140,9 +140,11 @@ class User_Ctrl extends Ctrl
         // on redirige
         header("Location:index.php");
     }
-     /**
-     * Page de profil
-     * @return void, adrien 
+
+    /**
+     * page de profil
+     * adrien
+     * 
      */
     public function profile() {
         include("models/user_model.php");
@@ -155,10 +157,15 @@ class User_Ctrl extends Ctrl
         }
 
         // Récupérer les informations de l'utilisateur connecté
-        $arrUser = $_SESSION['user'];
+        $arrUser = $objUserModel->getById($_SESSION['user']['user_id']);
+
+        if ($arrUser === false) {
+            echo "Erreur : utilisateur non trouvé.";
+            exit();
+        }
 
         // Déterminer le niveau de droit de l'utilisateur
-        $userLevel = $arrUser['user_level'];
+        $userLevel = $arrUser['droit_id'];
 
         $this->_arrData['strPage']      = "profile";
         $this->_arrData['strTitleH1']   = "Mon Profil";
