@@ -1,6 +1,8 @@
 <?php
-    // Salar
-    // Controller parent
+    /**
+     * Mother Controller
+     * @author Salar
+     */
     
     class Ctrl{
 

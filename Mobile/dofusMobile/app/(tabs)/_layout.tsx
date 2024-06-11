@@ -32,6 +32,15 @@ export default function TabLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="forum"
+        options={{
+          title: 'Forum',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={"chatbubbles"} color={color} />
+          ),
+        }}
+      />
     </Tabs>
   );
 }
