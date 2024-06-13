@@ -5,7 +5,7 @@ export const useStuff = (piecesId: string) => {
   //console.log(piecesId)
   useEffect(() => {
     fetch(
-      "http://172.20.10.10:8082/Bloc3-WebSite/index.php/?ctrl=stuff&action=equipements&pieces=" +
+      "http://192.168.151.113/Bloc3-WebSite/index.php/?ctrl=stuff&action=equipements&pieces=" +
         piecesId
     )
       .then((res) => res.json())

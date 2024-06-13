@@ -5,6 +5,7 @@ import { TabBarIcon } from "@/components/navigation/TabBarIcon";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import FontAwesome6 from "@expo/vector-icons/build/FontAwesome6";
+
 export default function TabLayout() {
   const colorScheme = useColorScheme();
 
@@ -31,6 +32,8 @@ export default function TabLayout() {
         name="stuff"
         options={{
           title: "Stuff",
+          headerTitle: "Encyclopedie",
+          headerShown: true,
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon
               name={focused ? "home" : "home-outline"}

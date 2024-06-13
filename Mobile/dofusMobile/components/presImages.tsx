@@ -10,8 +10,8 @@ export function PresImages({children, onPress} : ButtonProps) {
       <Pressable style={{
         backgroundColor:"green", 
         //height:100, 
-        //width:200,
-        justifyContent:"center", 
+        width:50,
+        //justifyContent:"center", 
         //alignItems:"center", 
         borderRadius:20,
         marginBottom:10,
