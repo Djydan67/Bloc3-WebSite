@@ -1,10 +1,8 @@
-</main>
-
 <footer class="footer-container">
-    <div class="container"> 
+    <div class="container">
         <p>Créé par les DI 23-25.</p>
         <p>
-            <a href="mentions.php">Mentions légales</a> 
+            <a href="mentions.php">Mentions légales</a>
             <a href="contact.php">Contact</a>
         </p>
         <p class="mb-0">
@@ -14,13 +12,14 @@
 </footer>
 
 <!-- <?php
-    if ($strPage == "blog"){
-?>
+        if ($strPage == "blog") {
+        ?>
 <script>
     changePeriod();
 </script>
 <?php
-    }
+        }
 ?> -->
 </body>
+
 </html>
