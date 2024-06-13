@@ -1,32 +1,29 @@
 <?php
-
 /**
- * Controller des utilisateurs
+ * Entité des utilisateurs
+ * @author Théo Bance
+ *
  */
     class User_Ctrl extends Ctrl
     {
-
-
         /**
          * Page de login
          * @return void
          */
         public function login()
         {
-
-            include("models/user_model.php");
+            include("Model/user_model.php");
             $objUserModel = new user_model();
             $arrErrors = array();
 
             if (count($_POST) > 0) {
                 // Récupérer le mail et le mot de passe
                 $strMail = trim($_POST['mail']);
-                $strPassword = $_POST['pwd'];
+                $strPassword = $_POST['mdp'];
 
                 if ($strMail == "" || $strPassword == "") {
                     $arrErrors[] = "Le mail et le mot de passe sont obligatoire";
                 }
-
                 if (count($arrErrors) == 0) {
                     // Rechercher l'utilisateur en fonction du mail
                     $arrUser = $objUserModel->getByMail($strMail);
@@ -34,11 +31,11 @@
                         $arrErrors[] = "Erreur de connexion";
                     } else {
                         // Comparer le mot de passe
-                        if (password_verify($strPassword, $arrUser['user_pwd'])) {
-                            unset($arrUser['user_pwd']);
+                        if (password_verify($strPassword, $arrUser['user_mdp'])) {
+                            unset($arrUser['user_mdp']);
                             $_SESSION['user'] = $arrUser;
                             $_SESSION['valid'] = "Vous êtes bien connecté";
-                            // header("Location:index.php");
+                             header("Location:");
                         } else {
                             $arrErrors[] = "Erreur de connexion";
                         }
@@ -66,22 +63,21 @@
          * @return void
          */
         public function create_account() {
-
-            include("models/user_model.php");
+            include("Model/user_model.php");
             $objUserModel   = new user_model();
             $arrErrors      = array();
 
             if (count($_POST) > 0) {
-                include("entities/user_entity.php");
+                include("Entities/user_entity.php");
                 $objUser = new User();
                 $objUser->hydrate($_POST);
                 $this->_arrData['objUser']      = $objUser;
 
                 if ($objUser->getName() == "") {
-                    $arrErrors['name'] = "Le nom est obligatoire";
+                    $arrErrors['nom'] = "Le nom est obligatoire";
                 }
                 if ($objUser->getFirstname() == "") {
-                    $arrErrors['firstname'] = "Le prénom est obligatoire";
+                    $arrErrors['prenom'] = "Le prénom est obligatoire";
                 }
                 if ($objUser->getMail() == "") {
                     $arrErrors['mail'] = "Le mail est obligatoire";
@@ -94,11 +90,11 @@
                 // Expression régulière REGEX
                 $regex = '#^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{16,20}$#';
                 if ($objUser->getPwd() == "") {
-                    $arrErrors['pwd'] = "Le mot de passe est obligatoire";
+                    $arrErrors['mdp'] = "Le mot de passe est obligatoire";
                 }elseif (!preg_match($regex, $objUser->getPwd() )){
-                    $arrErrors['pwd'] = "Le mot de passe n'est pas correct";
+                    $arrErrors['mdp'] = "Le mot de passe n'est pas correct";
                 }elseif ($objUser->getPwd() != $_POST['confirmpwd']) {
-                    $arrErrors['pwd'] = "Le mot de passe et sa confirmation sont incorrect";
+                    $arrErrors['mdp'] = "Le mot de passe et sa confirmation sont incorrect";
                 }
 
                 // Si tout est ok => Insertion BDD
