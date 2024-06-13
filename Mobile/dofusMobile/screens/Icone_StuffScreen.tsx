@@ -1,8 +1,21 @@
-import { Image, Pressable, Text, Touchable, View } from "react-native";
-import { Link } from "expo-router";
+import {
+  Image,
+  Pressable,
+  Text,
+  Touchable,
+  View,
+  FlatList,
+} from "react-native";
+import { Link, useNavigation } from "expo-router";
+import { Drawer } from "expo-router/drawer";
 import { PresImages } from "@/components/presImages";
+import { useStuff } from "@/hooks/useStuff";
+import { useState } from "react";
 
 export function HomeScreen() {
+  const [piecesId, setPieceId] = useState<string>();
+  const stuff = useStuff(piecesId);
+
   const items = [
     {
       id: "Amulette",
@@ -49,33 +62,46 @@ export function HomeScreen() {
     <View
       style={{
         flex: 1,
+        marginTop: "25%",
         flexDirection: "row",
-        flexWrap: "wrap",
-        justifyContent: "space-between",
-        alignItems: "center",
       }}
     >
-      {items.map((item) => {
-        //console.log(item.id)
-        return (
-          <Link asChild
-            href={{
-              pathname: "/stuff/[stuffId]",
-              params: { piecesId: item.id },
-            }}
-          >
-            <PresImages onPress={() => {}}>
-              <Image
-                source={item.image}
-                style={{
-                  height: 100,
-                  width: 100,
-                }}
-              />
+      <View>
+        {items.map((item) => {
+          return (
+            <PresImages
+              onPress={() => {
+                setPieceId(item.id);
+              }}
+            >
+              <Image source={item.image} style={{}} />
             </PresImages>
-          </Link>
-        );
-      })}
+          );
+        })}
+      </View>
+      <FlatList
+        data={stuff}
+        renderItem={({ item }) => (
+          <View>
+            <Image
+              source={{
+                uri: "http://192.168.151.113/" + item.stuff_imgPathMobile,
+              }}
+              style={{
+                width: 50,
+                height: 50,
+              }}
+            />
+            <Text
+              style={{
+                margin: 10,
+              }}
+            >
+              {item.stuff_name} {item.stuff_setType}
+            </Text>
+          </View>
+        )}
+      />
     </View>
   );
 }
