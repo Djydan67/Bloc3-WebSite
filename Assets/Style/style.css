@@ -22,6 +22,10 @@
   text-align: center; /* Centrage du texte */
 }
 
+.response-of-user{
+  background-color: #313131;
+  color: antiquewhite;
+}
 #Index {
   #IndexText {
     text-align: center;
