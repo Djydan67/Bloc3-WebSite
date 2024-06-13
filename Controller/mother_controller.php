@@ -5,7 +5,6 @@
      */
     
     class Ctrl{
-
         // array for user's data
         protected array $_arrData = array();
 
