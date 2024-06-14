@@ -25,9 +25,7 @@ const carousel = [
     id: "image_equip",
     source: require("@/assets/images/stuff.png"),
     openinapp: true,
-    // href={{
-    //   pathname: "/user/[userId]",
-    // }}
+    href: "/stuff",
   },
   {
     id: "image_forum",
@@ -48,7 +46,7 @@ export default function HomeScreen() {
         animated: true,
         index: currentIndex,
       });
-    }, 5000); // Change every 3 seconds
+    }, 5000); // Change every 5 seconds
 
     return () => clearInterval(interval);
   }, []);
