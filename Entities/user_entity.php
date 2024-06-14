@@ -4,7 +4,7 @@
  * @author Théo Bance
  *
  */
-    include("entities/mother_entity.php");
+    include("../entities/mother_entity.php");
 
     class User extends Entity{
 		private string $_name;
@@ -13,6 +13,9 @@
         private string $_pwd;
         private int $_isactif;
         private int $_droit;
+        private string $_date_de_naissance; 
+        private string $_date_de_creation;  
+         private string $_pseudonyme;        
 
         public function __construct(){
             $this->_prefixe = "user_";
@@ -97,4 +100,49 @@
          public function getDroit() {
             return $this->_droit;
          }
+
+        /**
+         * @param string $dateDeNaissance Date de naissance de l'utilisateur
+         * @return void
+         */
+        public function setDateDeNaissance($dateDeNaissance){
+            $this->_date_de_naissance = trim($dateDeNaissance);
+        }
+
+        /**
+         * @return string Date de naissance
+         */
+        public function getDateDeNaissance(){
+            return $this->_date_de_naissance;
+        }
+
+        /**
+         * @param string $dateDeCreation Date de création de l'utilisateur
+         * @return void
+         */
+        public function setDateDeCreation($dateDeCreation){
+            $this->_date_de_creation = trim($dateDeCreation);
+        }
+
+        /**
+         * @return string Date de création
+         */
+        public function getDateDeCreation(){
+            return $this->_date_de_creation;
+        }
+
+        /**
+         * @param string $pseudonyme Pseudonyme de l'utilisateur
+         * @return void
+         */
+        public function setPseudonyme($pseudonyme){
+            $this->_pseudonyme = trim($pseudonyme);
+        }
+
+        /**
+         * @return string Pseudonyme
+         */
+        public function getPseudonyme(){
+            return $this->_pseudonyme;
+        }
 	}
