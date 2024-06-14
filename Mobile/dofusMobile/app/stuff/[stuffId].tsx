@@ -1,5 +1,5 @@
-import { StuffScreen } from "@/screens/StuffScreen";
+// import { StuffScreen } from "@/screens/StuffScreen";
 
-export default function User(){
-    return <StuffScreen/>;
-}
+// export default function User(){
+//     return <StuffScreen/>;
+// }
