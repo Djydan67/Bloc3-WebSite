@@ -134,7 +134,39 @@
             session_start();
             $_SESSION['valid'] = "Vous êtes bien déconnecté";
 
-            // on redirige
-            header("Location:index.php");
-        }
+        // on redirige
+        header("Location:index.php");
     }
+
+    /**
+     * Page de profil du premier utilisateur trouvé
+     * @return void
+     */
+    public function profileFirstUser() {
+        include("models/user_model.php");
+        $objUserModel = new user_model();
+
+        // Récupérer le premier utilisateur
+        $arrUser = $objUserModel->getFirstUser();
+
+        if ($arrUser === false) {
+            echo "Erreur : aucun utilisateur trouvé.";
+            exit();
+        }
+
+        // Déterminer le niveau de droit de l'utilisateur
+        $userLevel = $arrUser['droit_id'];
+
+        var_dump($arrUser); // Debug
+        var_dump($userLevel); // Debug
+
+        $this->_arrData['arrUser']      = $arrUser;
+        $this->_arrData['userLevel']    = $userLevel;
+
+        $this->_arrData['strPage']      = "profile";
+        $this->_arrData['strTitleH1']   = "Profil Utilisateur";
+        $this->_arrData['strFirstP']    = "Page de profil du premier utilisateur";
+
+        $this->display('profile');
+    }
+}

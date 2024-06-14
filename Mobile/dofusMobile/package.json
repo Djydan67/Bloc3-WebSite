@@ -12,6 +12,7 @@
     "lint": "expo lint",
     "build:android": "eas build --platform android --profile preview",
     "update": "eas update --auto"
+    
   },
   "jest": {
     "preset": "jest-expo"
