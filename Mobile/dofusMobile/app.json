@@ -19,7 +19,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.djydan.dofusMobile"
     },
     "web": {
       "bundler": "metro",
@@ -31,6 +32,20 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "58db84c9-bedf-499d-8a7f-e863fd6b2ea6"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/58db84c9-bedf-499d-8a7f-e863fd6b2ea6"
     }
   }
 }
