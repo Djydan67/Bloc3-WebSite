@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "dofusMobile",
-    "slug": "dofusMobile",
+    "slug": "dofusmobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -38,7 +38,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "58db84c9-bedf-499d-8a7f-e863fd6b2ea6"
+        "projectId": "e07f4219-b701-449b-b5cb-ee02b8495779"
       }
     },
     "runtimeVersion": {
@@ -46,6 +46,7 @@
     },
     "updates": {
       "url": "https://u.expo.dev/58db84c9-bedf-499d-8a7f-e863fd6b2ea6"
-    }
+    },
+    "owner": "cesi_di2324"
   }
 }
