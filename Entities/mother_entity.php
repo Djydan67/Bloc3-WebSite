@@ -1,3 +1,4 @@
+
 <?php
 
 /**
@@ -6,16 +7,18 @@
  *
  */
 
-class Entity {
+class Entity
+{
 
     protected  string $_prefixe;
 
     protected int $_id;
 
-    public function hydrate($arrData){
-        foreach($arrData as $key => $value){
-            $strSetter  = "set".ucfirst(str_replace($this->_prefixe, "", $key));
-            if (method_exists($this, $strSetter)){
+    public function hydrate($arrData)
+    {
+        foreach ($arrData as $key => $value) {
+            $strSetter  = "set" . ucfirst(str_replace($this->_prefixe, "", $key));
+            if (method_exists($this, $strSetter)) {
                 $this->$strSetter($value);
             }
         }
@@ -25,16 +28,17 @@ class Entity {
      * @param int $intId Identifiant
      * @return void
      */
-    
-    public function setId(int $intId){
+
+    public function setId(int $intId)
+    {
         $this->_id = $intId;
     }
 
     /**
      * @return int Identifiant de l'article
      */
-    public function getId(){
+    public function getId()
+    {
         return $this->_id;
     }
-
 }
