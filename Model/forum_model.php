@@ -12,7 +12,6 @@ include("bdd.php");
 
 class Forum_model extends Bdd
 {
-
     /**
      * Retrieve all forums by a specific theme.
      * 
@@ -71,5 +70,47 @@ class Forum_model extends Bdd
         $strPrepare->bindValue(":forum", $forumId, PDO::PARAM_INT);
         $strPrepare->execute();
         return $strPrepare->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Create a new forum.
+     * 
+     * @param string $titre The title of the forum.
+     * @param string $message The message of the forum.
+     * @param int $userId The ID of the user creating the forum.
+     * @param int $themeId The ID of the theme.
+     * @return bool Whether the forum was created successfully.
+     */
+
+    public function createForum($titre, $message, $userId, $themeId)
+    {
+        $strQuery =
+            "INSERT INTO T_forum (forum_titre, forum_message, forum_date, forum_isvalide, forum_isclose, user_id, theme_id)
+             VALUES (:titre, :message, NOW(), 1, 0, :user_id, :theme_id);";
+        $strPrepare = $this->_db->prepare($strQuery);
+        $strPrepare->bindValue(":titre", $titre, PDO::PARAM_STR);
+        $strPrepare->bindValue(":message", $message, PDO::PARAM_STR);
+        $strPrepare->bindValue(":user_id", $userId, PDO::PARAM_INT);
+        $strPrepare->bindValue(":theme_id", $themeId, PDO::PARAM_INT);
+        return $strPrepare->execute();
+    }
+    /**
+     * Create a new response for a forum.
+     * 
+     * @param string $message The message of the response.
+     * @param int $userId The ID of the user creating the response.
+     * @param int $forumId The ID of the forum.
+     * @return bool Whether the response was created successfully.
+     */
+    public function createResponse($message, $userId, $forumId)
+    {
+        $strQuery =
+            "INSERT INTO T_reponse (reponse_message, reponse_date, user_id, forum_id)
+             VALUES (:message, NOW(), :user_id, :forum_id);";
+        $strPrepare = $this->_db->prepare($strQuery);
+        $strPrepare->bindValue(":message", $message, PDO::PARAM_STR);
+        $strPrepare->bindValue(":user_id", $userId, PDO::PARAM_INT);
+        $strPrepare->bindValue(":forum_id", $forumId, PDO::PARAM_INT);
+        return $strPrepare->execute();
     }
 }
