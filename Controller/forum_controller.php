@@ -44,6 +44,7 @@ class Forum_Ctrl extends Ctrl
             echo json_encode(['error' => $e->getMessage()]);
         }
     }
+
     public function forums()
     {
         include(__DIR__ . "/../Model/forum_model.php");
@@ -70,6 +71,62 @@ class Forum_Ctrl extends Ctrl
             }
         } catch (\Throwable $th) {
             header('Content-Type: application/json', true, 500);
+            echo json_encode(['error' => $e->getMessage()]);
+        }
+    }
+
+    public function createForum()
+    {
+        include(__DIR__ . "/../Model/forum_model.php");
+        $objForumModel = new Forum_model();
+
+        try {
+            $data = json_decode(file_get_contents('php://input'), true);
+
+            if (isset($data['titre'], $data['message'], $data['user_id'], $data['theme_id'])) {
+
+                $titre = $data['titre'];
+                $message = $data['message'];
+                $userId = intval($data['user_id']);
+                $themeId = intval($data['theme_id']);
+
+                $result = $objForumModel->createForum($titre, $message, $userId, $themeId);
+
+                header('Content-Type: application/json');
+                echo json_encode(['success' => $result]);
+                return;
+            } else {
+                throw new Exception('Missing parameters');
+            }
+        } catch (\Throwable $th) {
+            header('Content-Type: application/json', true, 400);
+            echo json_encode(['error' => $e->getMessage()]);
+        }
+    }
+
+    public function createResponse()
+    {
+        include(__DIR__ . "/../Model/forum_model.php");
+        $objForumModel = new Forum_model();
+
+        try {
+            $data = json_decode(file_get_contents('php://input'), true);
+
+            if (isset($data['message'], $data['user_id'], $data['forum_id'])) {
+                $message = $data['message'];
+                $userId = intval($data['user_id']);
+                $forumId = intval($data['forum_id']);
+
+                $result = $objForumModel->createResponse($message, $userId, $forumId);
+
+                header('Content-Type: application/json');
+                echo json_encode(['success' => $result]);
+                return;
+            } else {
+                throw new Exception('Missing parameters');
+            }
+        } catch (Exception $e) {
+            header('Content-Type: application/json', true, 400);
             echo json_encode(['error' => $e->getMessage()]);
         }
     }
