@@ -1,16 +1,90 @@
+/*--------------Stuff.php------------------*/
 #corps {
   position: relative;
+  display:flex;
 }
 
-#filtre {
+#stuff_filtreNom{
+  display: flex;
+  color: white;
+}
+
+#Stuff_Nom{
+  margin-left: 10px;
+}
+
+#Stuff {
+  background-color: #313131; /* Fond noir */
+}
+
+/* #stuff_filtre {
   position: absolute;
   top: 20px;
   left: 10px;
+} */
+
+
+#stuff_title{
+  color: white;
+}
+#corps {
+  display: flex;
+  background-color:#6aa84f ;
+
+}
+#stuff_filtre{
+  position: sticky;
+}
+#filtre {
+  /* position: absolute; */
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.fond{
+  background-color: #2e2924;
+}
+h1{
+text-align: center;
+color: white;
+}
+#logo{
+  height:50px;
+  width: 50px;
 }
 
+#listing{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);  
+  margin: 50px;
+  margin-left:300px
+  
+}
+#card-stuff{    
+  background-color: #3c3630;
+  color: white;
+  margin:10px;
+}
+#titre{
+  display: flex;
+  justify-content: space-between;
+}
+.amulette{
+  height:75px;
+  width:75px;
+}
+#sous-titre{
+  display: flex;
+  justify-content: space-between;
+}
+#stuff-corps {
+  display: flex;
+  justify-content: space-between;
+}
+/*----------------Stuff.php----------------------------*/
 /* début CSS de Ilian (footer + index) */
 .footer-container {
-  position: fixed;
+  /* position: fixed; */
   bottom: 0;
   width: 100%;
   background-color: #313131; /* Fond noir */
@@ -22,6 +96,10 @@
   text-align: center; /* Centrage du texte */
 }
 
+.response-of-user{
+  background-color: #313131;
+  color: antiquewhite;
+}
 #Index {
   #IndexText {
     text-align: center;
