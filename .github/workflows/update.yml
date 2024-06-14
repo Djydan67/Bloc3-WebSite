@@ -29,7 +29,9 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
 
       - name: Install dependencies
-        run: cd Mobile/dofusMobile && npm install
+        working-directory: Mobile/dofusMobile
+        run: npm install
 
       - name: Publish update
-        run: cd Mobile/dofusMobile && npm run update
+        working-directory: Mobile/dofusMobile
+        run: npm run update
