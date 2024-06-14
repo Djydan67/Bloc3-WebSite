@@ -26,4 +26,4 @@ jobs:
         run: npm ci
       - name: Build on EAS
         working-directory: Mobile/dofusMobile
-        run: npm run build:android --non-interactive --no-wait
+        run: eas build --platform android --profile preview --non-interactive --no-wait
