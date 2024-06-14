@@ -74,9 +74,20 @@
         </nav>
     </div>
     <div class="fond">
+        <div class="card-header" id="stuff_filtreNom">
+            <div id="filtre">
+                <input type="text" id="NomEquipement" placeholder="Nom de l'équipement">
+                <input type="number" id="NiveauMin" placeholder="Niveau min">
+                <input type="number" id="NiveauMax" placeholder="Niveau max">
+                <button id="filter-submit">Filtrer</button>
+                <button id="unfilter">Réinitialiser</button>
+            </div>
+        </div>
         <div class="row" id="listing"></div>
     </div>
-    <div id='tab'></div>
+    <!-- <div>
+        <div id='tab'></div>
+    </div> -->
 
     <script src="../Assets/JS/stuff.js"></script>
     <?php

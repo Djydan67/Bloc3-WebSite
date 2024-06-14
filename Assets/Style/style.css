@@ -1,6 +1,16 @@
+/*--------------Stuff.php------------------*/
 #corps {
   position: relative;
   display:flex;
+}
+
+#stuff_filtreNom{
+  display: flex;
+  color: white;
+}
+
+#Stuff_Nom{
+  margin-left: 10px;
 }
 
 #Stuff {
@@ -13,7 +23,7 @@
   left: 10px;
 } */
 
-/*--------------Stuff.php------------------*/
+
 #stuff_title{
   color: white;
 }
@@ -71,7 +81,7 @@ color: white;
   display: flex;
   justify-content: space-between;
 }
-/*----------------Stuff.html----------------------------*/
+/*----------------Stuff.php----------------------------*/
 /* début CSS de Ilian (footer + index) */
 .footer-container {
   /* position: fixed; */
