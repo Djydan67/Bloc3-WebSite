@@ -12,8 +12,16 @@
                 $$key = $value;
             }
 
-            // include("views/_partial/header.php");
-            include("View/".$strArgument.".php");
-            // include("views/_partial/footer.php");
+            include("View/_partial/header.php");
+            include("View/" . $strArgument . ".php");
+            include("View/_partial/footer.php");
+
+            // $viewPath = __DIR__ . "/../View/" . $strArgument . ".php";
+
+            // if (file_exists($viewPath)) {
+            //     include($viewPath);
+            // } else {
+            //     echo "Le fichier de vue " . $strArgument . " est introuvable.";
+            // }
         }
     }
