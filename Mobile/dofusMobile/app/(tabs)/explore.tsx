@@ -1,6 +1,4 @@
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { StyleSheet } from "react-native";
-import { View, Text } from "react-native";
+import { Text, View } from "react-native";
 
 export default function TabTwoScreen() {
   return (

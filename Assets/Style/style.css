@@ -1,6 +1,16 @@
+/*--------------Stuff.php------------------*/
 #corps {
   position: relative;
   display:flex;
+}
+
+#stuff_filtreNom{
+  display: flex;
+  color: white;
+}
+
+#Stuff_Nom{
+  margin-left: 10px;
 }
 
 #Stuff {
@@ -13,7 +23,7 @@
   left: 10px;
 } */
 
-/*--------------Stuff.php------------------*/
+
 #stuff_title{
   color: white;
 }
@@ -71,7 +81,7 @@ color: white;
   display: flex;
   justify-content: space-between;
 }
-/*----------------Stuff.html----------------------------*/
+/*----------------Stuff.php----------------------------*/
 /* début CSS de Ilian (footer + index) */
 .footer-container {
   /* position: fixed; */
@@ -108,16 +118,6 @@ color: white;
     font-size: 1.2em; /* Taille de police pour le paragraphe */
   }
 
-  #background-container {
-    position: absolute;
-    background: lightblue url("../Images/dofushelp_banner.jpg") no-repeat center /
-      cover;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1; /* Pour placer l'image derrière le texte */
-  }
   #background-container {
     position: absolute;
     background: lightblue url("../Images/dofushelp_banner.jpg") no-repeat center /

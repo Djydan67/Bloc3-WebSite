@@ -49,4 +49,18 @@ class Stuff_Ctrl
         }
         //include("View/stuff.php");
     }
+
+    public function tousEquipements()
+    {
+        $strPage = "équipements";
+        $strTitleH1 = "Bibliothèque";
+        $strFirstP = "";
+        include("Model/stuff_model.php");
+        $objStuffModel = new Stuff_model();
+        include("Entities/stuff_entity.php");
+
+        $arrStuff = $objStuffModel->getAfficheStuff();
+        header('Content-Type: application/json');
+        echo json_encode($arrStuff);
+    }
 }

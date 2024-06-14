@@ -19,43 +19,43 @@ export function HomeScreen() {
   const items = [
     {
       id: "Amulette",
-      image: require("@/assets/images/stuff-icone/logo-amulette.png"),
+      image: "https://actu-gaming.tech/Assets/Images/logo-amulette.png",
     },
     {
       id: "Ceinture",
-      image: require("@/assets/images/stuff-icone/logo-ceinture.png"),
+      image: "https://actu-gaming.tech/Assets/Images/logo-ceinture.png",
     },
     {
       id: "Dofus",
-      image: require("@/assets/images/stuff-icone/logo-dofus_(2).png"),
+      image: "https://actu-gaming.tech/Assets/Images/logo-dofus_(2).png",
     },
     {
       id: "Bottes",
-      image: require("@/assets/images/stuff-icone/logo-botte.png"),
+      image: "https://actu-gaming.tech/Assets/Images/logo-botte.png",
     },
     {
       id: "Cape",
-      image: require("@/assets/images/stuff-icone/logo-cape.png"),
+      image: "https://actu-gaming.tech/Assets/Images/logo-cape.png",
     },
     {
       id: "Chapeau",
-      image: require("@/assets/images/stuff-icone/logo-chapeau.png"),
+      image: "https://actu-gaming.tech/Assets/Images/logo-chapeau.png",
     },
     {
       id: "Anneau",
-      image: require("@/assets/images/stuff-icone/logo-anneaux.png"),
+      image: "https://actu-gaming.tech/Assets/Images/logo-anneaux.png",
     },
     {
       id: "Trophee",
-      image: require("@/assets/images/stuff-icone/logo-trophee.png"),
+      image: "https://actu-gaming.tech/Assets/Images/logo-trophee.png",
     },
     {
       id: "Bouclier",
-      image: require("@/assets/images/stuff-icone/logo-bouclier.png"),
+      image: "https://actu-gaming.tech/Assets/Images/logo-bouclier.png",
     },
     {
       id: "Armes",
-      image: require("@/assets/images/stuff-icone/logo-arme.png"),
+      image: "https://actu-gaming.tech/Assets/Images/logo-arme.png",
     },
   ];
   return (
@@ -74,7 +74,10 @@ export function HomeScreen() {
                 setPieceId(item.id);
               }}
             >
-              <Image source={item.image} style={{}} />
+              <Image
+                source={{ uri: item.image }}
+                style={{ width: 50, height: 50 }}
+              />
             </PresImages>
           );
         })}

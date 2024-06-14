@@ -1,6 +1,7 @@
 let numeroPage = 0;
 let taillePage = 12; // Valeur par défaut
 let equipementsAfficher = [];
+let equipements = [];
 
 document.getElementById('Amulette').addEventListener('click', afficheStuff);
 document.getElementById('Ceinture').addEventListener('click', afficheStuff);
@@ -13,11 +14,50 @@ document.getElementById('Trophee').addEventListener('click', afficheStuff);
 document.getElementById('Bouclier').addEventListener('click', afficheStuff);
 document.getElementById('Armes').addEventListener('click', afficheStuff);
 
-function afficheStuff(e) {
+document.getElementById('filter-submit').addEventListener('click', modifFiltre)
+document.getElementById('unfilter').addEventListener('click', unfilter)
+
+function unfilter(){
+    document.getElementById('NomEquipement').value = ''
+    document.getElementById("NiveauMin").value = ''
+    document.getElementById("NiveauMax").value = ''
+
+    modifFiltre()
+}
+
+
+function modifFiltre() {
+    let exact = false;
+    numeroPage = 0;
+    let nomEquipement = document.getElementById("NomEquipement").value.toUpperCase();
+    let niveauMin = parseInt(document.getElementById("NiveauMin").value) || 0;
+    let niveauMax = parseInt(document.getElementById("NiveauMax").value) || Infinity;
+
+    equipementsAfficher = [];
+
+    equipements.forEach(el => {
+        if (el.stuff_name.toUpperCase() === nomEquipement) {
+            exact = true;
+            equipementsAfficher = [el];
+        }
+
+        let nomValide = el.stuff_name.toUpperCase().includes(nomEquipement) && !exact;
+        let niveauValide = el.stuff_level >= niveauMin && el.stuff_level <= niveauMax;
+
+        if (nomValide && niveauValide) {
+            equipementsAfficher.push(el);
+        }
+    });
+
+    affichePage();
+}
+
+document.addEventListener('DOMContentLoaded', afficheToutStuff);
+
+function afficheToutStuff() {
     numeroPage = 0;
     document.getElementById('listing').innerHTML = '';
-    console.log(e.target.id)
-    fetch('http://localhost/Bloc3-WebSite/index.php/?ctrl=stuff&action=equipements&pieces=' + encodeURIComponent(e.target.id))
+    fetch('http://localhost/Bloc3-WebSite/index.php/?ctrl=stuff&action=tousEquipements')
         .then(res => {
             if (!res.ok) {
                 throw new Error('Erreur de réseau');
@@ -26,12 +66,21 @@ function afficheStuff(e) {
         })
         .then(data => {
             console.log(data);
-            equipementsAfficher = data;
+            equipements = data;
+            equipementsAfficher = [...equipements];
             affichePage();
         })
         .catch(error => {
             console.error('Erreur lors de la récupération des données:', error);
         });
+}
+function afficheStuff(e) {
+    numeroPage = 0;
+    document.getElementById('listing').innerHTML = '';
+    //console.log(e.target.id)
+    let pieceId = e.target.id;
+    equipementsAfficher = equipements.filter(item => item.stuff_pieces === pieceId)
+    affichePage()
 }
 
 function affichePage() {

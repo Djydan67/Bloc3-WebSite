@@ -36,7 +36,7 @@ export default function TabLayout() {
           headerShown: true,
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon
-              name={focused ? "home" : "home-outline"}
+              name={focused ? "book" : "book-outline"}
               color={color}
             />
           ),
@@ -67,7 +67,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="forum"
         options={{
-          title: 'Forum',
+          title: "Forum",
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={"chatbubbles"} color={color} />
           ),
