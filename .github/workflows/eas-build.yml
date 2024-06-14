@@ -1,0 +1,29 @@
+name: EAS Build
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    name: Install and build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18.x
+          cache: npm
+          cache-dependency-path: Mobile/dofusMobile/package-lock.json
+      - name: Setup Expo and EAS
+
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+      - name: Install dependencies
+        working-directory: Mobile/dofusMobile
+        run: npm ci
+      - name: Build on EAS
+        working-directory: Mobile/dofusMobile
+        run: npm run build:android --non-interactive --no-wait
