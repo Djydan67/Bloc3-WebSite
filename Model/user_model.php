@@ -65,7 +65,8 @@
 
         }
 
-	}public function updateUserRole($email, $newRole) {
+	
+    public function updateUserRole($email, $newRole) {
         $query = $this->_pdo->prepare("UPDATE T_user SET droit_id = :newRole WHERE email = :email");
         $query->bindParam(':newRole', $newRole);
         $query->bindParam(':email', $email);
@@ -88,5 +89,26 @@
 
         return $strPrepare->fetch(PDO::FETCH_ASSOC);
     }
-
+  
+    
+        public function getFirstUser(): array|bool {
+            $strQuery = "SELECT user_id, user_mdp, user_nom, user_prenom, user_mail, user_isactif, droit_id, user_datenaissance, user_datecreation, user_pseudo  
+                         FROM T_user 
+                         ORDER BY user_id ASC 
+                         LIMIT 1";
+            $strPrepare = $this->_db->prepare($strQuery);
+            $strPrepare->execute();
+    
+            return $strPrepare->fetch(PDO::FETCH_ASSOC);
+        }
+        public function getUsersByDroit($droit) {
+            // Exemple de requête pour récupérer les utilisateurs ayant le niveau de droit spécifié
+            $strQuery = "SELECT * FROM T_user WHERE droit_id = ?";
+            $strPrepare = $this->_db->prepare($strQuery);
+            $strPrepare->execute([$droit]);
+            return $strPrepare->fetchAll(PDO::FETCH_ASSOC);
+        }
+    
+        // ... autres méthodes ...
+    }
     

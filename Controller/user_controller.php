@@ -142,36 +142,33 @@ class User_Ctrl extends Ctrl
     }
 
     /**
-     * page de profil
-     * adrien
-     * 
+     * Page de profil du premier utilisateur trouvé
+     * @return void
      */
-    public function profile() {
+    public function profileFirstUser() {
         include("models/user_model.php");
         $objUserModel = new user_model();
 
-        // Vérifier si l'utilisateur est connecté
-        if (!isset($_SESSION['user'])) {
-            header("Location: index.php?ctrl=user&action=login");
-            exit();
-        }
-
-        // Récupérer les informations de l'utilisateur connecté
-        $arrUser = $objUserModel->getById($_SESSION['user']['user_id']);
+        // Récupérer le premier utilisateur
+        $arrUser = $objUserModel->getFirstUser();
 
         if ($arrUser === false) {
-            echo "Erreur : utilisateur non trouvé.";
+            echo "Erreur : aucun utilisateur trouvé.";
             exit();
         }
 
         // Déterminer le niveau de droit de l'utilisateur
         $userLevel = $arrUser['droit_id'];
 
-        $this->_arrData['strPage']      = "profile";
-        $this->_arrData['strTitleH1']   = "Mon Profil";
-        $this->_arrData['strFirstP']    = "Page de profil";
+        var_dump($arrUser); // Debug
+        var_dump($userLevel); // Debug
+
         $this->_arrData['arrUser']      = $arrUser;
         $this->_arrData['userLevel']    = $userLevel;
+
+        $this->_arrData['strPage']      = "profile";
+        $this->_arrData['strTitleH1']   = "Profil Utilisateur";
+        $this->_arrData['strFirstP']    = "Page de profil du premier utilisateur";
 
         $this->display('profile');
     }
