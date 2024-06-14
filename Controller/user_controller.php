@@ -167,6 +167,6 @@
         $this->_arrData['strTitleH1']   = "Profil Utilisateur";
         $this->_arrData['strFirstP']    = "Page de profil du premier utilisateur";
 
-        $this->display('profile');
+        $this->prepare('profile');
     }
 }
