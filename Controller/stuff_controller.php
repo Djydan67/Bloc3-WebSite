@@ -1,8 +1,9 @@
 <?php
- /**
-  * Controller de tous les équipements
-  * @author Renaud 
-  */
+
+/**
+ * Controller de tous les équipements
+ * @author Renaud 
+ */
 
 class Stuff_Ctrl extends Ctrl
 {
@@ -60,7 +61,7 @@ class Stuff_Ctrl extends Ctrl
 
         $this->display('stuff');
     }
-    
+
     /**
      * recupère les données et les converties en json
      */
@@ -70,6 +71,7 @@ class Stuff_Ctrl extends Ctrl
         $objStuffModel = new Stuff_model();
         $arrStuff = $objStuffModel->getAfficheStuff();
         header('Content-Type: application/json');
+        //var_dump($arrStuff);
         echo json_encode($arrStuff);
         exit();
     }

@@ -51,10 +51,7 @@
                         <a class="nav-link active" aria-current="page" href="#">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="index.php?ctrl=stuff&action=tousEquipements">Stuff</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php?ctrl=forum&action=allForums">Forum</a>
+                        <a class="nav-link" href="/Cube3/Bloc3-WebSite/index.php?ctrl=stuff&action=tousEquipements">Stuff</a>
                     </li>
                 </ul>
             </div>
