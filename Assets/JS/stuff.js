@@ -2,6 +2,7 @@ let numeroPage = 0;
 let taillePage = 12; // Valeur par défaut
 let equipementsAfficher = [];
 let equipements = [];
+let descriptionAfficher = false;
 
 document.getElementById('Amulette').addEventListener('click', afficheStuff);
 document.getElementById('Ceinture').addEventListener('click', afficheStuff);
@@ -54,10 +55,11 @@ function modifFiltre() {
 
 document.addEventListener('DOMContentLoaded', afficheToutStuff);
 
+// Récupère les données des équipements
 function afficheToutStuff() {
     numeroPage = 0;
     document.getElementById('listing').innerHTML = '';
-    fetch('http://localhost/Cube3/Bloc3-WebSite/index.php/?ctrl=stuff&action=getEquipementsJson')
+    fetch('http://localhost/Bloc3-WebSite/index.php/?ctrl=stuff&action=getEquipementsJson')
         .then(res => {
             //console.log(res)
             if (!res.ok) {
@@ -75,6 +77,8 @@ function afficheToutStuff() {
             console.error('Erreur lors de la récupération des données:', error);
         });
 }
+
+// Affiche les équipements en fonction de la pièce sélectionnée
 function afficheStuff(e) {
     numeroPage = 0;
     document.getElementById('listing').innerHTML = '';
@@ -84,36 +88,48 @@ function afficheStuff(e) {
     affichePage()
 }
 
+// Affiche les équipements sous forme de carte
 function affichePage() {
     let container = document.getElementById('listing');
     container.innerHTML = '';
 
     for (let i = taillePage * numeroPage; i < equipementsAfficher.length && i < taillePage * (numeroPage + 1); i++) {
         let item = equipementsAfficher[i];
-        container.innerHTML += '<div id="card-stuff" class="card col-10">' +
-            '<div class="card-title" id="titre">' +
-            '<p>' + item.stuff_name + '</p>' +
-            '<img class="amulette" src="' + item.stuff_imgPath + '" alt="Image"/>' +
-            '</div>' +
-            '<div id="sous-titre">' +
-            '<p>Niveau ' + item.stuff_level + '</p>' +
-            '<p>Ilevel : ' + (item.stuff_setType === null ? '' : item.stuff_setType) + '<p>' +
-            '</div>' +
-            '<hr />' +
-            '<div class="card-body">' +
-            '<p>' + item.stuff_description + '<p>' +
-            '</div>' +
-            '</div>';
+        container.innerHTML += '<div id="card-stuff" class="card col-11">' +
+                                    '<div class="card-title" id="titre">' +
+                                        '<p>' + item.stuff_name + '</p>' +
+                                        '<img class="amulette" src="' + item.stuff_imgPath + '" alt="Image"/>' +
+                                    '</div>' +
+                                    '<div id="sous-titre">' +
+                                        '<p>Niveau ' + item.stuff_level + '</p>' +
+                                        (item.stuff_setType === null ? '' : '<p>Ilevel : ' +  item.stuff_setType) + '<p>' +
+                                    '</div>' +
+                                    '<hr />' +
+                                    '<div class="card-body">' +
+                                        '<p class="stuff_description short-text"><span>' + item.stuff_description + '</span><p>' +
+                                    '</div>' +
+                                '</div>';
     }
 
     affichePagination();
+    afficheDetailDescription();
 }
 
+// Affiche ou cache la description complète de l'équipement
+function afficheDetailDescription() {
+    document.querySelectorAll('.stuff_description').forEach(function(el) {
+        el.addEventListener('click', function() {
+            this.classList.toggle('short-text'); //Bascule la classe 'short-text' en fonction de sa présence ou non
+        })
+    })
+}
+
+// Affiche la pagination
 function affichePagination() {
     let container = document.getElementById('listing');
     let nbPages = Math.ceil(equipementsAfficher.length / taillePage);
 
-    let listePage = '<div class="d-flex justify-content-between align-items-center">';
+    let listePage = '<div class="d-flex justify-content-between">';
     
     // Sélecteur de taille de page
     listePage += '<select id="pageSizeSelect" class="form-select" style="width: auto;">' +
@@ -135,9 +151,6 @@ function affichePagination() {
             listePage += '<li class="page-item ' + (i === numeroPage ? 'active' : '') + '">' +
                 '<a class="page-link" href="#" id="page-' + i + '">' + (i + 1) + '</a></li>';
         }
-    } else {
-        // Logique pour les ellipses
-        // ...
     }
 
     // Bouton suivant
@@ -147,7 +160,7 @@ function affichePagination() {
 
     listePage += '</ul></nav></div>';
 
-    container.innerHTML += listePage;
+    document.getElementById('pagination').innerHTML = listePage;
 
     // Écouteurs d'événements pour la pagination
     document.getElementById('prev').addEventListener('click', () => {
