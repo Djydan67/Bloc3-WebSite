@@ -71,6 +71,7 @@ class Stuff_Ctrl extends Ctrl
         $objStuffModel = new Stuff_model();
         $arrStuff = $objStuffModel->getAfficheStuff();
         header('Content-Type: application/json');
+        //var_dump($arrStuff);
         echo json_encode($arrStuff);
         exit();
     }

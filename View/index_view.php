@@ -4,6 +4,11 @@
         //$strFirstP	= "Page d'acceuil";
         //include("_partial/header.php");
         ?> -->
+//$strPage = "index";
+//$strTitleH1 = "Accueil";
+//$strFirstP = "Page d'acceuil";
+//include("_partial/header.php");
+?> -->
 <div id="Index">
     <main>
         <div id="background-container">

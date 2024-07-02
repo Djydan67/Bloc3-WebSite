@@ -2,7 +2,7 @@
 
 /**
  * Navbar
- * @Creator files Renaud
+ * @Creator files Renaud Siegel
  * @author 
  */
 
@@ -20,6 +20,7 @@
                     <i class="fas fa-sign-out-alt"></i>
                 </a>
             <?php
+            } else {
             } else {
             ?>
                 <a class="btn btn-sm" href="index.php?ctrl=user&action=create_account" title="Se connecter">

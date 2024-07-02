@@ -1,4 +1,9 @@
-/*--------------Stuff.php------------------*/
+/*--------------Stuff.php @Siegel Renaud------------------*/
+
+.stuff_boutton{
+  background-color: #749245;
+}
+
 #corps {
   position: relative;
   display:flex;
@@ -57,7 +62,7 @@ color: white;
   display: grid;
   grid-template-columns: repeat(3, 1fr);  
   margin: 50px;
-  margin-left:300px
+  /* margin-left:300px */
   
 }
 #card-stuff{    
@@ -80,6 +85,12 @@ color: white;
 #stuff-corps {
   display: flex;
   justify-content: space-between;
+}
+
+.short-text{
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 /*----------------Stuff.php----------------------------*/
