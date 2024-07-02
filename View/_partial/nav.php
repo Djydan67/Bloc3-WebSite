@@ -20,7 +20,6 @@
                 </a>
             <?php
             } else {
-            } else {
             ?>
                 <a class="btn btn-sm" href="index.php?ctrl=user&action=create_account" title="Se connecter">
                     <i class="fa-solid fa-user"></i></i>
