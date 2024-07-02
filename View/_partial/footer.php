@@ -1,3 +1,5 @@
+</main>
+
 <footer class="footer-container">
     <div class="container">
         <p>Créé par les DI 23-25.</p>

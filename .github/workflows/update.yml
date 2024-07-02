@@ -1,8 +1,8 @@
 name: update
-on: 
+on:
   push:
-      paths:
-        - Mobile/dofusMobile/**
+    paths:
+      - Mobile/dofusMobile/**
 
 jobs:
   update:

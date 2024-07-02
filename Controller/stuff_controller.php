@@ -1,26 +1,10 @@
 <?php
-// require_once '../Model/StuffModel.php';
+ /**
+  * Controller de tous les équipements
+  * @author Renaud 
+  */
 
-// // Vérification de l'existence et de la non-nullité de $_GET['pieces']
-// if (isset($_GET['pieces']) && !empty($_GET['pieces'])) {
-//     $stuffModel = new StuffModel();
-
-//     // Validation de $_GET['pieces'] si nécessaire
-//     $pieces = $_GET['pieces']; // Vous pouvez ajouter des validations supplémentaires ici
-
-//     // Appel de la méthode getAmulette avec la valeur de $_GET['pieces']
-//     $amulettes = $stuffModel->getAmulette($pieces);
-
-//     // Envoi des résultats encodés en JSON
-//     header('Content-Type: application/json');
-//     echo json_encode($amulettes);
-// } else {
-//     // Gestion de l'erreur si $_GET['pieces'] est manquant ou vide
-//     header('Content-Type: application/json');
-//     echo json_encode(['error' => 'ID not provided']);
-// }
-
-class Stuff_Ctrl
+class Stuff_Ctrl extends Ctrl
 {
 
     public function equipements()
@@ -50,17 +34,43 @@ class Stuff_Ctrl
         //include("View/stuff.php");
     }
 
+    /**
+     * Page de la bibliothèque d'équipements
+     */
     public function tousEquipements()
     {
-        $strPage = "équipements";
-        $strTitleH1 = "Bibliothèque";
-        $strFirstP = "";
+        // $strPage = "équipements";
+        // $strTitleH1 = "Bibliothèque";
+        // $strFirstP = "";
+        // include("Model/stuff_model.php");
+        // $objStuffModel = new Stuff_model();
+        // include("Entities/stuff_entity.php");
+
+        // $arrStuff = $objStuffModel->getAfficheStuff();
+        // header('Content-Type: application/json');
+        // echo json_encode($arrStuff);
+        // include("Model/stuff_model.php");
+        // $objStuffModel = new Stuff_model();
+        // $arrStuff = $objStuffModel->getAfficheStuff();
+        // $this->_arrData['arrStuff'] = $arrStuff;
+
+        $this->_arrData['strPage'] = "stuff";
+        $this->_arrData['strTitleH1'] = "Bibliothèque";
+        $this->_arrData['strFirstP'] = "";
+
+        $this->display('stuff');
+    }
+    
+    /**
+     * recupère les données et les converties en json
+     */
+    public function getEquipementsJson()
+    {
         include("Model/stuff_model.php");
         $objStuffModel = new Stuff_model();
-        include("Entities/stuff_entity.php");
-
         $arrStuff = $objStuffModel->getAfficheStuff();
         header('Content-Type: application/json');
         echo json_encode($arrStuff);
+        exit();
     }
 }
