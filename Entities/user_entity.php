@@ -4,18 +4,18 @@
  * @author Théo Bance
  *
  */
-    include("../entities/mother_entity.php");
+    include("Entities\mother_entity.php");
 
     class User extends Entity{
-		private string $_name;
-        private string $_firstname;
+		private string $_nom;
+        private string $_prenom;
 		private string $_mail;
-        private string $_pwd;
-        private int $_isactif;
-        private int $_droit;
+        private string $_mdp;
+        private int $_isactif = 1;
+        private int $_droit = 1;
         private string $_date_de_naissance; 
         private string $_date_de_creation;  
-         private string $_pseudonyme;        
+        private string $_pseudonyme;
 
         public function __construct(){
             $this->_prefixe = "user_";
@@ -25,30 +25,30 @@
          * @param $strName Nom de l'utilisateur
          * @return void
          */
-		public function setName($strName){
-			$this->_name = strtoupper(trim($strName));
+		public function setNom($strName){
+			$this->_nom = strtoupper(trim($strName));
 		}
 
         /**
          * @return string Nom
          */
-		public function getName(){
-			return $this->_name;
+		public function getNom(){
+			return $this->_nom;
 		}
 
         /**
          * @param $strFirstname Prénom de l'utilisateur
          * @return void
          */
-        public function setFirstname($strFirstname){
-            $this->_firstname = trim($strFirstname);
+        public function setPrenom($strFirstname){
+            $this->_prenom = trim($strFirstname);
         }
 
         /**
          * @return string Prénom
          */
-        public function getFirstname(){
-            return $this->_firstname;
+        public function getPrenom(){
+            return $this->_prenom;
         }
 
         /**
@@ -70,19 +70,19 @@
          * @param $strPwd Mot de passe de l'utilisateur
          * @return void
          */
-        public function setPwd($strPwd){
-            $this->_pwd = $strPwd;
+        public function setMdp($strPwd){
+            $this->_mdp = $strPwd;
         }
 
         /**
          * @return string Mot de passe
          */
-        public function getPwd(){
-            return $this->_pwd;
+        public function getMdp(){
+            return $this->_mdp;
         }
 
         public function getHashedPwd(){
-            return password_hash($this->_pwd, PASSWORD_DEFAULT);
+            return password_hash($this->_mdp, PASSWORD_DEFAULT);
         }
 
         public function setIsActif($intActif) {

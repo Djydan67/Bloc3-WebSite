@@ -5,7 +5,6 @@
  * @Creator files Renaud
  * @author 
  */
-
 ?>
 <nav id="nav" class="navbar navbar-light bg-light">
     <div class="container-fluid">
@@ -16,17 +15,17 @@
                     <i class="fas fa-user"></i> <?php echo $_SESSION['user']['user_nom']; ?>
                 </a>
                 |
-                <a class="btn btn-sm" href="../index.php?ctrl=user&action=logout" title="Se déconnecter">
+                <a class="btn btn-sm" href="index.php?ctrl=user&action=logout" title="Se déconnecter">
                     <i class="fas fa-sign-out-alt"></i>
                 </a>
             <?php
             } else {
             ?>
-                <a class="btn btn-sm" href="../index.php?ctrl=user&action=create_account" title="Se connecter">
+                <a class="btn btn-sm" href="index.php?ctrl=user&action=create_account" title="Se connecter">
                     <i class="fas fa-user"></i>
                 </a>
                 |
-                <a class="btn btn-sm" href="../index.php?ctrl=user&action=login" title="Se connecter">
+                <a class="btn btn-sm" href="index.php?ctrl=user&action=login" title="Se connecter">
                     <i class="fas fa-sign-in-alt"></i>
                 </a>
             <?php
