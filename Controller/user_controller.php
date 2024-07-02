@@ -55,7 +55,7 @@
             $this->_arrData['strTitleH1']   = "Me connecter";
             $this->_arrData['strFirstP']    = "Page de connexion";
 
-            $this->prepare('login');
+            $this->display('login');
         }
 
         /**
@@ -71,12 +71,15 @@
                 include("Entities/user_entity.php");
                 $objUser = new User();
                 $objUser->hydrate($_POST);
-                $this->_arrData['objUser']      = $objUser;
+                echo "<pre>";
+                var_dump($objUser);
+                var_dump($_POST);
+                $this->_arrData['objUser'] = $objUser;
 
-                if ($objUser->getName() == "") {
+                if ($objUser->getNom() == "") {
                     $arrErrors['nom'] = "Le nom est obligatoire";
                 }
-                if ($objUser->getFirstname() == "") {
+                if ($objUser->getPrenom() == "") {
                     $arrErrors['prenom'] = "Le prénom est obligatoire";
                 }
                 if ($objUser->getMail() == "") {
@@ -87,17 +90,15 @@
                     $arrErrors['mail'] = "Le mail existe déjà";
                 }
 
-                // Expression régulière REGEX
                 $regex = '#^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{16,20}$#';
-                if ($objUser->getPwd() == "") {
+                if ($objUser->getMdp() == "") {
                     $arrErrors['mdp'] = "Le mot de passe est obligatoire";
-                }elseif (!preg_match($regex, $objUser->getPwd() )){
+                }elseif (!preg_match($regex, $objUser->getMdp() )){
                     $arrErrors['mdp'] = "Le mot de passe n'est pas correct";
-                }elseif ($objUser->getPwd() != $_POST['confirmpwd']) {
+                }elseif ($objUser->getMdp() != $_POST['confirmpwd']) {
                     $arrErrors['mdp'] = "Le mot de passe et sa confirmation sont incorrect";
                 }
 
-                // Si tout est ok => Insertion BDD
                 if (count($arrErrors) == 0) {
                     $boolInsert = $objUserModel->insert($objUser);
                     if ($boolInsert){
@@ -120,7 +121,7 @@
             $this->_arrData['strTitleH1']   = "Créer un compte";
             $this->_arrData['strFirstP']    = "Page de création de compte";
 
-            $this->prepare('create_account');
+            $this->display('create_account');
         }
 
         /**
@@ -167,6 +168,6 @@
         $this->_arrData['strTitleH1']   = "Profil Utilisateur";
         $this->_arrData['strFirstP']    = "Page de profil du premier utilisateur";
 
-        $this->prepare('profile');
+        $this->display('profile');
     }
 }
