@@ -2,10 +2,9 @@
 
 /**
  * Navbar
- * @Creator files Renaud Siegel
+ * @Creator files Renaud
  * @author 
  */
-
 ?>
 <nav id="nav" class="navbar navbar-light bg-light">
     <div class="container-fluid">
@@ -57,7 +56,7 @@
                         <a class="nav-link" href="index.php?ctrl=stuff&action=tousEquipements">Stuff</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="index.php?ctrl=forum&action=themes">Forum</a>
+                        <a class="nav-link" href="index.php?ctrl=forum&action=allForums">Forum</a>
                     </li>
                 </ul>
             </div>

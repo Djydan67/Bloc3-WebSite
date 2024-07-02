@@ -41,7 +41,7 @@ class Forum_model extends Bdd
     public function getAllThemes()
     {
         $strQuery =
-            "   SELECT theme_id, theme_nom, theme_description, theme_update
+            "   SELECT theme_id, theme_nom, theme_description, theme_update, theme_color
                     FROM T_theme;
                 ";
         $strPrepare = $this->_db->prepare($strQuery);

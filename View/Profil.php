@@ -1,15 +1,17 @@
-<?php 
+<?php
 //include("_partial/header.php");
 ?>
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../Assets/Style/style.css">
-    <link rel="stylesheet" href="../Assets/Style/Bootstrap/bootstrap.css"/>
+    <link rel="stylesheet" href="../Assets/Style/Bootstrap/bootstrap.css" />
     <title>Profil Utilisateur</title>
 </head>
+
 <body class="fond">
     <header id="entete">
         <h1 id="title">Profil Utilisateur</h1>
@@ -47,7 +49,7 @@
                 <div>
                     <label for="userSelect">Sélectionnez un utilisateur à bannir :</label>
                     <select id="userSelect">
-                        <?php foreach ($userList as $user): ?>
+                        <?php foreach ($userList as $user) : ?>
                             <option value="<?php echo htmlspecialchars($user['user_id']); ?>">
                                 <?php echo htmlspecialchars($user['user_pseudo']); ?>
                             </option>
@@ -78,8 +80,9 @@
             console.log(`Banning user with ID ${userId} for ${duration}`);
         }
     </script>
-    <?php 
+    <?php
     include("_partial/footer.php");
     ?>
 </body>
+
 </html>

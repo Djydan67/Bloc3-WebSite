@@ -5,11 +5,55 @@
  * 
  * This class handles interactions with the forum and theme database tables.
  * 
- * @autor Salar
+ * @author Salar
  */
 
 class Forum_Ctrl extends Ctrl
 {
+    public function allForums()
+    {
+        $this->_arrData['strPage'] = "forum";
+        $this->_arrData['strTitleH1'] = "Forums";
+        $this->_arrData['strFirstP'] = "";
+
+        try {
+            $this->display('forum_view');
+        } catch (Exception $e) {
+            error_log('Error displaying all forums: ' . $e->getMessage());
+            header('Content-Type: application/json', true, 500);
+            echo json_encode(['error' => 'Failed to display forums']);
+        }
+    }
+
+    public function Forums()
+    {
+        include(__DIR__ . "/../Model/forum_model.php");
+        $objForumModel = new Forum_model();
+
+        try {
+            if (isset($_GET['forum_id'])) {
+                $forumId = intval($_GET['forum_id']);
+                $arrForums = $objForumModel->getForumResponses($forumId);
+                header('Content-Type: application/json');
+
+                // Checking JSON if is valid
+                $jsonData = json_encode($arrForums);
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    error_log('JSON encode error: ' . json_last_error_msg());
+                    echo json_encode(['error' => 'Failed to encode JSON']);
+                    return;
+                }
+
+                echo $jsonData;
+                return;
+            }
+        } catch (\Throwable $th) {
+            error_log('Error fetching forum responses: ' . $th->getMessage());
+            header('Content-Type: application/json', true, 500);
+            echo json_encode(['error' => $th->getMessage()]);
+        }
+    }
+
     public function themes()
     {
         include(__DIR__ . "/../Model/forum_model.php");
@@ -40,36 +84,7 @@ class Forum_Ctrl extends Ctrl
             $this->_arrData['strFirstP'] = "Page affichant les forums";
             $this->display('forum_view');
         } catch (Exception $e) {
-            header('Content-Type: application/json', true, 500);
-            echo json_encode(['error' => $e->getMessage()]);
-        }
-    }
-
-    public function forums()
-    {
-        include(__DIR__ . "/../Model/forum_model.php");
-        $objForumModel = new Forum_model();
-
-        try {
-            if (isset($_GET['forum_id'])) {
-                $forumId = intval($_GET['forum_id']);
-                $arrForums = $objForumModel->getForumResponses($forumId);
-                header('Content-Type: application/json');
-
-                // Checking JSON if is valid
-                $jsonData = json_encode($arrForums);
-                if (json_last_error() !== JSON_ERROR_NONE) {
-                    error_log('JSON encode error: ' . json_last_error_msg());
-                    echo json_encode(['error' => 'Failed to encode JSON']);
-                    return;
-                }
-
-                echo $jsonData;
-                return;
-                echo $jsonData;
-                return;
-            }
-        } catch (\Throwable $th) {
+            error_log('Error fetching themes: ' . $e->getMessage());
             header('Content-Type: application/json', true, 500);
             echo json_encode(['error' => $e->getMessage()]);
         }
@@ -99,8 +114,9 @@ class Forum_Ctrl extends Ctrl
                 throw new Exception('Missing parameters');
             }
         } catch (\Throwable $th) {
+            error_log('Error creating forum: ' . $th->getMessage());
             header('Content-Type: application/json', true, 400);
-            echo json_encode(['error' => $e->getMessage()]);
+            echo json_encode(['error' => $th->getMessage()]);
         }
     }
 
@@ -126,6 +142,7 @@ class Forum_Ctrl extends Ctrl
                 throw new Exception('Missing parameters');
             }
         } catch (Exception $e) {
+            error_log('Error creating response: ' . $e->getMessage());
             header('Content-Type: application/json', true, 400);
             echo json_encode(['error' => $e->getMessage()]);
         }

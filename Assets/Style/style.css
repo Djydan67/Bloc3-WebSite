@@ -1,25 +1,41 @@
-/*--------------Stuff.php @Siegel Renaud------------------*/
+:root {
+  --greenDofus: #749245;
+  --DarkBlack: #313131;
+  --bodyGreen: #6aa84f;
+  --white: #ffffff;
+  --antiqueWhite: #faebd7;
+  --aliceBlue: #f0f8ff;
+  --darkGray: #8f8f8f;
+  --lightGray: #e0e0e0;
+  --mediumGray: #3c3630;
+  --backgroundGray: #2e2924;
+  --responseBackground: #343a40;
+  --themeBackground: #6aa84f;
+  --forumCardBackground: #8f8f8f;
+  --forumContainerBackground: #ffffff;
+}
 
-.stuff_boutton{
-  background-color: #749245;
+.stuff_boutton {
+  background-color: var(--greenDofus);
 }
 
 #corps {
   position: relative;
-  display:flex;
-}
-
-#stuff_filtreNom{
   display: flex;
-  color: white;
+  background-color: var(--bodyGreen);
 }
 
-#Stuff_Nom{
+#stuff_filtreNom {
+  display: flex;
+  color: var(--white);
+}
+
+#Stuff_Nom {
   margin-left: 10px;
 }
 
 #Stuff {
-  background-color: #313131; /* Fond noir */
+  background-color: var(--DarkBlack); /* Fond noir */
 }
 
 /* #stuff_filtre {
@@ -28,80 +44,82 @@
   left: 10px;
 } */
 
-
-#stuff_title{
-  color: white;
+#stuff_title {
+  color: var(--white);
 }
-#corps {
-  display: flex;
-  background-color:#6aa84f ;
 
-}
-#stuff_filtre{
+#stuff_filtre {
   position: sticky;
 }
+
 #filtre {
   /* position: absolute; */
   display: flex;
   justify-content: center;
   width: 100%;
 }
-.fond{
-  background-color: #2e2924;
+
+.fond {
+  background-color: var(--backgroundGray);
 }
-h1{
-text-align: center;
-color: white;
+
+h1 {
+  text-align: center;
+  color: var(--white);
 }
-#logo{
-  height:50px;
+
+#logo {
+  height: 50px;
   width: 50px;
 }
 
-#listing{
+#listing {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);  
+  grid-template-columns: repeat(3, 1fr);
   margin: 50px;
   /* margin-left:300px */
-  
 }
-#card-stuff{    
-  background-color: #3c3630;
-  color: white;
-  margin:10px;
+
+#card-stuff {
+  background-color: var(--mediumGray);
+  color: var(--white);
+  margin: 10px;
 }
-#titre{
+
+#titre {
   display: flex;
   justify-content: space-between;
 }
-.amulette{
-  height:75px;
-  width:75px;
+
+.amulette {
+  height: 75px;
+  width: 75px;
 }
-#sous-titre{
+
+#sous-titre {
   display: flex;
   justify-content: space-between;
 }
+
 #stuff-corps {
   display: flex;
   justify-content: space-between;
 }
 
-.short-text{
+.short-text {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-/*----------------Stuff.php----------------------------*/
 /* début CSS de Ilian (footer + index) */
 
 .footer-container {
   /* position: fixed; */
   bottom: 0;
   width: 100%;
-  background-color: #313131; /* Fond noir */
-  color: white; /* Texte blanc */
+  background-color: var(--DarkBlack); /* Fond noir */
+  color: var(--white); /* Texte blanc */
   padding: 20px 0; /* Espacement intérieur du footer */
 }
 
@@ -109,9 +127,9 @@ color: white;
   text-align: center;
 }
 
-.response-of-user{
-  background-color: #313131;
-  color: antiquewhite;
+.response-of-user {
+  background-color: var(--DarkBlack);
+  color: var(--antiqueWhite);
 }
 
 #carousel-item{
@@ -127,7 +145,7 @@ color: white;
     margin-top: 100px; /* Espacement depuis le haut de la page */
     position: relative; /* Positionnement relatif pour que z-index fonctionne */
     z-index: 1; /* Pour placer le texte au-dessus de l'image de fond */
-    color: aliceblue; /* Couleur du texte */
+    color: var(--aliceBlue); /* Couleur du texte */
   }
 
   #IndexText h2 {
@@ -141,8 +159,7 @@ color: white;
 
   #background-container {
     position: absolute;
-    background: lightblue url("../Images/dofushelp_banner.jpg") no-repeat center /
-      cover;
+    background: lightblue url("../Images/dofushelp_banner.jpg") no-repeat center / cover;
     top: 0;
     left: 0;
     width: 100%;
@@ -158,13 +175,118 @@ color: white;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(
-      0,
-      0,
-      0,
-      0.3
-    ); /* Couleur d'arrière-plan légèrement assombrie */
+    background-color: rgba(0, 0, 0, 0.3); /* Couleur d'arrière-plan légèrement assombrie */
     z-index: -2; /* Pour placer le calque derrière l'image */
   }
 }
-/*fin du CSS Ilian (Index + footer)*/
+
+/*-------------------Forum-------------------*/
+.forum-card {
+  background-color: var(--forumCardBackground);
+  margin-bottom: 1em;
+  padding: 0.4em;
+  border-radius: 0.5rem;
+}
+
+.card-text {
+  margin-left: 1em;
+}
+
+.response-card {
+  background-color: var(--white);
+  color: var(--lightGray);
+  border: 1px solid var(--lightGray);
+}
+
+.response-card .card-body {
+  padding: 0.4rem;
+  background-color: var(--responseBackground);
+}
+
+.response-card .card-title {
+  font-size: 1.25rem;
+  color: var(--lightGray);
+  font-weight: bold;
+}
+
+.response-card .card-text,
+.response-card small {
+  font-size: 1rem;
+}
+
+.theme-btn {
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0.5rem;
+}
+
+.forum-list {
+  margin-top: 2rem;
+}
+
+.search-bar {
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+}
+
+.list-group-item {
+  border: 1px solid var(--lightGray);
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+#createForumFormContainer {
+  background-color: var(--white);
+  padding: 2rem;
+  border: 1px solid var(--lightGray);
+  border-radius: 0.5rem;
+  margin-top: 2rem;
+}
+
+#createForumForm .form-control,
+#createForumForm .btn {
+  border-radius: 0.5rem;
+}
+
+#themeSearch {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  max-width: 50%;
+}
+
+.forum-container {
+  background-image: url('../Images/Forum-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  color: var(--white);
+}
+
+.search-bar {
+  max-width: 300px;
+}
+
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.theme-btn {
+  flex: 1;
+  min-width: 150px;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.theme-btn h3 {
+  margin: 0;
+}
