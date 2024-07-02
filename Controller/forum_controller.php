@@ -38,7 +38,7 @@ class Forum_Ctrl extends Ctrl
             $this->_arrData['strPage'] = "forum";
             $this->_arrData['strTitleH1'] = "Forums";
             $this->_arrData['strFirstP'] = "Page affichant les forums";
-            $this->prepare('forum_view');
+            $this->display('forum_view');
         } catch (Exception $e) {
             header('Content-Type: application/json', true, 500);
             echo json_encode(['error' => $e->getMessage()]);

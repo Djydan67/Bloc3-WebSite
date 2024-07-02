@@ -81,8 +81,10 @@ color: white;
   display: flex;
   justify-content: space-between;
 }
+
 /*----------------Stuff.php----------------------------*/
 /* début CSS de Ilian (footer + index) */
+
 .footer-container {
   /* position: fixed; */
   bottom: 0;
@@ -93,13 +95,21 @@ color: white;
 }
 
 .footer-container .container {
-  text-align: center; /* Centrage du texte */
+  text-align: center;
 }
 
 .response-of-user{
   background-color: #313131;
   color: antiquewhite;
 }
+
+#carousel-item{
+  width : 500px;
+  height : 500px;
+  margin: auto;
+  display: flex;
+}
+
 #Index {
   #IndexText {
     text-align: center;

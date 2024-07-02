@@ -1,8 +1,9 @@
 <?php
- /**
-  * Controller de tous les équipements
-  * @author Renaud 
-  */
+
+/**
+ * Controller de tous les équipements
+ * @author Renaud 
+ */
 
 class Stuff_Ctrl extends Ctrl
 {
@@ -60,7 +61,7 @@ class Stuff_Ctrl extends Ctrl
 
         $this->display('stuff');
     }
-    
+
     /**
      * recupère les données et les converties en json
      */
