@@ -24,25 +24,31 @@
                     <!-- Première diapositive -->
                     <div class="slide">
                         <!-- Image de la première diapositive -->
-                        <img src="Assets\Images\dldofus.png" alt="Image 1">
+                        <a href="https://www.dofus.com/fr/mmorpg/telecharger">
+                            <img src="Assets\Images\dldofus.png" alt="Image 1">
+                        </a>
                     </div>
                     <!-- Deuxième diapositive -->
                     <div class="slide">
                         <!-- Image de la deuxième diapositive -->
-                        <img src="Assets\Images\forum.png" alt="Image 2">
+                        <a class="nav-link" href="index.php?ctrl=forum&action=allForums">
+                            <img src="Assets\Images\forum-slide.png" alt="Image 2">
+                        </a>
                     </div>
                     <!-- Troisième diapositive -->
                     <div class="slide">
                         <!-- Image de la troisième diapositive -->
-                        <img src="Assets\Images\dofushelp_banner.jpg" alt="Image 3">
+                        <a class="nav-link" href="#">
+                            <img src="Assets\Images\articles-slide.png" alt="Image 3">
+                        </a>
                     </div>
                 </div>
                 <!-- Conteneur pour les boutons de navigation -->
                 <div class="carousel-controls">
                     <!-- Bouton pour passer à la diapositive précédente -->
-                    <button id="prev">Précédent</button>
+                    <button id="prev">◀</button>
                     <!-- Bouton pour passer à la diapositive suivante -->
-                    <button id="next">Suivant</button>
+                    <button id="next">▶</button>
                 </div>
                 <!-- Conteneur pour les points de navigation -->
                 <div class="carousel-dots"></div>
