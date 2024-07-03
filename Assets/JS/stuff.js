@@ -61,6 +61,7 @@ document.addEventListener("DOMContentLoaded", afficheToutStuff);
 
 // Récupère les données des équipements
 function afficheToutStuff() {
+<<<<<<< HEAD
   numeroPage = 0;
   document.getElementById("listing").innerHTML = "";
   fetch(
@@ -82,6 +83,27 @@ function afficheToutStuff() {
     .catch((error) => {
       console.error("Erreur lors de la récupération des données:", error);
     });
+=======
+    numeroPage = 0;
+    document.getElementById('listing').innerHTML = '';
+    fetch('http://localhost/Bloc3-WebSite/index.php/?ctrl=stuff&action=getEquipementsJson')
+        .then(res => {
+            console.log(res)
+            if (!res.ok) {
+                throw new Error('Erreur de réseau');
+            }
+            return res.json();
+        })
+        .then(data => {
+            console.log(data);
+            equipements = data;
+            equipementsAfficher = [...equipements];
+            affichePage();
+        })
+        .catch(error => {
+            console.error('Erreur lors de la récupération des données:', error);
+        });
+>>>>>>> 72863402b3a7706dcf174c79f387355b6501ccc2
 }
 
 // Affiche les équipements en fonction de la pièce sélectionnée
