@@ -8,23 +8,10 @@
 </head>
 
 <body class="fond">
-    <header id="entete">
-        <h1 id="title">Profil Utilisateur</h1>
-    </header>
     <main class="fond">
         <div class="container">
-            <?php
-            include("Entities/user_entity.php");
-            include("Model/user_model.php");
-            $UserModel = new user_model();
-            $arrUser = $UserModel->getFirstUser();
-            $userLevel = $arrUser['user_droit'] ?? 1; 
-            var_dump($arrUser);
 
-            // Retrieve list of users with droit = 1
-            $userList = $UserModel->getUsersByDroit(1);
-            ?>
-            <div id="ProfilText" class="profil-texte-blanc">
+            <div id="profil" class="profil-texte-blanc">
                 <h2>Informations du Profil</h2>
                 <ul>
                     <li>Pseudo: <?php echo htmlspecialchars($arrUser['user_pseudo'] ?? 'N/A'); ?></li>
@@ -36,7 +23,8 @@
                 </ul>
             </div>
 
-            <?php if ($arrUser['droit_id'] == 2 || $arrUser['droit_id'] == 3) : ?>
+            <?php if ($arrUser['droit_id'] == 2 || $arrUser['droit_id'] == 3) : 
+                var_dump($userList);?>
                 <div id="ProfilText" class="profil-texte-blanc">
                     <h2>Panel Modération</h2>
                     <form id="moderationForm" action="index.php?ctrl=user&action=PanneauModeration" method="post">
@@ -50,10 +38,6 @@
                                     </option>
                                 <?php endforeach; ?>
                             </select>
-                        </div>
-                        <div>
-                            <label for="banReason">Raison du ban :</label>
-                            <textarea id="banReason" name="banReason" placeholder="Raison du ban"></textarea>
                         </div>
                         <button type="submit" name="action" value="ban">Bannir</button>
                         <button type="submit" name="action" value="addModerator">Ajouter modérateur</button>

@@ -140,26 +140,39 @@
 
 
     public function profil()
-    {
-        // $strPage = "équipements";
-        // $strTitleH1 = "Bibliothèque";
-        // $strFirstP = "";
-        // include("Model/stuff_model.php");
-        // $objStuffModel = new Stuff_model();
-        // include("Entities/stuff_entity.php");
+    {            
+        include("Model/user_model.php");
+        $UserModel = new user_model();
+        $arrUser = $UserModel->getFirstUser();
+      
+        $arrUser = $UserModel->getFirstUser();
+        $userLevel = $arrUser['user_droit'] ?? 1; 
+        var_dump($arrUser);
 
-        // $arrStuff = $objStuffModel->getAfficheStuff();
-        // header('Content-Type: application/json');
-        // echo json_encode($arrStuff);
-        // include("Model/stuff_model.php");
-        // $objStuffModel = new Stuff_model();
-        // $arrStuff = $objStuffModel->getAfficheStuff();
-        // $this->_arrData['arrStuff'] = $arrStuff;
+        // Retrieve list of users with droit = 1
+        $userList = $UserModel->getUsersByDroit(1);
+      
+        if ($arrUser === false) {
+            echo "Erreur : aucun utilisateur trouvé.";
+            exit();
+        }
 
+        // Déterminer le niveau de droit de l'utilisateur
+        $userLevel = $arrUser['droit_id'];
+
+   
+
+        $this->_arrData['arrUser']      = $arrUser;
+        $this->_arrData['userLevel']    = $userLevel;
+        $this->_arrData['userList'] = $userList;
+   
+      
+
+    
+      
         $this->_arrData['strPage'] = "profil";
         $this->_arrData['strTitleH1'] = "profil utilisateur";
         $this->_arrData['strFirstP'] = "";
-
         $this->display('profil');
     }
     /**
@@ -167,11 +180,16 @@
      * @return void
      */
     public function profileFirstUser() {
-        include("models/user_model.php");
-        $objUserModel = new user_model();
-
         // Récupérer le premier utilisateur
-        $arrUser = $objUserModel->getFirstUser();
+        $arrUser = $UserModel->getFirstUser();
+        include("Model/user_model.php");
+        $UserModel = new user_model();
+        $arrUser = $UserModel->getFirstUser();
+        $userLevel = $arrUser['user_droit'] ?? 1; 
+        var_dump($arrUser);
+
+        // Retrieve list of users with droit = 1
+        $userList = $UserModel->getUsersByDroit(1);
 
         if ($arrUser === false) {
             echo "Erreur : aucun utilisateur trouvé.";
@@ -196,6 +214,8 @@
 
     public function PanneauModeration() {
         $message = "";
+        include("Model/user_model.php");
+        $objUserModel = new user_model();
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $action = $_POST['action'] ?? '';
@@ -204,35 +224,22 @@
             if ($action && $userId) {
                 switch ($action) {
                     case 'ban':
-                        $banReason = $_POST['banReason'] ?? '';
-                        if ($banReason) {
-                            $result = $this->UserModel->banUser($userId);
-                            if ($result) {
-                                $message = "L'utilisateur a été banni avec succès.";
-                            } else {
-                                $message = "Erreur lors du bannissement de l'utilisateur.";
-                            }
-                        } else {
-                            $message = "Veuillez fournir une raison pour le bannissement.";
-                        }
+                       
+                     $objUserModel->banUser($userId);
+                            
+                        
                         break;
                     case 'addModerator':
-                        $result = $this->UserModel->createModerateur($userId);
-                        if ($result) {
-                            $message = "L'utilisateur a été promu modérateur avec succès.";
-                        } else {
-                            $message = "Erreur lors de la promotion de l'utilisateur.";
-                        }
+                        $objUserModel->createModerateur($userId);
+                        
                         break;
                     default:
                         $message = "Action non reconnue.";
                         break;
                 }
-            } else {
-                $message = "Action ou utilisateur non spécifié.";
-            }
+            } 
         }
-        return $message;
+        header("Location:index.php?ctrl=user&action=profil");
     }
 
 }
