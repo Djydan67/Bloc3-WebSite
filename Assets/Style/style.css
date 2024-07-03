@@ -230,17 +230,20 @@ h1 {
   margin-bottom: 1rem;
 }
 
-#createForumFormContainer {
+.createForumFormContainer {
   background-color: var(--white);
   padding: 2rem;
   border: 1px solid var(--lightGray);
   border-radius: 0.5rem;
   margin-top: 2rem;
+  color: var(--DarkBlack);
 }
 
 #createForumForm .form-control,
 #createForumForm .btn {
   border-radius: 0.5rem;
+  margin: 0.5rem;
+  
 }
 
 #themeSearch {
@@ -254,7 +257,37 @@ h1 {
   background-size: cover;
   background-position: center;
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+.forum {
+  position: relative; 
+  overflow: hidden; 
+}
+.create-forum-card{
+  background-color: var(--backgroundGray);
+  color: var(--white);
+  border: 1px solid var(--lightGray);
+  border-radius: 0 0 0.5rem 0.5rem;
+  margin-bottom: 1rem;
+  padding: 20px;
+  color: var(--DarkBlack);
+}
+.forum::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../Images/Forum.jpg');
+  background-size: cover;
+  background-position: center;
+
+  z-index: -1; 
+
+}
+.search-forum{
+  color: var(--white);
 }
 
 .pageHeader {

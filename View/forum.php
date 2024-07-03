@@ -1,5 +1,7 @@
-<div id="Index" class="container">
-    <div class="forum">
+<div id="Index" class=" forum">
+    <div class="container">
+
+
         <h1 class="my-4">Forum</h1>
         <?php
         include("Entities/forum_entity.php"); // Includes both Forum and Theme classes
@@ -35,45 +37,48 @@
         <?php
         }
         ?>
+        <div class="create-forum-card">
+            <!-- Create Forum Button -->
+            <button id="showCreateForumForm" class="btn btn-primary my-4">Create Forum</button>
 
-        <!-- Create Forum Button -->
-        <button id="showCreateForumForm" class="btn btn-primary my-4">Create Forum</button>
-
-        <!-- Create Forum Form -->
-        <div id="createForumFormContainer" style="display: none;">
-            <h2>Create a Forum</h2>
-            <form id="createForumForm">
-                <div class="form-group">
-                    <label for="forumTitle">Title</label>
-                    <input type="text" class="form-control" id="forumTitle" required>
-                </div>
-                <div class="form-group">
-                    <label for="forumMessage">Message</label>
-                    <textarea class="form-control" id="forumMessage" rows="3" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="forumTheme">Theme</label>
-                    <select class="form-control" id="forumTheme" required>
-                        <?php
-                        foreach ($arrThemes as $arrDetTheme) {
-                            $objTheme = new Theme();
-                            $objTheme->hydrate($arrDetTheme);
-                            echo '<option value="' . $objTheme->getThemeId() . '">' . htmlspecialchars($objTheme->getThemeName()) . '</option>';
-                        }
-                        ?>
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-primary">Create Forum</button>
-                <button id="hideCreateForumForm" type="button" class="btn btn-secondary">Close</button>
-            </form>
-        </div>
-
-        <h2>Forums:</h2>
-        <input type="text" class="form-control search-bar" id="forumSearch" placeholder="Search Forums...">
-        <div class="forum-list">
-            <div class="list-group" id="forums-container">
-                <p>Select a theme to view forums.</p>
+            <!-- Create Forum Form -->
+            <div id="createForumFormContainer" class="createForumFormContainer" style="display: none;">
+                <h2>Create a Forum</h2>
+                <form id="createForumForm">
+                    <div class="form-group">
+                        <label for="forumTitle">Title</label>
+                        <input type="text" class="form-control" id="forumTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="forumMessage">Message</label>
+                        <textarea class="form-control" id="forumMessage" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="forumTheme">Theme</label>
+                        <select class="form-control" id="forumTheme" required>
+                            <?php
+                            foreach ($arrThemes as $arrDetTheme) {
+                                $objTheme = new Theme();
+                                $objTheme->hydrate($arrDetTheme);
+                                echo '<option value="' . $objTheme->getThemeId() . '">' . htmlspecialchars($objTheme->getThemeName()) . '</option>';
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create Forum</button>
+                    <button id="hideCreateForumForm" type="button" class="btn btn-secondary">Close</button>
+                </form>
             </div>
+            <div class="search-forum">
+                <h2>Forums:</h2>
+                <input type="text" class="form-control search-bar" id="forumSearch" placeholder="Search Forums...">
+                <div class="forum-list">
+                    <div class="list-group" id="forums-container">
+                        <p>Select a theme to view forums.</p>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
@@ -85,61 +90,65 @@
         themeButtons.forEach(button => {
             button.addEventListener('click', function() {
                 const themeId = this.getAttribute('data-theme-id');
-                const url = `index.php?ctrl=forum&action=themes&theme_id=${themeId}`;
-                fetch(url)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.text(); // Use text() to log raw response first
-                    })
-                    .then(text => {
-                        try {
-                            const data = JSON.parse(text);
-                            const forumsContainer = document.getElementById('forums-container');
-                            if (forumsContainer) {
-                                forumsContainer.innerHTML = '';
-                                if (data.error) {
-                                    forumsContainer.innerHTML = `<p>Error: ${data.error}</p>`;
-                                    return;
-                                }
-                                if (data.length > 0) {
-                                    data.forEach(forum => {
-                                        forumsContainer.innerHTML += `
-                                        <div class="forum-card">
-                                            <a href="#" class="list-group-item list-group-item-action forum-item" data-forum-id="${forum.forum_id}">
-                                                <h5 class="mb-1">${forum.forum_titre}</h5>
-                                                <p class="mb-1">${forum.forum_message}</p>
-                                                <small>${forum.forum_date}</small>
-                                            </a>
-                                            <div id="${forum.forum_id}_forum_response" style="display: none;"></div>
-                                        </div>
-                                    `;
-                                    });
-                                } else {
-                                    forumsContainer.innerHTML = '<p>No forum topics found.</p>';
-                                }
-                                getResponses();
+                fetchForumsByTheme(themeId);
+            });
+        });
+
+        function fetchForumsByTheme(themeId) {
+            const url = `index.php?ctrl=forum&action=themes&theme_id=${themeId}`;
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(text => {
+                    try {
+                        const data = JSON.parse(text);
+                        const forumsContainer = document.getElementById('forums-container');
+                        if (forumsContainer) {
+                            forumsContainer.innerHTML = '';
+                            if (data.error) {
+                                forumsContainer.innerHTML = `<p>Error: ${data.error}</p>`;
+                                return;
+                            }
+                            if (data.length > 0) {
+                                data.reverse().forEach(forum => {
+                                    forumsContainer.innerHTML += `
+                                    <div class="forum-card">
+                                        <a href="#" class="list-group-item list-group-item-action forum-item" data-forum-id="${forum.forum_id}">
+                                            <h5 class="mb-1">${forum.forum_titre}</h5>
+                                            <p class="mb-1">${forum.forum_message}</p>
+                                            <small>${forum.forum_date}</small>
+                                        </a>
+                                        <div id="${forum.forum_id}_forum_response" style="display: none;"></div>
+                                    </div>
+                                `;
+                                });
                             } else {
-                                console.error('forums-container element not found.');
+                                forumsContainer.innerHTML = '<p>No forum topics found.</p>';
                             }
-                        } catch (error) {
-                            console.error('Error parsing JSON:', error, text);
-                            const forumsContainer = document.getElementById('forums-container');
-                            if (forumsContainer) {
-                                forumsContainer.innerHTML = '<p>Error fetching forums. Please try again.</p>';
-                            }
+                            getResponses();
+                        } else {
+                            console.error('forums-container element not found.');
                         }
-                    })
-                    .catch(error => {
+                    } catch (error) {
+                        console.error('Error parsing JSON:', error, text);
                         const forumsContainer = document.getElementById('forums-container');
                         if (forumsContainer) {
                             forumsContainer.innerHTML = '<p>Error fetching forums. Please try again.</p>';
                         }
-                        console.error('Error fetching forums:', error);
-                    });
-            });
-        });
+                    }
+                })
+                .catch(error => {
+                    const forumsContainer = document.getElementById('forums-container');
+                    if (forumsContainer) {
+                        forumsContainer.innerHTML = '<p>Error fetching forums. Please try again.</p>';
+                    }
+                    console.error('Error fetching forums:', error);
+                });
+        }
 
         function getResponses() {
             const forumItems = document.querySelectorAll('.forum-item');
@@ -147,13 +156,13 @@
                 forum.addEventListener('click', function(event) {
                     event.preventDefault();
                     const forumId = this.getAttribute('data-forum-id');
-                    const url = `index.php?ctrl=forum&action=Forums&forum_id=${forumId}`; // Make sure this matches your PHP method
+                    const url = `index.php?ctrl=forum&action=Forums&forum_id=${forumId}`;
                     fetch(url)
                         .then(response => {
                             if (!response.ok) {
                                 throw new Error('Network response was not ok');
                             }
-                            return response.text(); // Use text() to log raw response first
+                            return response.text();
                         })
                         .then(text => {
                             try {
@@ -322,6 +331,7 @@
                         if (data.success) {
                             alert('Forum created successfully!');
                             this.reset();
+                            fetchForumsByTheme(themeId); // Fetch forums for the selected theme
                             const createForumFormContainer = document.getElementById('createForumFormContainer');
                             if (createForumFormContainer) {
                                 createForumFormContainer.style.display = 'none';
