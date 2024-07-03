@@ -1,25 +1,3 @@
-<<<<<<< HEAD
-fetch('../Controller/StuffController.php?action=affichage').then(res => {
-    console.log(res);
-    if (!res.ok) {
-        throw new Error('Erreur de réseau');
-    }
-    return res.json();
-}).then(data => {
-    affichage(data);
-}).catch(error => {
-    console.error('Erreur lors de la récuperation des données:', error);
-});
-
-function affichage(stuffs) {
-    let container = document.getElementById('listing');
-    stuffs.forEach(stuff => {
-        let p = document.createElement('p');
-        p.textContent = stuff.setName;
-        container.appendChild(p);
-    })
-}
-=======
 let numeroPage = 0;
 let taillePage = 12; // Valeur par défaut
 let equipementsAfficher = [];
@@ -87,7 +65,7 @@ document.addEventListener("DOMContentLoaded", afficheToutStuff);
 function afficheToutStuff() {
     numeroPage = 0;
     document.getElementById('stuff_listing').innerHTML = '';
-    fetch('http://localhost:8080/Bloc3-WebSite/index.php/?ctrl=stuff&action=getEquipementsJson')
+    fetch('http://localhost/Bloc3-WebSite/index.php/?ctrl=stuff&action=getEquipementsJson')
         .then(res => {
             console.log(res)
             if (!res.ok) {
@@ -248,4 +226,3 @@ function affichePagination() {
         affichePage();
     });
 }
->>>>>>> main
