@@ -35,7 +35,7 @@
                             unset($arrUser['user_mdp']);
                             $_SESSION['user'] = $arrUser;
                             $_SESSION['valid'] = "Vous êtes bien connecté";
-                             header("Location:");
+                             header("Location:index.php");
                         } else {
                             $arrErrors[] = "Erreur de connexion";
                         }
@@ -50,10 +50,6 @@
                 }
                 echo "</div>";
             }
-
-            $this->_arrData['strPage']      = "login";
-            $this->_arrData['strTitleH1']   = "Me connecter";
-            $this->_arrData['strFirstP']    = "Page de connexion";
 
             $this->display('login');
         }

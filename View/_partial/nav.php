@@ -9,7 +9,7 @@
 ?>
 <nav id="nav" class="navbar navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Dofus</a>
+        <a class="navbar-brand" href="index.php">Dofus</a>
         <div id="user" class="col-4 d-flex justify-content-end align-items-center">
             <?php if (isset($_SESSION['user'])) { ?>
                 <a class="btn btn-sm" href="../index.php?ctrl=user&action=login" title="Se connecter">
