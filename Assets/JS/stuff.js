@@ -61,7 +61,7 @@ function afficheToutStuff() {
     document.getElementById('listing').innerHTML = '';
     fetch('http://localhost/Bloc3-WebSite/index.php/?ctrl=stuff&action=getEquipementsJson')
         .then(res => {
-            //console.log(res)
+            console.log(res)
             if (!res.ok) {
                 throw new Error('Erreur de réseau');
             }

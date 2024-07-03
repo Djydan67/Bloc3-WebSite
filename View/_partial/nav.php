@@ -8,11 +8,11 @@
 ?>
 <nav id="nav" class="navbar navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Dofus</a>
+        <a class="navbar-brand" href="#">DofusHelp</a>
         <div id="user" class="col-4 d-flex justify-content-end align-items-center">
             <?php if (isset($_SESSION['user'])) { ?>
-                <a class="btn btn-sm" href="../index.php?ctrl=user&action=login" title="Se connecter">
-                    <i class="fas fa-user"></i> <?php echo $_SESSION['user']['user_nom']; ?>
+                <a class="btn btn-sm" href="index.php?ctrl=user&action=login" title="Se connecter">
+                    <i class="fa-solid fa-user"></i></i> <?php echo $_SESSION['user']['user_nom']; ?>
                 </a>
                 |
                 <a class="btn btn-sm" href="index.php?ctrl=user&action=logout" title="Se déconnecter">
@@ -22,7 +22,7 @@
             } else {
             ?>
                 <a class="btn btn-sm" href="index.php?ctrl=user&action=create_account" title="Se connecter">
-                    <i class="fas fa-user"></i>
+                    <i class="fa-solid fa-user"></i></i>
                 </a>
                 |
                 <a class="btn btn-sm" href="index.php?ctrl=user&action=login" title="Se connecter">
@@ -40,15 +40,16 @@
                 <a href="create_account.php">
                     <button>
                         <span class="fa-regular fa-user" aria-hidden="true"></span>
+                        <a class="nav-link" href="index.php?ctrl=user&action=login"></a>
                     </button>
                 </a>
-                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Offcanvas</h5>
+                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Navigation</h5>
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        <a class="nav-link active" aria-current="page" href="index.php?ctrl=index&action=index">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="index.php?ctrl=stuff&action=tousEquipements">Stuff</a>
