@@ -18,7 +18,7 @@ const carousel = [
   {
     id: "image_del",
     openinapp: false,
-    source: require("@/assets/images/dldofus.png"),
+    source: require("AssetsImagesdldofus.png"),
     href: "https://www.dofus.com/fr/mmorpg/telecharger",
   },
   {
