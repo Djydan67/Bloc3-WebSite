@@ -4,19 +4,19 @@ let equipementsAfficher = [];
 let equipements = [];
 let descriptionAfficher = false;
 
-document.getElementById('Amulette').addEventListener('click', afficheStuff);
-document.getElementById('Ceinture').addEventListener('click', afficheStuff);
-document.getElementById('Bottes').addEventListener('click', afficheStuff);
-document.getElementById('Dofus').addEventListener('click', afficheStuff);
-document.getElementById('Cape').addEventListener('click', afficheStuff);
-document.getElementById('Chapeau').addEventListener('click', afficheStuff);
-document.getElementById('Anneau').addEventListener('click', afficheStuff);
-document.getElementById('Trophee').addEventListener('click', afficheStuff);
-document.getElementById('Bouclier').addEventListener('click', afficheStuff);
-document.getElementById('Armes').addEventListener('click', afficheStuff);
+document.getElementById("Amulette").addEventListener("click", afficheStuff);
+document.getElementById("Ceinture").addEventListener("click", afficheStuff);
+document.getElementById("Bottes").addEventListener("click", afficheStuff);
+document.getElementById("Dofus").addEventListener("click", afficheStuff);
+document.getElementById("Cape").addEventListener("click", afficheStuff);
+document.getElementById("Chapeau").addEventListener("click", afficheStuff);
+document.getElementById("Anneau").addEventListener("click", afficheStuff);
+document.getElementById("Trophee").addEventListener("click", afficheStuff);
+document.getElementById("Bouclier").addEventListener("click", afficheStuff);
+document.getElementById("Armes").addEventListener("click", afficheStuff);
 
-document.getElementById('filter-submit').addEventListener('click', modifFiltre)
-document.getElementById('unfilter').addEventListener('click', unfilter)
+document.getElementById("filter-submit").addEventListener("click", modifFiltre);
+document.getElementById("unfilter").addEventListener("click", unfilter);
 
 // Réinitialise les filtres
 function unfilter(){
@@ -29,35 +29,63 @@ function unfilter(){
 
 // Filtre en fonctions des informations entrées dans les inputs
 function modifFiltre() {
-    let exact = false;
-    numeroPage = 0;
-    let nomEquipement = document.getElementById("NomEquipement").value.toUpperCase();
-    let niveauMin = parseInt(document.getElementById("NiveauMin").value) || 0;
-    let niveauMax = parseInt(document.getElementById("NiveauMax").value) || Infinity;
+  let exact = false;
+  numeroPage = 0;
+  let nomEquipement = document
+    .getElementById("NomEquipement")
+    .value.toUpperCase();
+  let niveauMin = parseInt(document.getElementById("NiveauMin").value) || 0;
+  let niveauMax =
+    parseInt(document.getElementById("NiveauMax").value) || Infinity;
 
-    equipementsAfficher = [];
+  equipementsAfficher = [];
 
-    equipements.forEach(el => {
-        if (el.stuff_name.toUpperCase() === nomEquipement) {
-            exact = true;
-            equipementsAfficher = [el];
-        }
+  equipements.forEach((el) => {
+    if (el.stuff_name.toUpperCase() === nomEquipement) {
+      exact = true;
+      equipementsAfficher = [el];
+    }
 
-        let nomValide = el.stuff_name.toUpperCase().includes(nomEquipement) && !exact;
-        let niveauValide = el.stuff_level >= niveauMin && el.stuff_level <= niveauMax;
+    let nomValide =
+      el.stuff_name.toUpperCase().includes(nomEquipement) && !exact;
+    let niveauValide =
+      el.stuff_level >= niveauMin && el.stuff_level <= niveauMax;
 
-        if (nomValide && niveauValide) {
-            equipementsAfficher.push(el);
-        }
-    });
+    if (nomValide && niveauValide) {
+      equipementsAfficher.push(el);
+    }
+  });
 
-    affichePage();
+  affichePage();
 }
 
-document.addEventListener('DOMContentLoaded', afficheToutStuff);
+document.addEventListener("DOMContentLoaded", afficheToutStuff);
 
 // Récupère les données des équipements
 function afficheToutStuff() {
+<<<<<<< HEAD
+  numeroPage = 0;
+  document.getElementById("listing").innerHTML = "";
+  fetch(
+    "http://localhost:8082/Bloc3-WebSite/index.php/?ctrl=stuff&action=getEquipementsJson"
+  )
+    .then((res) => {
+      //console.log(res)
+      if (!res.ok) {
+        throw new Error("Erreur de réseau");
+      }
+      return res.json();
+    })
+    .then((data) => {
+      console.log(data);
+      equipements = data;
+      equipementsAfficher = [...equipements];
+      affichePage();
+    })
+    .catch((error) => {
+      console.error("Erreur lors de la récupération des données:", error);
+    });
+=======
     numeroPage = 0;
     document.getElementById('stuff_listing').innerHTML = '';
     fetch('http://localhost/Bloc3-WebSite/index.php/?ctrl=stuff&action=getEquipementsJson')
@@ -77,6 +105,7 @@ function afficheToutStuff() {
         .catch(error => {
             console.error('Erreur lors de la récupération des données:', error);
         });
+>>>>>>> 72863402b3a7706dcf174c79f387355b6501ccc2
 }
 
 // Affiche les équipements en fonction de la pièce sélectionnée
@@ -116,11 +145,11 @@ function affichePage() {
 
 // Affiche ou cache la description complète de l'équipement
 function afficheDetailDescription() {
-    document.querySelectorAll('.stuff_description').forEach(function(el) {
-        el.addEventListener('click', function() {
-            this.classList.toggle('short-text'); //Bascule la classe 'short-text' en fonction de sa présence ou non
-        })
-    })
+  document.querySelectorAll(".stuff_description").forEach(function (el) {
+    el.addEventListener("click", function () {
+      this.classList.toggle("short-text"); //Bascule la classe 'short-text' en fonction de sa présence ou non
+    });
+  });
 }
 
 // Affiche la pagination
@@ -128,21 +157,31 @@ function affichePagination() {
     let container = document.getElementById('stuff_listing');
     let nbPages = Math.ceil(equipementsAfficher.length / taillePage); // Calcul du nombre de pages et récupère le nombre entier inférieur
 
-    let listePage = '<div class="d-flex justify-content-between">';
-    
-    // Sélecteur de taille de page
-    listePage += '<select id="pageSizeSelect" class="form-select" style="width: auto;">' +
-        '<option value="6"' + (taillePage == 6 ? ' selected' : '') + '>6</option>' +
-        '<option value="12"' + (taillePage == 12 ? ' selected' : '') + '>12</option>' +
-        '<option value="24"' + (taillePage == 24 ? ' selected' : '') + '>24</option>' +
-        '</select>';
+  let listePage = '<div class="d-flex justify-content-between">';
 
-    listePage += '<nav aria-label="Page navigation"><ul class="pagination mb-0">';
+  // Sélecteur de taille de page
+  listePage +=
+    '<select id="pageSizeSelect" class="form-select" style="width: auto;">' +
+    '<option value="6"' +
+    (taillePage == 6 ? " selected" : "") +
+    ">6</option>" +
+    '<option value="12"' +
+    (taillePage == 12 ? " selected" : "") +
+    ">12</option>" +
+    '<option value="24"' +
+    (taillePage == 24 ? " selected" : "") +
+    ">24</option>" +
+    "</select>";
 
-    // Bouton précédent
-    listePage += '<li class="page-item ' + (numeroPage === 0 ? 'disabled' : '') + '">' +
-        '<a class="page-link" href="#" aria-label="Previous" id="prev">' +
-        '<span aria-hidden="true">&laquo;</span></a></li>';
+  listePage += '<nav aria-label="Page navigation"><ul class="pagination mb-0">';
+
+  // Bouton précédent
+  listePage +=
+    '<li class="page-item ' +
+    (numeroPage === 0 ? "disabled" : "") +
+    '">' +
+    '<a class="page-link" href="#" aria-label="Previous" id="prev">' +
+    '<span aria-hidden="true">&laquo;</span></a></li>';
 
     // Numéros de page
     if (nbPages <= 6) {
@@ -168,14 +207,17 @@ function affichePagination() {
         }
     }
 
-    // Bouton suivant
-    listePage += '<li class="page-item ' + (numeroPage === nbPages - 1 ? 'disabled' : '') + '">' +
-        '<a class="page-link" href="#" aria-label="Next" id="next">' +
-        '<span aria-hidden="true">&raquo;</span></a></li>';
+  // Bouton suivant
+  listePage +=
+    '<li class="page-item ' +
+    (numeroPage === nbPages - 1 ? "disabled" : "") +
+    '">' +
+    '<a class="page-link" href="#" aria-label="Next" id="next">' +
+    '<span aria-hidden="true">&raquo;</span></a></li>';
 
-    listePage += '</ul></nav></div>';
+  listePage += "</ul></nav></div>";
 
-    document.getElementById('pagination').innerHTML = listePage;
+  document.getElementById("pagination").innerHTML = listePage;
 
     // Retourne à la page précédente au clique sur le bouton, si on n'est pas déjà à la première page
     document.getElementById('prev').addEventListener('click', () => {
@@ -193,13 +235,13 @@ function affichePagination() {
         }
     });
 
-    let pageLinks = document.querySelectorAll('.page-link[id^="page-"]');
-    pageLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            numeroPage = parseInt(e.target.id.split('-')[1]);
-            affichePage();
-        });
+  let pageLinks = document.querySelectorAll('.page-link[id^="page-"]');
+  pageLinks.forEach((link) => {
+    link.addEventListener("click", (e) => {
+      numeroPage = parseInt(e.target.id.split("-")[1]);
+      affichePage();
     });
+  });
 
     // Change la taille de la page au changement de la sélection
     document.getElementById('pageSizeSelect').addEventListener('change', (e) => {
