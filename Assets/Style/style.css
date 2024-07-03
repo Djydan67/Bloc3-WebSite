@@ -174,7 +174,7 @@ h1 {
 
 /*-------------------Forum-------------------*/
 .forum-card {
-  background-color: var(--forumCardBackground);
+  background-color: var(--greenDofus);
   margin-bottom: 1em;
   padding: 0.4em;
   border-radius: 0.5rem;
@@ -185,14 +185,14 @@ h1 {
 }
 
 .response-card {
-  background-color: var(--white);
+  background-color: var(--greenDofus);
   color: var(--lightGray);
   border: 1px solid var(--lightGray);
 }
 
 .response-card .card-body {
   padding: 0.4rem;
-  background-color: var(--responseBackground);
+  background-color: var(--DarkBlack);
 }
 
 .response-card .card-title {
