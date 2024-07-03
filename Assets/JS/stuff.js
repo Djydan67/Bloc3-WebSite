@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', afficheToutStuff);
 function afficheToutStuff() {
     numeroPage = 0;
     document.getElementById('listing').innerHTML = '';
-    fetch('http://localhost/Bloc3-WebSite/index.php/?ctrl=stuff&action=getEquipementsJson')
+    fetch('http://localhost:8080/bloc-3/Bloc3-WebSite/index.php/?ctrl=stuff&action=getEquipementsJson')
         .then(res => {
             console.log(res)
             if (!res.ok) {
