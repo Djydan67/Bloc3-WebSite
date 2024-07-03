@@ -1,112 +1,92 @@
-/*--------------Stuff.php------------------*/
-#corps {
-  position: relative;
-  display:flex;
+:root {
+  --greenDofus: #749245;
+  --DarkBlack: #313131;
+  --bodyGreen: #6aa84f;
+  --white: #ffffff;
+  --darkGray: #8f8f8f;
+  --lightGray: #e0e0e0;
+  --mediumGray: #3c3630;
+  --backgroundGray: #2e2924;
+  --responseBackground: #343a40;
+}
+/* Début CSS Page stuff.php crée par Siegel Renaud */
+.stuff_boutton {
+  background-color: var(--greenDofus);
 }
 
-#stuff_filtreNom{
-  display: flex;
-  color: white;
+/* Affiche le titre de la page en blanc */
+#stuff_title {
+  color: var(--white);
+  text-align: center;
 }
 
-#Stuff_Nom{
-  margin-left: 10px;
+/* Affiche la couleur de fond du site */
+.stuff_fond {
+  background-color: var(--backgroundGray);
 }
 
-#Stuff {
-  background-color: #313131; /* Fond noir */
-}
-
-/* #stuff_filtre {
-  position: absolute;
-  top: 20px;
-  left: 10px;
-} */
-
-
-#stuff_title{
-  color: white;
-}
-#corps {
-  display: flex;
-  background-color:#6aa84f ;
-
-}
-#stuff_filtre{
-  position: sticky;
-}
-#filtre {
-  /* position: absolute; */
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-.fond{
-  background-color: #2e2924;
-}
-h1{
-text-align: center;
-color: white;
-}
-#logo{
-  height:50px;
-  width: 50px;
-}
-
-#listing{
+/* Organise les cartes 3 part 3 */
+#stuff_listing {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);  
+  grid-template-columns: repeat(3, 1fr);
   margin: 50px;
-  margin-left:300px
-  
 }
-#card-stuff{    
-  background-color: #3c3630;
-  color: white;
-  margin:10px;
+
+/* Gère le style visuel des cartes */
+#card-stuff {
+  background-color: var(--mediumGray);
+  color: var(--white);
+  margin: 10px;
 }
-#titre{
-  display: flex;
-  justify-content: space-between;
+
+ /* Gère la taille des icônes */
+.amulette {
+  height: 75px;
+  width: 75px;
 }
-.amulette{
-  height:75px;
-  width:75px;
+
+/* Tronque la description des objets */
+.short-text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
-#sous-titre{
-  display: flex;
-  justify-content: space-between;
-}
-#stuff-corps {
-  display: flex;
-  justify-content: space-between;
-}
-/*----------------Stuff.php----------------------------*/
+/* Fin CSS Page stuff.php crée par Siegel Renaud */
+
 /* début CSS de Ilian (footer + index) */
+
 .footer-container {
   /* position: fixed; */
   bottom: 0;
   width: 100%;
-  background-color: #313131; /* Fond noir */
-  color: white; /* Texte blanc */
+  background-color: var(--DarkBlack); /* Fond noir */
+  color: var(--white); /* Texte blanc */
   padding: 20px 0; /* Espacement intérieur du footer */
 }
 
 .footer-container .container {
-  text-align: center; /* Centrage du texte */
+  text-align: center;
 }
 
-.response-of-user{
-  background-color: #313131;
-  color: antiquewhite;
+.response-of-user {
+  background-color: var(--DarkBlack);
+  color: var(--lightGray);
 }
+
+#carousel-item{
+  width : 500px;
+  height : 500px;
+  margin: auto;
+  display: flex;
+}
+
 #Index {
   #IndexText {
     text-align: center;
     margin-top: 100px; /* Espacement depuis le haut de la page */
     position: relative; /* Positionnement relatif pour que z-index fonctionne */
     z-index: 1; /* Pour placer le texte au-dessus de l'image de fond */
-    color: aliceblue; /* Couleur du texte */
+    color: var(--lightGray); /* Couleur du texte */
   }
 
   #IndexText h2 {
@@ -120,8 +100,7 @@ color: white;
 
   #background-container {
     position: absolute;
-    background: lightblue url("../Images/dofushelp_banner.jpg") no-repeat center /
-      cover;
+    background: lightblue url("../Images/dofushelp_banner.jpg") no-repeat center / cover;
     top: 0;
     left: 0;
     width: 100%;
@@ -137,21 +116,151 @@ color: white;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(
-      0,
-      0,
-      0,
-      0.3
-    ); /* Couleur d'arrière-plan légèrement assombrie */
+    background-color: rgba(0, 0, 0, 0.3); /* Couleur d'arrière-plan légèrement assombrie */
     z-index: -2; /* Pour placer le calque derrière l'image */
   }
 }
-/*fin du CSS Ilian (Index + footer)*/
 
-#ProfilText{
-  
-    color: white !important;
+/*-------------------Forum-------------------*/
+.forum-card {
+  background-color: var(--greenDofus);
+  margin-bottom: 1em;
+  padding: 0.4em;
+  border-radius: 0.5rem;
+}
+
+.card-text {
+  margin-left: 1em;
+}
+
+.response-card {
+  background-color: var(--greenDofus);
+  color: var(--lightGray);
+  border: 1px solid var(--lightGray);
+}
+
+.response-card .card-body {
+  padding: 0.4rem;
+  background-color: var(--DarkBlack);
+}
+
+.response-card .card-title {
+  font-size: 1.25rem;
+  color: var(--lightGray);
+  font-weight: bold;
+}
+
+.response-card .card-text,
+.response-card small {
+  font-size: 1rem;
+}
+
+.theme-btn {
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0.5rem;
+}
+
+.forum-list {
+  margin-top: 2rem;
+}
+
+.search-bar {
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+}
+
+.list-group-item {
+  border: 1px solid var(--lightGray);
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.createForumFormContainer {
+  background-color: var(--white);
+  padding: 2rem;
+  border: 1px solid var(--lightGray);
+  border-radius: 0.5rem;
+  margin-top: 2rem;
+  color: var(--DarkBlack);
+}
+
+#createForumForm .form-control,
+#createForumForm .btn {
+  border-radius: 0.5rem;
+  margin: 0.5rem;
   
 }
 
+#themeSearch {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  max-width: 50%;
+}
 
+.forum-container {
+  background-image: url('../Images/Forum-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  padding: 20px;
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+.forum {
+  position: relative; 
+  overflow: hidden; 
+}
+.create-forum-card{
+  background-color: var(--backgroundGray);
+  color: var(--white);
+  border: 1px solid var(--lightGray);
+  border-radius: 0 0 0.5rem 0.5rem;
+  margin-bottom: 1rem;
+  padding: 20px;
+  color: var(--DarkBlack);
+}
+.forum::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../Images/Forum.jpg');
+  background-size: cover;
+  background-position: center;
+
+  z-index: -1; 
+
+}
+.search-forum{
+  color: var(--white);
+}
+
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  color: var(--white);
+}
+
+.search-bar {
+  max-width: 300px;
+}
+
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.theme-btn {
+  flex: 1;
+  min-width: 150px;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.theme-btn h3 {
+  margin: 0;
+}

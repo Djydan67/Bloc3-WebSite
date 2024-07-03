@@ -10,15 +10,16 @@
 		
 		public function insert($objUser){
 
-            $strQuery = "	INSERT INTO T_user (user_mdp, user_nom, user_prenom, user_mail, user_isactif, droit_id ) 
-                                VALUES (:mdp, :nom, :prenom, :mail, :isactif, :droit);";
+            $strQuery = "	INSERT INTO T_user (user_mdp, user_nom, user_prenom, user_mail, user_isactif, droit_id, user_pseudo, user_datecreation ) 
+                                VALUES (:mdp, :nom, :prenom, :mail, :isactif, :droit, :pseudonyme, NOW());";
             $strPrepare = $this->_db->prepare($strQuery);
-            $strPrepare->bindValue(":nom", $objUser->getName(), PDO::PARAM_STR);
-            $strPrepare->bindValue(":prenom", $objUser->getFirstname(), PDO::PARAM_STR);
+            $strPrepare->bindValue(":nom", $objUser->getNom(), PDO::PARAM_STR);
+            $strPrepare->bindValue(":prenom", $objUser->getPrenom(), PDO::PARAM_STR);
             $strPrepare->bindValue(":mail", $objUser->getMail(), PDO::PARAM_STR);
             $strPrepare->bindValue(":mdp", $objUser->getHashedPwd(), PDO::PARAM_STR);
             $strPrepare->bindValue(":isactif", $objUser->getIsActif(), PDO::PARAM_INT);
             $strPrepare->bindValue(":droit", $objUser->getDroit(), PDO::PARAM_INT);
+            $strPrepare->bindValue(":pseudonyme", $objUser->getPseudonyme(), PDO::PARAM_STR);
             return $this->execute_requete($strPrepare);
 		}
 
@@ -44,7 +45,7 @@
 
         public function getByMail(string $strMail):array|bool{
             // Faire la requête
-            $strQuery		= "	SELECT user_mdp, user_nom, user_prenom, user_isactif, droit_id 
+            $strQuery		= "	SELECT user_id, user_mdp, user_nom, user_prenom, user_isactif, droit_id 
 	                            FROM T_user
                                 WHERE user_mail = :mail;";
             $strPrepare     = $this->_db->prepare($strQuery);
@@ -59,7 +60,7 @@
                                 FROM T_user
                                 WHERE droit_id not like '3'";
             $strPrepare     = $this->_db->prepare($strQuery);
-            $query->fetchAll(PDO::FETCH_ASSOC);
+            $this->_db->fetchAll(PDO::FETCH_ASSOC);
             $strPrepare->execute();
 
 
@@ -67,6 +68,7 @@
 
 	
     public function updateUserRole($email, $newRole) {
+        $query = $this->_db->prepare("UPDATE T_user SET droit_id = :newRole WHERE email = :email");
         $query = $this->_db->prepare("UPDATE T_user SET droit_id = :newRole WHERE email = :email");
         $query->bindParam(':newRole', $newRole);
         $query->bindParam(':email', $email);

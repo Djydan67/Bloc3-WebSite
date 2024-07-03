@@ -1,8 +1,13 @@
 <!-- <?php
-	//$strPage	= "index";
-	//$strTitleH1	= "Accueil";
-	//$strFirstP	= "Page d'acceuil";
-	//include("_partial/header.php");
+        //$strPage	= "index";
+        //$strTitleH1	= "Accueil";
+        //$strFirstP	= "Page d'acceuil";
+        //include("_partial/header.php");
+        ?> -->
+//$strPage = "index";
+//$strTitleH1 = "Accueil";
+//$strFirstP = "Page d'acceuil";
+//include("_partial/header.php");
 ?> -->
 <div id="Index">
     <main>
@@ -16,6 +21,34 @@
                 Essayer vos combinaisons pour optimiser votre perso au maximum !
             </p>
         </div>
+        <div id="demo" class="carousel slide carousel-fade" data-ride="carousel">
+            <!-- Indicateurs -->
+            <ul class="carousel-indicators">
+                <li data-target="#demo" data-slide-to="0" class="active"></li>
+                <li data-target="#demo" data-slide-to="1" class="active"></li>
+                <li data-target="#demo" data-slide-to="2" class="active"></li>
+            </ul>
+            <!-- Carrousel -->
+            <div id="carousel-item" class="carousel-inner">
+                <div class="carousel-item active" data-interval="4000">
+                    <img src="Assets/Images/dldofus.png" alt="1" class="d-block w-100">
+                </div>
+                <div class="carousel-item" data-interval="2000">
+                    <img src="Assets\Images\forum.png" alt="2" class="d-block w-100">
+                </div>
+                <div class="carousel-item" data-interval="1000">
+                    <img src="Assets\Images\dofushelp_banner.jpg" alt="3" class="d-block w-100">
+                </div>
+            </div>
+            <!-- Contrôles -->
+            <a class="carousel-control-prev" href="#demo" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Précédent</span>
+            </a>
+            <a class="carousel-control-next" href="#demo" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Suivant</span>
+            </a>
+        </div>
 </div>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+</div>
