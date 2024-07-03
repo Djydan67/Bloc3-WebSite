@@ -3,16 +3,11 @@
   --DarkBlack: #313131;
   --bodyGreen: #6aa84f;
   --white: #ffffff;
-  --antiqueWhite: #faebd7;
-  --aliceBlue: #f0f8ff;
   --darkGray: #8f8f8f;
   --lightGray: #e0e0e0;
   --mediumGray: #3c3630;
   --backgroundGray: #2e2924;
   --responseBackground: #343a40;
-  --themeBackground: #6aa84f;
-  --forumCardBackground: #8f8f8f;
-  --forumContainerBackground: #ffffff;
 }
 
 .stuff_boutton {
@@ -129,7 +124,7 @@ h1 {
 
 .response-of-user {
   background-color: var(--DarkBlack);
-  color: var(--antiqueWhite);
+  color: var(--lightGray);
 }
 
 #carousel-item{
@@ -145,7 +140,7 @@ h1 {
     margin-top: 100px; /* Espacement depuis le haut de la page */
     position: relative; /* Positionnement relatif pour que z-index fonctionne */
     z-index: 1; /* Pour placer le texte au-dessus de l'image de fond */
-    color: var(--aliceBlue); /* Couleur du texte */
+    color: var(--lightGray); /* Couleur du texte */
   }
 
   #IndexText h2 {

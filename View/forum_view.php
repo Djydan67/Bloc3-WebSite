@@ -1,77 +1,79 @@
 <div id="Index" class="container">
-    <h1 class="my-4">Forum</h1>
-    <?php
-    include("Entities/forum_entity.php"); // Includes both Forum and Theme classes
-    include("Model/forum_model.php");
+    <div class="forum">
+        <h1 class="my-4">Forum</h1>
+        <?php
+        include("Entities/forum_entity.php"); // Includes both Forum and Theme classes
+        include("Model/forum_model.php");
 
-    // Initialize the model
-    $forumModel = new Forum_model();
-    // Fetch and display all themes
-    $arrThemes = $forumModel->getAllThemes();
+        // Initialize the model
+        $forumModel = new Forum_model();
+        // Fetch and display all themes
+        $arrThemes = $forumModel->getAllThemes();
 
-    if ($arrThemes) {
-    ?>
-        <div class="forum-container">
-            <div class="pageHeader">
-                <h2>Themes :</h2>
-                <input type="search" class="form-control search-bar" id="themeSearch" placeholder="Search Themes..." aria-label="Search">
-            </div>
+        if ($arrThemes) {
+        ?>
+            <div class="forum-container">
+                <div class="pageHeader">
+                    <h2>Themes :</h2>
+                    <input type="search" class="form-control search-bar" id="themeSearch" placeholder="Search Themes..." aria-label="Search">
+                </div>
 
-            <div class="btn-group" role="group" aria-label="Themes" id="themeButtons">
-                <?php
-                foreach ($arrThemes as $arrDetTheme) {
-                    $objTheme = new Theme();
-                    $objTheme->hydrate($arrDetTheme);
-                ?>
-                    <button type="button" style="background-color: <?php echo htmlspecialchars(($objTheme->getColor())) ?>;" class="btn theme-btn" data-theme-id="<?php echo $objTheme->getThemeId(); ?>">
-                        <h3 class="mb-0"><?php echo htmlspecialchars($objTheme->getThemeName()); ?></h3>
-                    </button>
-                <?php
-                }
-                ?>
-            </div>
-        </div>
-    <?php
-    }
-    ?>
-
-    <!-- Create Forum Button -->
-    <button id="showCreateForumForm" class="btn btn-primary my-4">Create Forum</button>
-
-    <!-- Create Forum Form -->
-    <div id="createForumFormContainer" style="display: none;">
-        <h2>Create a Forum</h2>
-        <form id="createForumForm">
-            <div class="form-group">
-                <label for="forumTitle">Title</label>
-                <input type="text" class="form-control" id="forumTitle" required>
-            </div>
-            <div class="form-group">
-                <label for="forumMessage">Message</label>
-                <textarea class="form-control" id="forumMessage" rows="3" required></textarea>
-            </div>
-            <div class="form-group">
-                <label for="forumTheme">Theme</label>
-                <select class="form-control" id="forumTheme" required>
+                <div class="btn-group" role="group" aria-label="Themes" id="themeButtons">
                     <?php
                     foreach ($arrThemes as $arrDetTheme) {
                         $objTheme = new Theme();
                         $objTheme->hydrate($arrDetTheme);
-                        echo '<option value="' . $objTheme->getThemeId() . '">' . htmlspecialchars($objTheme->getThemeName()) . '</option>';
+                    ?>
+                        <button type="button" style="background-color: <?php echo htmlspecialchars(($objTheme->getColor())) ?>;" class="btn theme-btn" data-theme-id="<?php echo $objTheme->getThemeId(); ?>">
+                            <h3 class="mb-0"><?php echo htmlspecialchars($objTheme->getThemeName()); ?></h3>
+                        </button>
+                    <?php
                     }
                     ?>
-                </select>
+                </div>
             </div>
-            <button type="submit" class="btn btn-primary">Create Forum</button>
-            <button id="hideCreateForumForm" type="button" class="btn btn-secondary">Close</button>
-        </form>
-    </div>
+        <?php
+        }
+        ?>
 
-    <h2>Forums:</h2>
-    <input type="text" class="form-control search-bar" id="forumSearch" placeholder="Search Forums...">
-    <div class="forum-list">
-        <div class="list-group" id="forums-container">
-            <p>Select a theme to view forums.</p>
+        <!-- Create Forum Button -->
+        <button id="showCreateForumForm" class="btn btn-primary my-4">Create Forum</button>
+
+        <!-- Create Forum Form -->
+        <div id="createForumFormContainer" style="display: none;">
+            <h2>Create a Forum</h2>
+            <form id="createForumForm">
+                <div class="form-group">
+                    <label for="forumTitle">Title</label>
+                    <input type="text" class="form-control" id="forumTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="forumMessage">Message</label>
+                    <textarea class="form-control" id="forumMessage" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="forumTheme">Theme</label>
+                    <select class="form-control" id="forumTheme" required>
+                        <?php
+                        foreach ($arrThemes as $arrDetTheme) {
+                            $objTheme = new Theme();
+                            $objTheme->hydrate($arrDetTheme);
+                            echo '<option value="' . $objTheme->getThemeId() . '">' . htmlspecialchars($objTheme->getThemeName()) . '</option>';
+                        }
+                        ?>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Create Forum</button>
+                <button id="hideCreateForumForm" type="button" class="btn btn-secondary">Close</button>
+            </form>
+        </div>
+
+        <h2>Forums:</h2>
+        <input type="text" class="form-control search-bar" id="forumSearch" placeholder="Search Forums...">
+        <div class="forum-list">
+            <div class="list-group" id="forums-container">
+                <p>Select a theme to view forums.</p>
+            </div>
         </div>
     </div>
 </div>
