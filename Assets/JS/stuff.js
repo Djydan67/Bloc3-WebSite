@@ -18,6 +18,7 @@ document.getElementById('Armes').addEventListener('click', afficheStuff);
 document.getElementById('filter-submit').addEventListener('click', modifFiltre)
 document.getElementById('unfilter').addEventListener('click', unfilter)
 
+// Réinitialise les filtres
 function unfilter(){
     document.getElementById('NomEquipement').value = ''
     document.getElementById("NiveauMin").value = ''
@@ -26,7 +27,7 @@ function unfilter(){
     modifFiltre()
 }
 
-
+// Filtre en fonctions des informations entrées dans les inputs
 function modifFiltre() {
     let exact = false;
     numeroPage = 0;
@@ -58,7 +59,7 @@ document.addEventListener('DOMContentLoaded', afficheToutStuff);
 // Récupère les données des équipements
 function afficheToutStuff() {
     numeroPage = 0;
-    document.getElementById('listing').innerHTML = '';
+    document.getElementById('stuff_listing').innerHTML = '';
     fetch('http://localhost/Bloc3-WebSite/index.php/?ctrl=stuff&action=getEquipementsJson')
         .then(res => {
             console.log(res)
@@ -81,8 +82,7 @@ function afficheToutStuff() {
 // Affiche les équipements en fonction de la pièce sélectionnée
 function afficheStuff(e) {
     numeroPage = 0;
-    document.getElementById('listing').innerHTML = '';
-    //console.log(e.target.id)
+    document.getElementById('stuff_listing').innerHTML = '';
     let pieceId = e.target.id;
     equipementsAfficher = equipements.filter(item => item.stuff_pieces === pieceId)
     affichePage()
@@ -90,17 +90,17 @@ function afficheStuff(e) {
 
 // Affiche les équipements sous forme de carte
 function affichePage() {
-    let container = document.getElementById('listing');
+    let container = document.getElementById('stuff_listing');
     container.innerHTML = '';
 
     for (let i = taillePage * numeroPage; i < equipementsAfficher.length && i < taillePage * (numeroPage + 1); i++) {
         let item = equipementsAfficher[i];
         container.innerHTML += '<div id="card-stuff" class="card col-11">' +
-                                    '<div class="card-title" id="titre">' +
+                                    '<div class="card-title d-flex justify-content-between">' +
                                         '<p>' + item.stuff_name + '</p>' +
                                         '<img class="amulette" src="' + item.stuff_imgPath + '" alt="Image"/>' +
                                     '</div>' +
-                                    '<div id="sous-titre">' +
+                                    '<div class="d-flex justify-content-between">' +
                                         '<p>Niveau ' + item.stuff_level + '</p>' +
                                         (item.stuff_setType === null ? '' : '<p>Ilevel : ' +  item.stuff_setType) + '<p>' +
                                     '</div>' +
@@ -110,7 +110,6 @@ function affichePage() {
                                     '</div>' +
                                 '</div>';
     }
-
     affichePagination();
     afficheDetailDescription();
 }
@@ -126,8 +125,8 @@ function afficheDetailDescription() {
 
 // Affiche la pagination
 function affichePagination() {
-    let container = document.getElementById('listing');
-    let nbPages = Math.ceil(equipementsAfficher.length / taillePage);
+    let container = document.getElementById('stuff_listing');
+    let nbPages = Math.ceil(equipementsAfficher.length / taillePage); // Calcul du nombre de pages et récupère le nombre entier inférieur
 
     let listePage = '<div class="d-flex justify-content-between">';
     
@@ -152,6 +151,22 @@ function affichePagination() {
                 '<a class="page-link" href="#" id="page-' + i + '">' + (i + 1) + '</a></li>';
         }
     }
+    else {
+        let startPage = Math.max(numeroPage - 3, 0);
+        let endPage = Math.min(numeroPage + 3, nbPages - 1);
+
+        if(numeroPage - 2 < 0){
+            endPage = Math.min(5, nbPages - 1);
+        }
+        if(numeroPage + 2 >= nbPages){
+            startPage = Math.max(nbPages - 5, 0);
+        }
+
+        for (let i = startPage; i <= endPage; i++) {
+            listePage += '<li class="page-item ' + (i === numeroPage ? 'active' : '') + '">' +
+                '<a class="page-link" href="#" id="page-' + i + '">' + (i + 1) + '</a></li>';
+        }
+    }
 
     // Bouton suivant
     listePage += '<li class="page-item ' + (numeroPage === nbPages - 1 ? 'disabled' : '') + '">' +
@@ -162,7 +177,7 @@ function affichePagination() {
 
     document.getElementById('pagination').innerHTML = listePage;
 
-    // Écouteurs d'événements pour la pagination
+    // Retourne à la page précédente au clique sur le bouton, si on n'est pas déjà à la première page
     document.getElementById('prev').addEventListener('click', () => {
         if (numeroPage > 0) {
             numeroPage--;
@@ -170,6 +185,7 @@ function affichePagination() {
         }
     });
 
+    // Passe à la page suivante au clique sur le bouton, si on n'est pas déjà à la dernière page
     document.getElementById('next').addEventListener('click', () => {
         if (numeroPage < nbPages - 1) {
             numeroPage++;
@@ -185,7 +201,7 @@ function affichePagination() {
         });
     });
 
-    // Écouteur d'événements pour le changement de taille de page
+    // Change la taille de la page au changement de la sélection
     document.getElementById('pageSizeSelect').addEventListener('change', (e) => {
         taillePage = parseInt(e.target.value);
         numeroPage = 0; // Retour à la première page lors du changement de taille
