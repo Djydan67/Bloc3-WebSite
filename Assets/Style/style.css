@@ -9,103 +9,49 @@
   --backgroundGray: #2e2924;
   --responseBackground: #343a40;
 }
-
+/* Début CSS Page stuff.php crée par Siegel Renaud */
 .stuff_boutton {
   background-color: var(--greenDofus);
 }
 
-#corps {
-  position: relative;
-  display: flex;
-  background-color: var(--bodyGreen);
-}
-
-#stuff_filtreNom {
-  display: flex;
-  color: var(--white);
-}
-
-#Stuff_Nom {
-  margin-left: 10px;
-}
-
-#Stuff {
-  background-color: var(--DarkBlack); /* Fond noir */
-}
-
-/* #stuff_filtre {
-  position: absolute;
-  top: 20px;
-  left: 10px;
-} */
-
+/* Affiche le titre de la page en blanc */
 #stuff_title {
   color: var(--white);
+  text-align: center;
 }
 
-#stuff_filtre {
-  position: sticky;
-}
-
-#filtre {
-  /* position: absolute; */
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-
-.fond {
+/* Affiche la couleur de fond du site */
+.stuff_fond {
   background-color: var(--backgroundGray);
 }
 
-h1 {
-  text-align: center;
-  color: var(--white);
-}
-
-#logo {
-  height: 50px;
-  width: 50px;
-}
-
-#listing {
+/* Organise les cartes 3 part 3 */
+#stuff_listing {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   margin: 50px;
-  /* margin-left:300px */
 }
 
+/* Gère le style visuel des cartes */
 #card-stuff {
   background-color: var(--mediumGray);
   color: var(--white);
   margin: 10px;
 }
 
-#titre {
-  display: flex;
-  justify-content: space-between;
-}
-
+ /* Gère la taille des icônes */
 .amulette {
   height: 75px;
   width: 75px;
 }
 
-#sous-titre {
-  display: flex;
-  justify-content: space-between;
-}
-
-#stuff-corps {
-  display: flex;
-  justify-content: space-between;
-}
-
+/* Tronque la description des objets */
 .short-text {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+/* Fin CSS Page stuff.php crée par Siegel Renaud */
 
 /* début CSS de Ilian (footer + index) */
 
