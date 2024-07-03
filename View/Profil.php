@@ -12,6 +12,7 @@
 <body class="fond">
     <main class="fond">
         <div class="container">
+            
 
             <div id="profil" class="profil-texte-blanc">
                 <h2>Informations du Profil</h2>
@@ -25,8 +26,7 @@
                 </ul>
             </div>
 
-            <?php if ($arrUser['droit_id'] == 2 || $arrUser['droit_id'] == 3) : 
-                var_dump($userList);?>
+            <?php if ($arrUser['droit_id'] == 2 || $arrUser['droit_id'] == 3) : ?>
                 <div id="ProfilText" class="profil-texte-blanc">
                     <h2>Panel Modération</h2>
                     <form id="moderationForm" action="index.php?ctrl=user&action=PanneauModeration" method="post">
@@ -44,12 +44,18 @@
                         <button type="submit" name="action" value="ban">Bannir</button>
                         <button type="submit" name="action" value="addModerator">Ajouter modérateur</button>
                     </form>
-                </div>
+                       <!-- Affichage du message de succès -->
+                       
+                       <?php 
+                       if (!empty($messageModo)): ?>
+                        <div class="success-message">
+                            <?php echo $messageModo; ?>
+                        </div>
+                    <?php endif; ?>
+                </div>  
             <?php endif; ?>
     </main>
-    <?php 
-    include("_partial/footer.php");
-    ?>
+
 </body>
 
 </html>

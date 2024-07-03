@@ -164,12 +164,13 @@ class User_Ctrl extends Ctrl
     {            
         include("Model/user_model.php");
         $UserModel = new user_model();
-        $arrUser = $UserModel->getFirstUser();
+        $user_id = $_SESSION['user']['user_id'];
+        var_dump($_SESSION);
+     
       
-        $arrUser = $UserModel->getFirstUser();
+        $arrUser = $UserModel->getFirstUser($user_id);
         $userLevel = $arrUser['user_droit'] ?? 1; 
-        var_dump($arrUser);
-
+  
         // Retrieve list of users with droit = 1
         $userList = $UserModel->getUsersByDroit(1);
       
@@ -183,11 +184,20 @@ class User_Ctrl extends Ctrl
 
    
 
+      
+        $messageModo = '';
+        if (isset($_SESSION['messagemodo'])) {
+            if ($_SESSION['messagemodo'] == "HAMMER TIME") {
+                $messageModo = '<img src="Assets/Images/HAMMERTIME.gif" alt="hammertime">';
+            } elseif ($_SESSION['messagemodo'] == "GO TAKE SHOWER") {
+                $messageModo = '<img src="Assets/Images/MODO.webp" alt="modo">';
+            }
+            unset($_SESSION['messagemodo']);
+        }
         $this->_arrData['arrUser']      = $arrUser;
         $this->_arrData['userLevel']    = $userLevel;
         $this->_arrData['userList'] = $userList;
-   
-      
+        $this->_arrData['messageModo'] = $messageModo; 
 
     
       
@@ -196,43 +206,7 @@ class User_Ctrl extends Ctrl
         $this->_arrData['strFirstP'] = "";
         $this->display('profil');
     }
-    /**
-     * Page de profil du premier utilisateur trouvé
-     * @return void
-     */
-    public function profileFirstUser() {
-        // Récupérer le premier utilisateur
-        $arrUser = $UserModel->getFirstUser();
-        include("Model/user_model.php");
-        $UserModel = new user_model();
-        $arrUser = $UserModel->getFirstUser();
-        $userLevel = $arrUser['user_droit'] ?? 1; 
-        var_dump($arrUser);
-
-        // Retrieve list of users with droit = 1
-        $userList = $UserModel->getUsersByDroit(1);
-
-        if ($arrUser === false) {
-            echo "Erreur : aucun utilisateur trouvé.";
-            exit();
-        }
-
-        // Déterminer le niveau de droit de l'utilisateur
-        $userLevel = $arrUser['droit_id'];
-
-        var_dump($arrUser); // Debug
-        var_dump($userLevel); // Debug
-
-        $this->_arrData['arrUser']      = $arrUser;
-        $this->_arrData['userLevel']    = $userLevel;
-
-        $this->_arrData['strPage']      = "profile";
-        $this->_arrData['strTitleH1']   = "Profil Utilisateur";
-        $this->_arrData['strFirstP']    = "Page de profil du premier utilisateur";
-
-        $this->prepare('profile');
-    }
-
+  
     public function PanneauModeration() {
         $message = "";
         include("Model/user_model.php");
@@ -246,13 +220,16 @@ class User_Ctrl extends Ctrl
                 switch ($action) {
                     case 'ban':
                        
-                     $objUserModel->banUser($userId);
-                            
+                    $objUserModel->banUser($userId);
+                    $_SESSION['messagemodo'] = 'HAMMER TIME';
+
                         
                         break;
                     case 'addModerator':
                         $objUserModel->createModerateur($userId);
-                        
+                        $_SESSION['messagemodo'] = 'GO TAKE SHOWER';
+                      
+
                         break;
                     default:
                         $message = "Action non reconnue.";

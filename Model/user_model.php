@@ -99,12 +99,14 @@
     }
   
     
-        public function getFirstUser(): array|bool {
+        public function getFirstUser(int $user_Id): array|bool {
             $strQuery = "SELECT user_id, user_mdp, user_nom, user_prenom, user_mail, user_isactif, droit_id, user_datenaissance, user_datecreation, user_pseudo  
                          FROM T_user 
+                         where user_id = :user_id
                          ORDER BY user_id ASC 
                          LIMIT 1";
             $strPrepare = $this->_db->prepare($strQuery);
+            $strPrepare->bindValue(":user_id", $user_Id, PDO::PARAM_INT);
             $strPrepare->execute();
     
             return $strPrepare->fetch(PDO::FETCH_ASSOC);
