@@ -17,7 +17,7 @@ class Forum_Ctrl extends Ctrl
         $this->_arrData['strFirstP'] = "";
 
         try {
-            $this->display('forum_view');
+            $this->display('forum');
         } catch (Exception $e) {
             error_log('Error displaying all forums: ' . $e->getMessage());
             header('Content-Type: application/json', true, 500);
@@ -82,7 +82,7 @@ class Forum_Ctrl extends Ctrl
             $this->_arrData['strPage'] = "forum";
             $this->_arrData['strTitleH1'] = "Forums";
             $this->_arrData['strFirstP'] = "Page affichant les forums";
-            $this->display('forum_view');
+            $this->display('forum');
         } catch (Exception $e) {
             error_log('Error fetching themes: ' . $e->getMessage());
             header('Content-Type: application/json', true, 500);

@@ -38,10 +38,28 @@ class User_Ctrl extends Ctrl
                         $_SESSION['valid'] = "Vous êtes bien connecté";
                         header("Location:");
                     } else {
-                        $arrErrors[] = "Erreur de connexion";
+                        // Comparer le mot de passe
+                        if (password_verify($strPassword, $arrUser['user_mdp'])) {
+                            unset($arrUser['user_mdp']);
+                            $_SESSION['user'] = $arrUser;
+                            $_SESSION['valid'] = "Vous êtes bien connecté";
+                             header("Location:index.php");
+                        } else {
+                            $arrErrors[] = "Erreur de connexion";
+                        }
                     }
                 }
             }
+
+            if (count($arrErrors) > 0) {
+                echo "<div class='alert alert-danger'>";
+                foreach ($arrErrors as $strError) {
+                    echo "<p>" . $strError . "</p>";
+                }
+                echo "</div>";
+            }
+
+            $this->display('login');
         }
 
         if (count($arrErrors) > 0) {
