@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #corps {
     position: relative;
 }
@@ -7,3 +8,371 @@
     top: 20px;
     left: 10px;
 }
+=======
+:root {
+  --greenDofus: #749245;
+  --DarkBlack: #313131;
+  --bodyGreen: #6aa84f;
+  --white: #ffffff;
+  --antiqueWhite: #faebd7;
+  --aliceBlue: #f0f8ff;
+  --darkGray: #8f8f8f;
+  --lightGray: #e0e0e0;
+  --mediumGray: #3c3630;
+  --backgroundGray: #2e2924;
+  --responseBackground: #343a40;
+  --themeBackground: #6aa84f;
+  --forumCardBackground: #8f8f8f;
+  --forumContainerBackground: #ffffff;
+}
+/* CSS NavBar */
+#nav{
+  color: var(--darkGray);
+}
+#logo-site{
+  height: 40px;
+  width: 40px;
+}
+#user{
+  margin-left: 57%;
+}
+/* fin CSS NavBar */
+
+
+.stuff_boutton {
+  background-color: var(--greenDofus);
+}
+
+#corps {
+  position: relative;
+  display: flex;
+  background-color: var(--bodyGreen);
+}
+
+#stuff_filtreNom {
+  display: flex;
+  color: var(--white);
+}
+
+#Stuff_Nom {
+  margin-left: 10px;
+}
+
+#Stuff {
+  background-color: var(--DarkBlack); /* Fond noir */
+}
+
+/* #stuff_filtre {
+  position: absolute;
+  top: 20px;
+  left: 10px;
+} */
+
+#stuff_title {
+  color: var(--white);
+}
+
+#stuff_filtre {
+  position: sticky;
+}
+
+#filtre {
+  /* position: absolute; */
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.fond {
+  background-color: var(--backgroundGray);
+}
+
+h1 {
+  text-align: center;
+  color: var(--white);
+}
+
+#logo {
+  height: 50px;
+  width: 50px;
+}
+
+#listing {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 50px;
+  /* margin-left:300px */
+}
+
+#card-stuff {
+  background-color: var(--mediumGray);
+  color: var(--white);
+  margin: 10px;
+}
+
+#titre {
+  display: flex;
+  justify-content: space-between;
+}
+
+.amulette {
+  height: 75px;
+  width: 75px;
+}
+
+#sous-titre {
+  display: flex;
+  justify-content: space-between;
+}
+
+#stuff-corps {
+  display: flex;
+  justify-content: space-between;
+}
+
+.short-text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* début CSS de Ilian (footer + index) */
+
+.footer-container {
+  /* position: fixed; */
+  bottom: 0;
+  width: 100%;
+  background-color: var(--DarkBlack); /* Fond noir */
+  color: var(--white); /* Texte blanc */
+  padding: 20px 0; /* Espacement intérieur du footer */
+}
+
+.footer-container .container {
+  text-align: center;
+}
+
+.response-of-user {
+  background-color: var(--DarkBlack);
+  color: var(--antiqueWhite);
+}
+
+
+#Index {
+  #IndexText {
+    text-align: center;
+    margin-top: 100px; /* Espacement depuis le haut de la page */
+    position: relative; /* Positionnement relatif pour que z-index fonctionne */
+    z-index: 1; /* Pour placer le texte au-dessus de l'image de fond */
+    color: var(--aliceBlue); /* Couleur du texte */
+  }
+
+  #IndexText h2 {
+    font-size: 2em; /* Taille de police pour le titre */
+    margin-bottom: 20px; /* Espacement sous le titre */
+  }
+
+  #IndexText p {  
+    font-size: 1.2em; /* Taille de police pour le paragraphe */
+    margin-bottom: 5%;
+  }
+  .container {
+    overflow: hidden; /* Cache les éléments qui dépassent du container */
+}
+/* Définition du carousel */
+.carousel {
+    position: relative; /* Le carousel est positionné relativement à son parent */
+}
+/* Définition de l'élément contenant les diapositives */
+.carousel-inner {
+    display: flex; /* Affiche les éléments en ligne */
+    overflow: hidden; /* Cache les éléments qui dépassent */
+    height: 100vh; /* Hauteur égale à 100% de la hauteur de la vue */
+    flex-wrap: nowrap; /* Empêche les éléments de se placer sur plusieurs lignes */
+}
+/* Définition des diapositives */
+.slide {
+    flex: 0 0 100%; /* Largeur de chaque diapositive est de 100% */
+    height: 100%; /* Hauteur de chaque diapositive est de 100% */
+    transition: .5s ease-in-out; /* Ajout d'une animation douce pour la transition entre les diapositives */
+}
+/* Définition de l'affichage de l'image de chaque diapositive */
+.slide img {
+    width: 34%; /* Largeur de l'image est de 34% */
+    height: 34%; /* Hauteur de l'image est de 34% */
+    object-fit: cover; /* Couvre tout l'espace disponible */
+    margin: auto;
+    display: flex;
+}
+/* Définition des boutons de contrôle du carousel */
+.carousel-controls {
+    position: absolute; /* Les boutons sont absolument positionnés */
+    z-index: 5; /* Ils sont placés au-dessus des autres éléments */
+    left: 40%; /* La distance à gauche est de 40% */
+    right: 40%; /* La distance à droite est de 40% */
+    top: 37%; /* La distance du haut est de 37% */
+    display: flex; /* Affiche les boutons en ligne */
+    justify-content: space-between; /* Espacement égal entre les boutons */
+}
+/* Style des boutons de contrôle */
+.carousel-controls button {
+    padding: 10px; /* Ajout de padding pour un meilleur contrôle */
+    background-color: #6aa84f; /* Couleur de l'arrière-plan */
+}
+/* Définition des points de contrôle */
+.carousel-dots {
+    position: absolute; /* Les points sont absolument positionnés */
+    z-index: 5; /* Ils sont placés au-dessus des autres éléments */
+    left: 50%; /* La distance à gauche est de 50% */
+    right: 50%; /* La distance à droite est de 50% */
+    bottom: 58%; /*La distance du bas est de 58% */
+    display: flex; /* Affiche les points en ligne */
+    justify-content: center; /* Centrage des points */
+}
+/* Style des points de contrôle */
+.carousel-dots .dot {
+    border-radius: 50%; /* Les points sont en forme de cercle */
+    margin: 5px; /* Ajout d'un margin pour un meilleur contrôle */
+    cursor: pointer; /* Curseur en forme de main pour un meilleur contrôle */
+}
+/* Styles pour les points de navigation du carrousel */ 
+.carousel-dots .active {
+    /* Border de 10px pour le point actif */
+    border: 10px solid #6aa84f !important; /* !important permet de surcharger les autres styles éventuels */
+}
+.carousel-dots .inactive {
+    border: 10px solid #000000; /* Border de 10px pour les points inactifs */
+}
+  #background-container {
+    position: absolute;
+    background: lightblue url("../Images/dofushelp_banner.jpg") no-repeat center / cover;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Pour placer l'image derrière le texte */
+  }
+
+  /* Style du calque d'arrière-plan */
+  #background-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3); /* Couleur d'arrière-plan légèrement assombrie */
+    z-index: -2; /* Pour placer le calque derrière l'image */
+  }
+}
+
+/*-------------------Forum-------------------*/
+.forum-card {
+  background-color: var(--forumCardBackground);
+  margin-bottom: 1em;
+  padding: 0.4em;
+  border-radius: 0.5rem;
+}
+
+.card-text {
+  margin-left: 1em;
+}
+
+.response-card {
+  background-color: var(--white);
+  color: var(--lightGray);
+  border: 1px solid var(--lightGray);
+}
+
+.response-card .card-body {
+  padding: 0.4rem;
+  background-color: var(--responseBackground);
+}
+
+.response-card .card-title {
+  font-size: 1.25rem;
+  color: var(--lightGray);
+  font-weight: bold;
+}
+
+.response-card .card-text,
+.response-card small {
+  font-size: 1rem;
+}
+
+.theme-btn {
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0.5rem;
+}
+
+.forum-list {
+  margin-top: 2rem;
+}
+
+.search-bar {
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+}
+
+.list-group-item {
+  border: 1px solid var(--lightGray);
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+#createForumFormContainer {
+  background-color: var(--white);
+  padding: 2rem;
+  border: 1px solid var(--lightGray);
+  border-radius: 0.5rem;
+  margin-top: 2rem;
+}
+
+#createForumForm .form-control,
+#createForumForm .btn {
+  border-radius: 0.5rem;
+}
+
+#themeSearch {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  max-width: 50%;
+}
+
+.forum-container {
+  background-image: url('../Images/Forum-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  color: var(--white);
+}
+
+.search-bar {
+  max-width: 300px;
+}
+
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.theme-btn {
+  flex: 1;
+  min-width: 150px;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.theme-btn h3 {
+  margin: 0;
+}
+>>>>>>> main

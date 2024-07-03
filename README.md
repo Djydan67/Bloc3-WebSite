@@ -15,3 +15,8 @@ structure du message du git commit :
 - nom des fichiers modifié
 - modification faites
 - version du projet
+
+
+---
+
+faire un"  npm i @react-native-picker/picker pour le mobile  "
