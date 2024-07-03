@@ -67,15 +67,21 @@
 
 	
     public function updateUserRole($email, $newRole) {
-        $query = $this->_pdo->prepare("UPDATE T_user SET droit_id = :newRole WHERE email = :email");
+        $query = $this->_db->prepare("UPDATE T_user SET droit_id = :newRole WHERE email = :email");
         $query->bindParam(':newRole', $newRole);
         $query->bindParam(':email', $email);
         return $query->execute();
     }
     
-    public function banUser($email) {
-        $query = $this->_pdo->prepare("UPDATE T_user SET user_isactif = 0 WHERE email = :email");
-        $query->bindParam(':email', $email);
+    public function banUser($userId) {
+        $query = $this->_db->prepare("UPDATE T_user SET user_isactif = 0 WHERE user_id = :userId");
+        $query->bindParam(':userId', $userId);
+        return $query->execute();
+    }
+
+    public function createModerateur($userId) {
+        $query = $this->_db->prepare("UPDATE T_user SET droit_id = 2 WHERE user_id = :userId");
+        $query->bindParam(':userId', $userId);
         return $query->execute();
     }
 
@@ -102,7 +108,7 @@
             return $strPrepare->fetch(PDO::FETCH_ASSOC);
         }
         public function getUsersByDroit($droit) {
-            // Exemple de requête pour récupérer les utilisateurs ayant le niveau de droit spécifié
+            
             $strQuery = "SELECT * FROM T_user WHERE droit_id = ?";
             $strPrepare = $this->_db->prepare($strQuery);
             $strPrepare->execute([$droit]);

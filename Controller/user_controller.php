@@ -138,6 +138,30 @@
         header("Location:index.php");
     }
 
+
+    public function profil()
+    {
+        // $strPage = "équipements";
+        // $strTitleH1 = "Bibliothèque";
+        // $strFirstP = "";
+        // include("Model/stuff_model.php");
+        // $objStuffModel = new Stuff_model();
+        // include("Entities/stuff_entity.php");
+
+        // $arrStuff = $objStuffModel->getAfficheStuff();
+        // header('Content-Type: application/json');
+        // echo json_encode($arrStuff);
+        // include("Model/stuff_model.php");
+        // $objStuffModel = new Stuff_model();
+        // $arrStuff = $objStuffModel->getAfficheStuff();
+        // $this->_arrData['arrStuff'] = $arrStuff;
+
+        $this->_arrData['strPage'] = "profil";
+        $this->_arrData['strTitleH1'] = "profil utilisateur";
+        $this->_arrData['strFirstP'] = "";
+
+        $this->display('profil');
+    }
     /**
      * Page de profil du premier utilisateur trouvé
      * @return void
@@ -169,4 +193,46 @@
 
         $this->prepare('profile');
     }
+
+    public function PanneauModeration() {
+        $message = "";
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $action = $_POST['action'] ?? '';
+            $userId = $_POST['userId'] ?? '';
+            
+            if ($action && $userId) {
+                switch ($action) {
+                    case 'ban':
+                        $banReason = $_POST['banReason'] ?? '';
+                        if ($banReason) {
+                            $result = $this->UserModel->banUser($userId);
+                            if ($result) {
+                                $message = "L'utilisateur a été banni avec succès.";
+                            } else {
+                                $message = "Erreur lors du bannissement de l'utilisateur.";
+                            }
+                        } else {
+                            $message = "Veuillez fournir une raison pour le bannissement.";
+                        }
+                        break;
+                    case 'addModerator':
+                        $result = $this->UserModel->createModerateur($userId);
+                        if ($result) {
+                            $message = "L'utilisateur a été promu modérateur avec succès.";
+                        } else {
+                            $message = "Erreur lors de la promotion de l'utilisateur.";
+                        }
+                        break;
+                    default:
+                        $message = "Action non reconnue.";
+                        break;
+                }
+            } else {
+                $message = "Action ou utilisateur non spécifié.";
+            }
+        }
+        return $message;
+    }
+
 }
