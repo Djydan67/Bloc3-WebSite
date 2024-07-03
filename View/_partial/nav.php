@@ -14,7 +14,7 @@
         <div id="user" class="col-4 d-flex justify-content-end align-items-center">
             <?php if (isset($_SESSION['user'])) { ?>
                 <a class="btn btn-sm" href="index.php?ctrl=user&action=login" title="Se connecter">
-                    <i class="fa-solid fa-user"></i></i> <?php echo $_SESSION['user']['user_nom']; ?>
+                    <i class="fa-solid fa-user"></i> <?php echo $_SESSION['user']['user_nom']; ?>
                 </a>
                 |
                 <a class="btn btn-sm" href="index.php?ctrl=user&action=logout" title="Se déconnecter">
@@ -24,7 +24,7 @@
             } else {
             ?>
                 <a class="btn btn-sm" href="index.php?ctrl=user&action=create_account" title="Se connecter">
-                    <i class="fa-solid fa-user"></i></i>
+                    <i class="fa-solid fa-user"></i>
                 </a>
                 |
                 <a class="btn btn-sm" href="index.php?ctrl=user&action=login" title="Se connecter">

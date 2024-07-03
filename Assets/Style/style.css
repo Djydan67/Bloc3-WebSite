@@ -3,14 +3,21 @@
   --DarkBlack: #313131;
   --bodyGreen: #6aa84f;
   --white: #ffffff;
+  --antiqueWhite: #faebd7;
+  --aliceBlue: #f0f8ff;
   --darkGray: #8f8f8f;
   --lightGray: #e0e0e0;
   --mediumGray: #3c3630;
   --backgroundGray: #2e2924;
   --responseBackground: #343a40;
+  --themeBackground: #6aa84f;
+  --forumCardBackground: #8f8f8f;
+  --forumContainerBackground: #ffffff;
 }
-<<<<<<< HEAD
 /* CSS NavBar */
+#nav{
+  color: var(--darkGray);
+}
 #logo-site{
   height: 40px;
   width: 40px;
@@ -21,51 +28,102 @@
 /* fin CSS NavBar */
 
 
-=======
-/* Début CSS Page stuff.php crée par Siegel Renaud */
->>>>>>> main
 .stuff_boutton {
   background-color: var(--greenDofus);
 }
 
-/* Affiche le titre de la page en blanc */
-#stuff_title {
-  color: var(--white);
-  text-align: center;
+#corps {
+  position: relative;
+  display: flex;
+  background-color: var(--bodyGreen);
 }
 
-/* Affiche la couleur de fond du site */
-.stuff_fond {
+#stuff_filtreNom {
+  display: flex;
+  color: var(--white);
+}
+
+#Stuff_Nom {
+  margin-left: 10px;
+}
+
+#Stuff {
+  background-color: var(--DarkBlack); /* Fond noir */
+}
+
+/* #stuff_filtre {
+  position: absolute;
+  top: 20px;
+  left: 10px;
+} */
+
+#stuff_title {
+  color: var(--white);
+}
+
+#stuff_filtre {
+  position: sticky;
+}
+
+#filtre {
+  /* position: absolute; */
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.fond {
   background-color: var(--backgroundGray);
 }
 
-/* Organise les cartes 3 part 3 */
-#stuff_listing {
+h1 {
+  text-align: center;
+  color: var(--white);
+}
+
+#logo {
+  height: 50px;
+  width: 50px;
+}
+
+#listing {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   margin: 50px;
+  /* margin-left:300px */
 }
 
-/* Gère le style visuel des cartes */
 #card-stuff {
   background-color: var(--mediumGray);
   color: var(--white);
   margin: 10px;
 }
 
- /* Gère la taille des icônes */
+#titre {
+  display: flex;
+  justify-content: space-between;
+}
+
 .amulette {
   height: 75px;
   width: 75px;
 }
 
-/* Tronque la description des objets */
+#sous-titre {
+  display: flex;
+  justify-content: space-between;
+}
+
+#stuff-corps {
+  display: flex;
+  justify-content: space-between;
+}
+
 .short-text {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-/* Fin CSS Page stuff.php crée par Siegel Renaud */
 
 /* début CSS de Ilian (footer + index) */
 
@@ -84,7 +142,7 @@
 
 .response-of-user {
   background-color: var(--DarkBlack);
-  color: var(--lightGray);
+  color: var(--antiqueWhite);
 }
 
 
@@ -94,7 +152,7 @@
     margin-top: 100px; /* Espacement depuis le haut de la page */
     position: relative; /* Positionnement relatif pour que z-index fonctionne */
     z-index: 1; /* Pour placer le texte au-dessus de l'image de fond */
-    color: var(--lightGray); /* Couleur du texte */
+    color: var(--aliceBlue); /* Couleur du texte */
   }
 
   #IndexText h2 {
@@ -198,7 +256,7 @@
 
 /*-------------------Forum-------------------*/
 .forum-card {
-  background-color: var(--greenDofus);
+  background-color: var(--forumCardBackground);
   margin-bottom: 1em;
   padding: 0.4em;
   border-radius: 0.5rem;
@@ -209,14 +267,14 @@
 }
 
 .response-card {
-  background-color: var(--greenDofus);
+  background-color: var(--white);
   color: var(--lightGray);
   border: 1px solid var(--lightGray);
 }
 
 .response-card .card-body {
   padding: 0.4rem;
-  background-color: var(--DarkBlack);
+  background-color: var(--responseBackground);
 }
 
 .response-card .card-title {
@@ -251,20 +309,17 @@
   margin-bottom: 1rem;
 }
 
-.createForumFormContainer {
+#createForumFormContainer {
   background-color: var(--white);
   padding: 2rem;
   border: 1px solid var(--lightGray);
   border-radius: 0.5rem;
   margin-top: 2rem;
-  color: var(--DarkBlack);
 }
 
 #createForumForm .form-control,
 #createForumForm .btn {
   border-radius: 0.5rem;
-  margin: 0.5rem;
-  
 }
 
 #themeSearch {
@@ -278,37 +333,7 @@
   background-size: cover;
   background-position: center;
   padding: 20px;
-  border-radius: 0.5rem 0.5rem 0 0;
-}
-.forum {
-  position: relative; 
-  overflow: hidden; 
-}
-.create-forum-card{
-  background-color: var(--backgroundGray);
-  color: var(--white);
-  border: 1px solid var(--lightGray);
-  border-radius: 0 0 0.5rem 0.5rem;
-  margin-bottom: 1rem;
-  padding: 20px;
-  color: var(--DarkBlack);
-}
-.forum::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url('../Images/Forum.jpg');
-  background-size: cover;
-  background-position: center;
-
-  z-index: -1; 
-
-}
-.search-forum{
-  color: var(--white);
+  border-radius: 10px;
 }
 
 .pageHeader {
