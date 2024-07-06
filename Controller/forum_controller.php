@@ -120,6 +120,31 @@ class Forum_Ctrl extends Ctrl
         }
     }
 
+    public function deleteForum()
+    {
+        include(__DIR__ . "/../Model/forum_model.php");
+        $objForumModel = new Forum_model();
+
+        try {
+            $data = json_decode(file_get_contents('php://input'), true);
+
+            if (isset($data['forum_id'])) {
+                $forumId = intval($data['forum_id']);
+                $result = $objForumModel->deleteForum($forumId);
+
+                header('Content-Type: application/json');
+                echo json_encode(['success' => $result]);
+                return;
+            } else {
+                throw new Exception('Missing parameters');
+            }
+        } catch (Exception $e) {
+            error_log('Error deleting forum: ' . $e->getMessage());
+            header('Content-Type: application/json', true, 400);
+            echo json_encode(['error' => $e->getMessage()]);
+        }
+    }
+
     public function createResponse()
     {
         include(__DIR__ . "/../Model/forum_model.php");
@@ -143,6 +168,107 @@ class Forum_Ctrl extends Ctrl
             }
         } catch (Exception $e) {
             error_log('Error creating response: ' . $e->getMessage());
+            header('Content-Type: application/json', true, 400);
+            echo json_encode(['error' => $e->getMessage()]);
+        }
+    }
+
+    public function closeForum()
+    {
+        include(__DIR__ . "/../Model/forum_model.php");
+        $objForumModel = new Forum_model();
+
+        try {
+            $data = json_decode(file_get_contents('php://input'), true);
+
+            if (isset($data['forum_id'])) {
+                $forumId = intval($data['forum_id']);
+                $result = $objForumModel->closeForum($forumId);
+
+                header('Content-Type: application/json');
+                echo json_encode(['success' => $result]);
+                return;
+            } else {
+                throw new Exception('Missing parameters');
+            }
+        } catch (Exception $e) {
+            error_log('Error closing forum: ' . $e->getMessage());
+            header('Content-Type: application/json', true, 400);
+            echo json_encode(['error' => $e->getMessage()]);
+        }
+    }
+
+    public function openForum()
+    {
+        include(__DIR__ . "/../Model/forum_model.php");
+        $objForumModel = new Forum_model();
+
+        try {
+            $data = json_decode(file_get_contents('php://input'), true);
+
+            if (isset($data['forum_id'])) {
+                $forumId = intval($data['forum_id']);
+                $result = $objForumModel->openForum($forumId);
+
+                header('Content-Type: application/json');
+                echo json_encode(['success' => $result]);
+                return;
+            } else {
+                throw new Exception('Missing parameters');
+            }
+        } catch (Exception $e) {
+            error_log('Error opening forum: ' . $e->getMessage());
+            header('Content-Type: application/json', true, 400);
+            echo json_encode(['error' => $e->getMessage()]);
+        }
+    }
+
+    // public function createTheme()
+    // {
+    //     include(__DIR__ . "/../Model/forum_model.php");
+    //     $objForumModel = new Forum_model();
+
+    //     try {
+    //         $data = json_decode(file_get_contents('php://input'), true);
+
+    //         if (isset($data['theme_name'], $data['color'])) {
+    //             $themeName = $data['theme_name'];
+    //             $color = $data['color'];
+    //             $result = $objForumModel->createTheme($themeName, $color);
+
+    //             header('Content-Type: application/json');
+    //             echo json_encode(['success' => $result]);
+    //             return;
+    //         } else {
+    //             throw new Exception('Missing parameters');
+    //         }
+    //     } catch (Exception $e) {
+    //         error_log('Error creating theme: ' . $e->getMessage());
+    //         header('Content-Type: application/json', true, 400);
+    //         echo json_encode(['error' => $e->getMessage()]);
+    //     }
+    // }
+
+    public function deleteTheme()
+    {
+        include(__DIR__ . "/../Model/forum_model.php");
+        $objForumModel = new Forum_model();
+
+        try {
+            $data = json_decode(file_get_contents('php://input'), true);
+
+            if (isset($data['theme_id'])) {
+                $themeId = intval($data['theme_id']);
+                $result = $objForumModel->deleteTheme($themeId);
+
+                header('Content-Type: application/json');
+                echo json_encode(['success' => $result]);
+                return;
+            } else {
+                throw new Exception('Missing parameters');
+            }
+        } catch (Exception $e) {
+            error_log('Error deleting theme: ' . $e->getMessage());
             header('Content-Type: application/json', true, 400);
             echo json_encode(['error' => $e->getMessage()]);
         }

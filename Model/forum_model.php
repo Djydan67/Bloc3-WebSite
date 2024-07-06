@@ -41,7 +41,7 @@ class Forum_model extends Bdd
     public function getAllThemes()
     {
         $strQuery =
-            "   SELECT theme_id, theme_nom, theme_description, theme_update, theme_color
+            "   SELECT theme_id, theme_nom, theme_description, theme_update, theme_color, theme_isActive
                     FROM T_theme;
                 ";
         $strPrepare = $this->_db->prepare($strQuery);
@@ -111,6 +111,107 @@ class Forum_model extends Bdd
         $strPrepare->bindValue(":message", $message, PDO::PARAM_STR);
         $strPrepare->bindValue(":user_id", $userId, PDO::PARAM_INT);
         $strPrepare->bindValue(":forum_id", $forumId, PDO::PARAM_INT);
+        return $strPrepare->execute();
+    }
+
+    public function closeForum($forumId)
+    {
+        $strQuery =
+            "UPDATE T_forum
+             SET forum_isclose = 1
+             WHERE forum_id = :forum_id;";
+        $strPrepare = $this->_db->prepare($strQuery);
+        $strPrepare->bindValue(":forum_id", $forumId, PDO::PARAM_INT);
+        return $strPrepare->execute();
+    }
+
+    public function openForum($forumId)
+    {
+        $strQuery =
+            "UPDATE T_forum
+             SET forum_isclose = 0
+             WHERE forum_id = :forum_id;";
+        $strPrepare = $this->_db->prepare($strQuery);
+        $strPrepare->bindValue(":forum_id", $forumId, PDO::PARAM_INT);
+        return $strPrepare->execute();
+    }
+
+    public function validateForum($forumId)
+    {
+        $strQuery =
+            "UPDATE T_forum
+             SET forum_isvalide = 1
+             WHERE forum_id = :forum_id;";
+        $strPrepare = $this->_db->prepare($strQuery);
+        $strPrepare->bindValue(":forum_id", $forumId, PDO::PARAM_INT);
+        return $strPrepare->execute();
+    }
+
+    public function invalidateForum($forumId)
+    {
+        $strQuery =
+            "UPDATE T_forum
+             SET forum_isvalide = 0
+             WHERE forum_id = :forum_id;";
+        $strPrepare = $this->_db->prepare($strQuery);
+        $strPrepare->bindValue(":forum_id", $forumId, PDO::PARAM_INT);
+        return $strPrepare->execute();
+    }
+
+    public function deleteForum($forumId)
+    {
+        $strQuery =
+            "DELETE FROM T_forum
+             WHERE forum_id = :forum_id;";
+        $strPrepare = $this->_db->prepare($strQuery);
+        $strPrepare->bindValue(":forum_id", $forumId, PDO::PARAM_INT);
+        return $strPrepare->execute();
+    }
+
+    public function deleteResponse($responseId)
+    {
+        $strQuery =
+            "DELETE FROM T_reponse
+             WHERE reponse_id = :reponse_id;";
+        $strPrepare = $this->_db->prepare($strQuery);
+        $strPrepare->bindValue(":reponse_id", $responseId, PDO::PARAM_INT);
+        return $strPrepare->execute();
+    }
+
+    public function createTheme($nom, $description, $color)
+    {
+        $strQuery =
+            "INSERT INTO T_theme (theme_nom, theme_description, theme_update, theme_color)
+             VALUES (:nom, :description, NOW(), :color);";
+        $strPrepare = $this->_db->prepare($strQuery);
+        $strPrepare->bindValue(":nom", $nom, PDO::PARAM_STR);
+        $strPrepare->bindValue(":description", $description, PDO::PARAM_STR);
+        $strPrepare->bindValue(":color", $color, PDO::PARAM_STR);
+        return $strPrepare->execute();
+    }
+
+    public function updateTheme($themeId, $nom, $description, $color)
+    {
+        $strQuery =
+            "UPDATE T_theme
+             SET theme_nom = :nom, theme_description = :description, theme_update = NOW(), theme_color = :color
+             WHERE theme_id = :theme_id;";
+        $strPrepare = $this->_db->prepare($strQuery);
+        $strPrepare->bindValue(":theme_id", $themeId, PDO::PARAM_INT);
+        $strPrepare->bindValue(":nom", $nom, PDO::PARAM_STR);
+        $strPrepare->bindValue(":description", $description, PDO::PARAM_STR);
+        $strPrepare->bindValue(":color", $color, PDO::PARAM_STR);
+        return $strPrepare->execute();
+    }
+
+    public function deleteTheme($themeId)
+    {
+        $strQuery =
+            "UPDATE T_theme
+             SET theme_isActive = 0
+             WHERE theme_id = :theme_id;";
+        $strPrepare = $this->_db->prepare($strQuery);
+        $strPrepare->bindValue(":theme_id", $themeId, PDO::PARAM_INT);
         return $strPrepare->execute();
     }
 }

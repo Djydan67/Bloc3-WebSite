@@ -8,6 +8,7 @@
   --mediumGray: #3c3630;
   --backgroundGray: #2e2924;
   --responseBackground: #343a40;
+  --red: #ba1919;
 }
 /* Début CSS Page stuff.php crée par Siegel Renaud */
 .stuff_boutton {
@@ -199,7 +200,8 @@
 }
 
 .forum-container {
-  background-image: url('../Images/Forum-bg.jpg');
+  /* background-image: url('../Images/Forum-bg.jpg'); */
+  background-color: var(--greenDofus);
   background-size: cover;
   background-position: center;
   padding: 20px;
@@ -210,9 +212,7 @@
   overflow: hidden; 
 }
 .create-forum-card{
-  background-color: var(--backgroundGray);
-  color: var(--white);
-  border: 1px solid var(--lightGray);
+  background-color: var(--greenDofus);
   border-radius: 0 0 0.5rem 0.5rem;
   margin-bottom: 1rem;
   padding: 20px;
@@ -225,12 +225,11 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('../Images/Forum.jpg');
+  /* background-image: url('../Images/Forum.jpg'); */
+  background-color: var(--backgroundGray);
   background-size: cover;
   background-position: center;
-
   z-index: -1; 
-
 }
 .search-forum{
   color: var(--white);
@@ -259,8 +258,21 @@
   min-width: 150px;
   text-align: center;
   border-radius: 5px;
+  color: var(--white);
+}
+
+.theme-btn:hover {
+  color: var(--greenDofus);
 }
 
 .theme-btn h3 {
   margin: 0;
+}
+
+.deleteForum {
+  background-color: var(--red);
+  border-color: var(--white);
+  margin-bottom: 1rem;
+  margin-left: 90%;
+  /* float: right; */
 }
