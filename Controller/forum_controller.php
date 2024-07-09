@@ -62,7 +62,10 @@ class Forum_Ctrl extends Ctrl
         try {
             if (isset($_GET['theme_id'])) {
                 $themeId = intval($_GET['theme_id']);
-                $arrForums = $objForumModel->getAllForumsByTheme($themeId);
+                $limit = isset($_GET['limit']) ? intval($_GET['limit']) : 10;
+                $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+
+                $arrForums = $objForumModel->getAllForumsByTheme($themeId, $limit, $page);
                 header('Content-Type: application/json');
 
                 // Checking JSON if is valid
@@ -120,30 +123,30 @@ class Forum_Ctrl extends Ctrl
         }
     }
 
-    public function deleteForum()
-    {
-        include(__DIR__ . "/../Model/forum_model.php");
-        $objForumModel = new Forum_model();
+    // public function deleteForum()
+    // {
+    //     include(__DIR__ . "/../Model/forum_model.php");
+    //     $objForumModel = new Forum_model();
 
-        try {
-            $data = json_decode(file_get_contents('php://input'), true);
+    //     try {
+    //         $data = json_decode(file_get_contents('php://input'), true);
 
-            if (isset($data['forum_id'])) {
-                $forumId = intval($data['forum_id']);
-                $result = $objForumModel->deleteForum($forumId);
+    //         if (isset($data['forum_id'])) {
+    //             $forumId = intval($data['forum_id']);
+    //             $result = $objForumModel->deleteForum($forumId);
 
-                header('Content-Type: application/json');
-                echo json_encode(['success' => $result]);
-                return;
-            } else {
-                throw new Exception('Missing parameters');
-            }
-        } catch (Exception $e) {
-            error_log('Error deleting forum: ' . $e->getMessage());
-            header('Content-Type: application/json', true, 400);
-            echo json_encode(['error' => $e->getMessage()]);
-        }
-    }
+    //             header('Content-Type: application/json');
+    //             echo json_encode(['success' => $result]);
+    //             return;
+    //         } else {
+    //             throw new Exception('Missing parameters');
+    //         }
+    //     } catch (Exception $e) {
+    //         error_log('Error deleting forum: ' . $e->getMessage());
+    //         header('Content-Type: application/json', true, 400);
+    //         echo json_encode(['error' => $e->getMessage()]);
+    //     }
+    // }
 
     public function createResponse()
     {
@@ -269,6 +272,31 @@ class Forum_Ctrl extends Ctrl
             }
         } catch (Exception $e) {
             error_log('Error deleting theme: ' . $e->getMessage());
+            header('Content-Type: application/json', true, 400);
+            echo json_encode(['error' => $e->getMessage()]);
+        }
+    }
+
+    public function deleteForum()
+    {
+        include(__DIR__ . "/../Model/forum_model.php");
+        $objForumModel = new Forum_model();
+
+        try {
+            $data = json_decode(file_get_contents('php://input'), true);
+
+            if (isset($data['forum_id'])) {
+                $forumId = intval($data['forum_id']);
+                $result = $objForumModel->deleteForum($forumId);
+
+                header('Content-Type: application/json');
+                echo json_encode(['success' => $result]);
+                return;
+            } else {
+                throw new Exception('Missing parameters');
+            }
+        } catch (Exception $e) {
+            error_log('Error deleting forum: ' . $e->getMessage());
             header('Content-Type: application/json', true, 400);
             echo json_encode(['error' => $e->getMessage()]);
         }

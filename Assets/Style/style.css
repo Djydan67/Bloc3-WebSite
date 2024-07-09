@@ -137,12 +137,13 @@
 .response-card {
   background-color: var(--greenDofus);
   color: var(--lightGray);
-  border: 1px solid var(--lightGray);
 }
 
 .response-card .card-body {
   padding: 0.4rem;
-  background-color: var(--DarkBlack);
+  background-color: var(--backgroundGray);
+  padding: 1.5rem;
+  border-top: #ffffff 1px solid;
 }
 
 .response-card .card-title {

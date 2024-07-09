@@ -91,12 +91,16 @@ $droit_id = $_SESSION['user']['droit_id'];
                     </div>
                 </div>
                 <div>
-                    <label for="forumsPerPage">Forums per page:</label>
-                    <select id="forumsPerPage">
-                        <option value="10">10</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
-                    </select>
+                    <div id="pagination-container">
+                        <label for="forumsPerPage">Forums per page:</label>
+                        <select id="forumsPerPage">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                        </select>
+                    </div>
+
+
                 </div>
             </div>
         </div>

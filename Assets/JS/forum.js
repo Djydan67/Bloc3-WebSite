@@ -1,37 +1,26 @@
-function formatDate(dateString) {
-  const dateParts = dateString.split(/[- :]/);
-  const date = new Date(
-    Date.UTC(
-      dateParts[0],
-      dateParts[1] - 1,
-      dateParts[2],
-      dateParts[3],
-      dateParts[4],
-      dateParts[5]
-    )
-  );
-  return new Intl.DateTimeFormat("en-GB", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  }).format(date);
-}
-
 document.addEventListener("DOMContentLoaded", function () {
   const themeButtons = document.querySelectorAll(".theme-btn");
+  const forumsPerPageSelect = document.getElementById("forumsPerPage");
   let currentOpenForumId = null;
+  let forumsPerPage = parseInt(forumsPerPageSelect.value);
+  let currentPage = 1;
+  let currentThemeId = null;
 
   themeButtons.forEach((button) => {
     button.addEventListener("click", function () {
-      const themeId = this.getAttribute("data-theme-id");
-      fetchForumsByTheme(themeId);
+      currentThemeId = this.getAttribute("data-theme-id");
+      fetchForumsByTheme(currentThemeId, forumsPerPage, currentPage);
     });
   });
 
-  function fetchForumsByTheme(themeId) {
-    const url = `index.php?ctrl=forum&action=themes&theme_id=${themeId}`;
+  forumsPerPageSelect.addEventListener("change", function () {
+    forumsPerPage = parseInt(this.value);
+    fetchForumsByTheme(currentThemeId, forumsPerPage, currentPage);
+  });
+
+  function fetchForumsByTheme(themeId, forumsPerPage, page) {
+    currentThemeId = themeId;
+    const url = `index.php?ctrl=forum&action=themes&theme_id=${themeId}&limit=${forumsPerPage}&page=${page}`;
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
@@ -41,27 +30,28 @@ document.addEventListener("DOMContentLoaded", function () {
           forumsContainer.innerHTML = `<p>Error: ${data.error}</p>`;
           return;
         }
-        if (data.length > 0) {
-          let deleteForum = "";
-          if (droitId == 3) {
-            deleteForum = `
-              <button id="showDeleteForum" class="btn btn-primary deleteForum">Delete Forum</button>
-            `;
-          }
-          data.reverse().forEach((forum) => {
+        if (data.forums.length > 0) {
+          data.forums.reverse().forEach((forum) => {
+            let deleteForum = "";
+            if (droitId == 3) {
+              deleteForum = `
+                <button class="btn btn-primary deleteForum" data-forum-id="${forum.forum_id}">Delete Forum</button>
+              `;
+            }
             const formattedDate = formatDate(forum.forum_date);
             forumsContainer.innerHTML += `
               <div class="forum-card">
                 <a href="#" class="list-group-item list-group-item-action forum-item" data-forum-id="${forum.forum_id}">
                   <h5 class="mb-1">${forum.forum_titre}</h5>
                   <p class="mb-1">${forum.forum_message} ${deleteForum}</p>
-                  
                   <small>${formattedDate}</small>
                 </a>
                 <div id="${forum.forum_id}_forum_response" style="display: none;"></div>
               </div>
             `;
           });
+          renderPagination(data.totalForums, forumsPerPage, page);
+          attachDeleteEventListeners(); // Attach event listeners to delete buttons
         } else {
           forumsContainer.innerHTML = "<p>No forum topics found.</p>";
         }
@@ -73,6 +63,63 @@ document.addEventListener("DOMContentLoaded", function () {
           "<p>Error fetching forums. Please try again.</p>";
         console.error("Error fetching forums:", error);
       });
+  }
+
+  function attachDeleteEventListeners() {
+    const deleteButtons = document.querySelectorAll(".deleteForum");
+    deleteButtons.forEach((button) => {
+      button.addEventListener("click", function () {
+        const forumId = this.getAttribute("data-forum-id");
+        deleteForum(forumId);
+      });
+    });
+  }
+
+  function deleteForum(forumId) {
+    const url = `index.php?ctrl=forum&action=deleteForum`;
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        forum_id: forumId,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          alert("Forum deleted successfully!");
+          fetchForumsByTheme(currentThemeId, forumsPerPage, currentPage);
+        } else {
+          alert("Error: " + data.error);
+        }
+      })
+      .catch((error) => {
+        console.error("Error deleting forum:", error);
+      });
+  }
+
+  function renderPagination(totalForums, forumsPerPage, currentPage) {
+    const paginationContainer = document.getElementById("pagination-container");
+    if (!paginationContainer) {
+      console.error("Pagination container not found");
+      return;
+    }
+    paginationContainer.innerHTML = "";
+    const totalPages = Math.ceil(totalForums / forumsPerPage);
+    for (let i = 1; i <= totalPages; i++) {
+      const pageButton = document.createElement("button");
+      pageButton.textContent = i;
+      pageButton.classList.add("page-button");
+      if (i === currentPage) {
+        pageButton.classList.add("active");
+      }
+      pageButton.addEventListener("click", function () {
+        fetchForumsByTheme(currentThemeId, forumsPerPage, i);
+      });
+      paginationContainer.appendChild(pageButton);
+    }
   }
 
   function getResponses() {
@@ -262,7 +309,7 @@ document.addEventListener("DOMContentLoaded", function () {
           if (data.success) {
             alert("Forum created successfully!");
             this.reset();
-            fetchForumsByTheme(themeId);
+            fetchForumsByTheme(themeId, forumsPerPage, currentPage);
             document.getElementById("createForumFormContainer").style.display =
               "none";
             document.getElementById("showCreateForumForm").style.display =
