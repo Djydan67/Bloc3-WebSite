@@ -39,7 +39,7 @@
   margin: 10px;
 }
 
- /* Gère la taille des icônes */
+/* Gère la taille des icônes */
 .amulette {
   height: 75px;
   width: 75px;
@@ -73,9 +73,9 @@
   color: var(--lightGray);
 }
 
-#carousel-item{
-  width : 500px;
-  height : 500px;
+#carousel-item {
+  width: 500px;
+  height: 500px;
   margin: auto;
   display: flex;
 }
@@ -100,7 +100,8 @@
 
   #background-container {
     position: absolute;
-    background: lightblue url("../Images/dofushelp_banner.jpg") no-repeat center / cover;
+    background: lightblue url("../Images/dofushelp_banner.jpg") no-repeat center /
+      cover;
     top: 0;
     left: 0;
     width: 100%;
@@ -116,7 +117,12 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.3); /* Couleur d'arrière-plan légèrement assombrie */
+    background-color: rgba(
+      0,
+      0,
+      0,
+      0.3
+    ); /* Couleur d'arrière-plan légèrement assombrie */
     z-index: -2; /* Pour placer le calque derrière l'image */
   }
 }
@@ -189,7 +195,6 @@
 #createForumForm .btn {
   border-radius: 0.5rem;
   margin: 0.5rem;
-  
 }
 
 #themeSearch {
@@ -199,17 +204,17 @@
 }
 
 .forum-container {
-  background-image: url('../Images/Forum-bg.jpg');
+  background-image: url("../Images/Forum-bg.jpg");
   background-size: cover;
   background-position: center;
   padding: 20px;
   border-radius: 0.5rem 0.5rem 0 0;
 }
 .forum {
-  position: relative; 
-  overflow: hidden; 
+  position: relative;
+  overflow: hidden;
 }
-.create-forum-card{
+.create-forum-card {
   background-color: var(--backgroundGray);
   color: var(--white);
   border: 1px solid var(--lightGray);
@@ -225,14 +230,13 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('../Images/Forum.jpg');
+  background-image: url("../Images/Forum.jpg");
   background-size: cover;
   background-position: center;
 
-  z-index: -1; 
-
+  z-index: -1;
 }
-.search-forum{
+.search-forum {
   color: var(--white);
 }
 
@@ -263,4 +267,62 @@
 
 .theme-btn h3 {
   margin: 0;
+}
+
+/* create accouunt */
+
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Ajuster l'espace en haut */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+/* Limiter la longueur des inputs */
+.form-control {
+  max-width: 300px; /* Ajustez cette valeur selon vos besoins */
+}
+
+.btn-primary {
+  max-width: 600px; /* Aligner le bouton avec les inputs */
+  display: block;
+  width: 100%;
+}
+
+.form-text {
+  text-align: left;
+  max-width: 300px; /* Aligner le texte avec les inputs */
+  margin: auto;
+  display: none; /* Masquer le texte d'aide par défaut */
+}
+
+/* create account */
+
+.tooltip-text {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 200px;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.tooltip-text::after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 20px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent #f8f9fa transparent;
 }

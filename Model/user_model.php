@@ -43,10 +43,10 @@
             return false;
         }
 
-        public function getByMail(string $strMail):array|bool{
+        public function getByMail(string $strMail) {
             // Faire la requête
-            $strQuery		= "	SELECT user_id, user_mdp, user_nom, user_prenom, user_isactif, droit_id 
-	                            FROM T_user
+            $strQuery		= "	SELECT user_id, user_mdp, user_nom, user_prenom, user_isactif, user_pseudo, u.droit_id, droit_description
+	                            FROM T_user u inner JOIN T_droit d on d.droit_id = u.droit_id
                                 WHERE user_mail = :mail;";
             $strPrepare     = $this->_db->prepare($strQuery);
             $strPrepare->bindValue(":mail", $strMail, PDO::PARAM_STR);
@@ -60,7 +60,7 @@
                                 FROM T_user
                                 WHERE droit_id not like '3'";
             $strPrepare     = $this->_db->prepare($strQuery);
-            $this->_db->fetchAll(PDO::FETCH_ASSOC);
+            $strPrepare->fetchAll(PDO::FETCH_ASSOC);
             $strPrepare->execute();
 
 
@@ -80,7 +80,7 @@
         return $query->execute();
     }
 
-    public function getById(int $userId): array|bool {
+    public function getById(int $userId){
         $strQuery = "SELECT user_id, user_mdp, user_nom, user_prenom, user_mail, user_dob, user_creation_date, user_isactif, droit_id 
                      FROM T_user 
                      WHERE user_id = :user_id";
@@ -92,7 +92,7 @@
     }
   
     
-        public function getFirstUser(): array|bool {
+        public function getFirstUser(){
             $strQuery = "SELECT user_id, user_mdp, user_nom, user_prenom, user_mail, user_isactif, droit_id, user_datenaissance, user_datecreation, user_pseudo  
                          FROM T_user 
                          ORDER BY user_id ASC 
