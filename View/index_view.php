@@ -1,3 +1,9 @@
+<!-- <?php
+        //$strPage	= "index";
+        //$strTitleH1	= "Accueil";
+        //$strFirstP	= "Page d'acceuil";
+        //include("_partial/header.php");
+        ?> -->
 <div id="Index">
     <main>
         <div id="background-container">
@@ -10,34 +16,97 @@
                 Essayer vos combinaisons pour optimiser votre perso au maximum !
             </p>
         </div>
-        <div id="demo" class="carousel slide carousel-fade" data-ride="carousel">
-            <!-- Indicateurs -->
-            <ul class="carousel-indicators">
-                <li data-target="#demo" data-slide-to="0" class="active"></li>
-                <li data-target="#demo" data-slide-to="1" class="active"></li>
-                <li data-target="#demo" data-slide-to="2" class="active"></li>
-            </ul>
-            <!-- Carrousel -->
-            <div id="carousel-item" class="carousel-inner">
-                <div class="carousel-item active" data-interval="4000">
-                    <img src="Assets/Images/dldofus.png" alt="1" class="d-block w-100">
+        <div class="container">
+            <!-- Élément carrousel -->
+            <div class="carousel">
+                <!-- Conteneur interne pour les diapositives -->
+                <div class="carousel-inner">
+                    <!-- Première diapositive -->
+                    <div class="slide">
+                        <!-- Image de la première diapositive -->
+                        <a href="https://www.dofus.com/fr/mmorpg/telecharger">
+                            <img src="Assets\Images\dldofus.png" alt="Image 1">
+                        </a>
+                    </div>
+                    <!-- Deuxième diapositive -->
+                    <div class="slide">
+                        <!-- Image de la deuxième diapositive -->
+                        <a class="nav-link" href="index.php?ctrl=forum&action=allForums">
+                            <img src="Assets\Images\forum-slide.png" alt="Image 2">
+                        </a>
+                    </div>
+                    <!-- Troisième diapositive -->
+                    <div class="slide">
+                        <!-- Image de la troisième diapositive -->
+                        <a class="nav-link" href="#">
+                            <img src="Assets\Images\articles-slide.png" alt="Image 3">
+                        </a>
+                    </div>
                 </div>
-                <div class="carousel-item" data-interval="2000">
-                    <img src="Assets\Images\forum.png" alt="2" class="d-block w-100">
+                <!-- Conteneur pour les boutons de navigation -->
+                <div class="carousel-controls">
+                    <!-- Bouton pour passer à la diapositive précédente -->
+                    <button id="prev">◀</button>
+                    <!-- Bouton pour passer à la diapositive suivante -->
+                    <button id="next">▶</button>
                 </div>
-                <div class="carousel-item" data-interval="1000">
-                    <img src="Assets\Images\dofushelp_banner.jpg" alt="3" class="d-block w-100">
-                </div>
+                <!-- Conteneur pour les points de navigation -->
+                <div class="carousel-dots"></div>
             </div>
-            <!-- Contrôles -->
-            <a class="carousel-control-prev" href="#demo" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Précédent</span>
-            </a>
-            <a class="carousel-control-next" href="#demo" role="button" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Suivant</span>
-            </a>
         </div>
+        <script>
+            (function() {
+                "use stict"
+                const slideTimeout = 5000; // Récupère les boutons de navigation
+                const prev = document.querySelector('#prev');
+                const next = document.querySelector('#next'); // Récupère tous les éléments de type "slide"
+                const $slides = document.querySelectorAll('.slide'); // Initialisation de la variable pour les "dots"
+                let $dots;
+                let intervalId;
+                let currentSlide = 1;
+
+                function slideTo(index) {
+                    currentSlide = index >= $slides.length || index < 1 ? 0 : index;
+                    $slides.forEach($elt => $elt.style.transform = `translateX(-${currentSlide * 100}%)`);
+                    $dots.forEach(($elt, key) => $elt.classList = `dot ${key === currentSlide? 'active': 'inactive'}`);
+                }
+
+                function showSlide() {
+                    slideTo(currentSlide);
+                    currentSlide++;
+                }
+                for (let i = 1; i <= $slides.length; i++) {
+                    let dotClass = i == currentSlide ? 'active' : 'inactive';
+                    let $dot = `<span data-slidId="${i}" class="dot ${dotClass}"></span>`;
+                    document.querySelector('.carousel-dots').innerHTML += $dot;
+                }
+                $dots = document.querySelectorAll('.dot');
+                $dots.forEach(($elt, key) => $elt.addEventListener('click', () => slideTo(key))); // Ajout d'un écouteur d'événement "click" sur le bouton "prev" pour afficher le slide précédent
+                prev.addEventListener('click', () => slideTo(--currentSlide)) // Ajout d'un écouteur d'événement "click" sur le bouton "next" pour afficher le slide suivant
+                next.addEventListener('click', () => slideTo(++currentSlide))
+                intervalId = setInterval(showSlide, slideTimeout)
+                $slides.forEach($elt => {
+                    let startX;
+                    let endX;
+                    $elt.addEventListener('mouseover', () => {
+                        clearInterval(intervalId);
+                    }, false)
+                    $elt.addEventListener('mouseout', () => {
+                        intervalId = setInterval(showSlide, slideTimeout);
+                    }, false);
+                    $elt.addEventListener('touchstart', (event) => {
+                        startX = event.touches[0].clientX;
+                    });
+                    $elt.addEventListener('touchend', (event) => {
+                        endX = event.changedTouches[0].clientX; // Si la position initiale est plus grande que la position finale, affiche le prochain slide
+                        if (startX > endX) {
+                            slideTo(currentSlide + 1); // Si la position initiale est plus petite que la position finale, affiche le slide précédent
+                        } else if (startX < endX) {
+                            slideTo(currentSlide - 1);
+                        }
+                    });
+                })
+            })()
+        </script>
 </div>
 </div>

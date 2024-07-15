@@ -7,7 +7,9 @@
 ?>
 <nav id="nav" class="navbar navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="index.php">Dofus</a>
+        <a class="navbar-brand" href="index.php?ctrl=index&action=index">
+            <img id="logo-site" src="Assets\Images\logo-site.png">
+        </a>
         <div id="user" class="col-4 d-flex justify-content-end align-items-center">
             <?php if (isset($_SESSION['user'])) { ?>
                 <a class="btn btn-sm" href="index.php?ctrl=user&action=login" title="Se connecter">
@@ -21,7 +23,7 @@
             } else {
             ?>
                 <a class="btn btn-sm" href="index.php?ctrl=user&action=create_account" title="Se connecter">
-                    <i class="fa-solid fa-user"></i></i>
+                    <i class="fa-solid fa-user"></i>
                 </a>
                 |
                 <a class="btn btn-sm" href="index.php?ctrl=user&action=login" title="Se connecter">
@@ -36,12 +38,6 @@
         </button>
         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
             <div class="offcanvas-header">
-                <a href="create_account.php">
-                    <button>
-                        <span class="fa-regular fa-user" aria-hidden="true"></span>
-                        <a class="nav-link" href="index.php?ctrl=user&action=login"></a>
-                    </button>
-                </a>
                 <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Navigation</h5>
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
