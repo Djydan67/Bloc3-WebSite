@@ -13,7 +13,6 @@ class User_Ctrl extends Ctrl
      */
     public function login()
     {
-        
         include("Model/user_model.php");
         $objUserModel = new user_model();
         $arrErrors = array();
@@ -124,12 +123,9 @@ class User_Ctrl extends Ctrl
     public function logout()
     {
         session_destroy();
-
-        // on recréé la session pour le message
         session_start();
         $_SESSION['valid'] = "Vous êtes bien déconnecté";
 
-        // on redirige
         header("Location:index.php");
     }
 
@@ -142,7 +138,6 @@ class User_Ctrl extends Ctrl
         include("models/user_model.php");
         $objUserModel = new user_model();
 
-        // Récupérer le premier utilisateur
         $arrUser = $objUserModel->getFirstUser();
 
         if ($arrUser === false) {
@@ -150,11 +145,7 @@ class User_Ctrl extends Ctrl
             exit();
         }
 
-        // Déterminer le niveau de droit de l'utilisateur
         $userLevel = $arrUser['droit_id'];
-
-        var_dump($arrUser); // Debug
-        var_dump($userLevel); // Debug
 
         $this->_arrData['arrUser']      = $arrUser;
         $this->_arrData['userLevel']    = $userLevel;
