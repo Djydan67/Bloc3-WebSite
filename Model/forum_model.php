@@ -29,7 +29,7 @@ class Forum_model extends Bdd
              SELECT SQL_CALC_FOUND_ROWS forum_id, forum_titre, forum_message, forum_date, forum_isvalide, forum_isclose, fo.user_id
              FROM T_forum fo 
              INNER JOIN T_user us ON us.user_id = fo.user_id 
-             WHERE theme_id = :theme
+             WHERE theme_id = :theme AND forum_isClose = 0
              LIMIT :limit OFFSET :offset;
          ";
         $strPrepare = $this->_db->prepare($strQuery);
@@ -61,7 +61,7 @@ class Forum_model extends Bdd
     {
         $strQuery = "
              SELECT theme_id, theme_nom, theme_description, theme_update, theme_color, theme_isActive
-             FROM T_theme;
+             FROM T_theme where theme_isActive = 1;
          ";
         $strPrepare = $this->_db->prepare($strQuery);
         $strPrepare->execute();
@@ -188,7 +188,7 @@ class Forum_model extends Bdd
     {
         $strQuery = "
              UPDATE T_forum
-             SET theme_isClose = 1
+             SET forum_isClose = 1
              WHERE forum_id = :forum_id;
          ";
         $strPrepare = $this->_db->prepare($strQuery);

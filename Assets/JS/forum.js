@@ -1,380 +1,558 @@
 document.addEventListener("DOMContentLoaded", function () {
+  // Element references
+  const deleteThemeButton = document.getElementById("deleteThemeButton");
+  const themeSelect = document.getElementById("themeSelect");
+  const confirmDeleteThemeButton = document.getElementById(
+    "confirmDeleteThemeButton"
+  );
+  const createThemeButton = document.getElementById("CreateThemeButton");
+  const createThemeContainer = document.getElementById("createThemeContainer");
+  const createThemeForm = document.getElementById("createThemeForm");
   const themeButtons = document.querySelectorAll(".theme-btn");
-  const forumsPerPageSelect = document.getElementById("forumsPerPage");
-  let currentOpenForumId = null;
-  let forumsPerPage = parseInt(forumsPerPageSelect.value);
+  const forumContainer = document.getElementById("forumContainer");
+  const paginationControls = document.getElementById("paginationControls");
+  const prevPageButton = document.getElementById("prevPageButton");
+  const nextPageButton = document.getElementById("nextPageButton");
+  const currentPageInfo = document.getElementById("currentPageInfo");
+  const showCreateForumFormButton = document.getElementById(
+    "showCreateForumForm"
+  );
+  const hideCreateForumFormButton = document.getElementById(
+    "hideCreateForumForm"
+  );
+  const createForumFormContainer = document.getElementById(
+    "createForumFormContainer"
+  );
+  const createForumForm = document.getElementById("createForumForm");
+  const forumSearchInput = document.getElementById("forumSearch");
+
   let currentPage = 1;
-  let currentThemeId = null;
+  let totalPages = 1;
+  let selectedThemeId = null;
+  let allForums = [];
+
+  // Generic functions
+
+  async function fetchData(url, options = {}) {
+    try {
+      const response = await fetch(url, options);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    } catch (error) {
+      console.error("Fetch error:", error);
+      throw error;
+    }
+  }
+
+  function handleApiResponse(promise, successMessage, reload = false) {
+    promise
+      .then((data) => {
+        if (data.success) {
+          alert(successMessage);
+          if (reload) {
+            window.location.reload();
+          }
+        } else {
+          console.error("Server error:", data.message);
+          alert("Error: " + data.message);
+        }
+      })
+      .catch((error) => {
+        console.error("Request failed:", error);
+        alert("An error occurred. Please try again later.");
+      });
+  }
+
+  function toggleVisibility(element) {
+    element.style.display =
+      element.style.display === "none" || element.style.display === ""
+        ? "block"
+        : "none";
+  }
+
+  function toggleButtonText(button, text1, text2) {
+    button.innerText = button.innerText === text1 ? text2 : text1;
+  }
+
+  function toggleButtonColor(button, color1, color2) {
+    button.style.backgroundColor =
+      button.style.backgroundColor === color1 ||
+      button.style.backgroundColor === ""
+        ? color2
+        : color1;
+  }
+
+  if (droitId === "2" || droitId === "3") {
+    deleteThemeButton.innerText = "Delete Theme";
+    createThemeButton.innerText = "Add Theme";
+    deleteThemeButton.style.backgroundColor = "#749245";
+    createThemeButton.style.backgroundColor = "#749245";
+
+    deleteThemeButton.addEventListener("click", function () {
+      toggleButtonText(deleteThemeButton, "Delete Theme", "Cancel");
+      toggleVisibility(themeSelect);
+      toggleVisibility(confirmDeleteThemeButton);
+      toggleButtonColor(
+        deleteThemeButton,
+        "rgb(116, 146, 69)",
+        "rgb(199, 30, 52)"
+      ); // Green to Red
+    });
+
+    createThemeButton.addEventListener("click", function () {
+      toggleButtonText(createThemeButton, "Add Theme", "Cancel");
+      toggleVisibility(createThemeContainer);
+      toggleButtonColor(
+        createThemeButton,
+        "rgb(116, 146, 69)",
+        "rgb(199, 30, 52)"
+      ); // Green to Red
+    });
+
+    createThemeForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+      const themeName = document.getElementById("themeName").value;
+      const themeDescription =
+        document.getElementById("themeDescription").value;
+      const themeColor = document.getElementById("themeColor").value;
+      const url = "index.php?ctrl=forum&action=createTheme";
+      const options = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          theme_name: themeName,
+          description: themeDescription,
+          color: themeColor,
+        }),
+      };
+
+      fetchData(url, options)
+        .then((data) => {
+          if (data.success) {
+            alert("Theme created successfully!");
+            window.location.reload();
+          } else {
+            alert("Error creating theme: " + data.error);
+          }
+        })
+        .catch((error) => {
+          console.error("Error creating theme:", error);
+        });
+    });
+
+    confirmDeleteThemeButton.addEventListener("click", function () {
+      const selectedThemeId = themeSelect.value;
+      if (selectedThemeId) {
+        if (confirm("Are you sure you want to delete this theme?")) {
+          deleteTheme(selectedThemeId);
+        }
+      } else {
+        alert("Please select a theme to delete.");
+      }
+    });
+  }
 
   themeButtons.forEach((button) => {
     button.addEventListener("click", function () {
-      currentThemeId = this.getAttribute("data-theme-id");
-      fetchForumsByTheme(currentThemeId, forumsPerPage, currentPage);
+      selectedThemeId = this.dataset.themeId;
+      fetchForumsByTheme(selectedThemeId, 1); // Load first page by default
     });
   });
 
-  forumsPerPageSelect.addEventListener("change", function () {
-    forumsPerPage = parseInt(this.value);
-    fetchForumsByTheme(currentThemeId, forumsPerPage, currentPage);
+  showCreateForumFormButton.addEventListener("click", function () {
+    createForumFormContainer.style.display = "block";
   });
 
-  function fetchForumsByTheme(themeId, forumsPerPage, page) {
-    currentThemeId = themeId;
-    const url = `index.php?ctrl=forum&action=themes&theme_id=${themeId}&limit=${forumsPerPage}&page=${page}`;
-    fetch(url)
-      .then((response) => response.json())
+  hideCreateForumFormButton.addEventListener("click", function () {
+    createForumFormContainer.style.display = "none";
+  });
+
+  forumSearchInput.addEventListener("input", function () {
+    const searchQuery = this.value.toLowerCase();
+    const filteredForums = allForums.filter(
+      (forum) =>
+        forum.forum_titre.toLowerCase().includes(searchQuery) ||
+        forum.forum_message.toLowerCase().includes(searchQuery)
+    );
+    displayForums(filteredForums);
+  });
+
+  function fetchForumsByTheme(themeId, page = 1) {
+    console.log(`Fetching forums for theme ${themeId} on page ${page}`);
+    const url = `index.php?ctrl=forum&action=getForumsByTheme&theme_id=${themeId}&page=${page}`;
+    fetchData(url)
       .then((data) => {
-        const forumsContainer = document.getElementById("forums-container");
-        forumsContainer.innerHTML = "";
         if (data.error) {
-          forumsContainer.innerHTML = `<p>Error: ${data.error}</p>`;
+          alert("Error fetching forums: " + data.error);
           return;
         }
-        if (data.forums.length > 0) {
-          data.forums.reverse().forEach((forum) => {
-            let deleteForum = "";
-            if (droitId == 3) {
-              deleteForum = `
-                <button class="btn btn-primary deleteForum" data-forum-id="${forum.forum_id}">Delete Forum</button>
-              `;
-            }
-            const formattedDate = formatDate(forum.forum_date);
-            forumsContainer.innerHTML += `
-              <div class="forum-card">
-                <a href="#" class="list-group-item list-group-item-action forum-item" data-forum-id="${forum.forum_id}">
-                  <h5 class="mb-1">${forum.forum_titre}</h5>
-                  <p class="mb-1">${forum.forum_message} ${deleteForum}</p>
-                  <small>${formattedDate}</small>
-                </a>
-                <div id="${forum.forum_id}_forum_response" style="display: none;"></div>
-              </div>
-            `;
-          });
-          renderPagination(data.totalForums, forumsPerPage, page);
-          attachDeleteEventListeners(); // Attach event listeners to delete buttons
+        if (Array.isArray(data.forums)) {
+          console.log("Forums fetched: ", data.forums);
+          allForums = data.forums; // Store all fetched forums
+          displayForums(data.forums);
+          updatePagination(data.currentPage, data.totalPages);
         } else {
-          forumsContainer.innerHTML = "<p>No forum topics found.</p>";
+          console.error("Unexpected response format:", data);
+          alert("Unexpected response format.");
         }
-        getResponses();
       })
       .catch((error) => {
-        const forumsContainer = document.getElementById("forums-container");
-        forumsContainer.innerHTML =
-          "<p>Error fetching forums. Please try again.</p>";
         console.error("Error fetching forums:", error);
       });
   }
 
-  function attachDeleteEventListeners() {
-    const deleteButtons = document.querySelectorAll(".deleteForum");
-    deleteButtons.forEach((button) => {
-      button.addEventListener("click", function () {
-        const forumId = this.getAttribute("data-forum-id");
-        deleteForum(forumId);
+  function displayForums(forums) {
+    forumContainer.innerHTML = ""; // Clear the current list of forums
+    if (forums.length === 0) {
+      forumContainer.innerHTML = "<p>No forums available for this theme.</p>";
+      return;
+    }
+
+    forums.forEach((forum) => {
+      const forumCard = document.createElement("div");
+      forumCard.className = "forum-card";
+      forumCard.dataset.forumId = forum.forum_id;
+
+      const forumCardHeader = document.createElement("div");
+      forumCardHeader.className = "forum-card-header";
+      forumCardHeader.innerText = forum.forum_titre;
+
+      const forumCardBody = document.createElement("div");
+      forumCardBody.className = "forum-card-body";
+      forumCardBody.innerHTML = `
+        <p>${forum.forum_message}</p>
+        <small>Posted on: ${new Date(
+          forum.forum_date
+        ).toLocaleDateString()}</small>
+        <div class="responses-container" id="responses-${
+          forum.forum_id
+        }" style="display: none;"></div>
+        <button class="btn btn-secondary toggle-responses-button" id="toggle-responses-${
+          forum.forum_id
+        }">Show Responses</button>
+      `;
+
+      if (droitId === "2" || droitId === "3") {
+        const deleteButton = document.createElement("button");
+        deleteButton.className = "btn btn-danger";
+        deleteButton.innerText = "Delete Forum";
+        deleteButton.addEventListener("click", () => {
+          if (confirm("Are you sure you want to delete this forum?")) {
+            deleteForum(forum.forum_id);
+          }
+        });
+        forumCardBody.appendChild(deleteButton);
+      }
+
+      forumCard.appendChild(forumCardHeader);
+      forumCard.appendChild(forumCardBody);
+      forumContainer.appendChild(forumCard);
+    });
+
+    // Attach event listeners for the "Show Responses" buttons
+    const toggleResponseButtons = document.querySelectorAll(
+      ".toggle-responses-button"
+    );
+    toggleResponseButtons.forEach((button) => {
+      button.addEventListener("click", function (event) {
+        event.stopPropagation(); // Prevent event from bubbling up to parent elements
+        const forumId = this.id.replace("toggle-responses-", "");
+        const responsesContainer = document.getElementById(
+          `responses-${forumId}`
+        );
+        if (responsesContainer.style.display === "block") {
+          responsesContainer.style.display = "none";
+          this.innerText = "Show Responses";
+        } else {
+          fetchResponses(forumId); // Fetch responses when opening
+          responsesContainer.style.display = "block";
+          this.innerText = "Close Responses";
+        }
       });
     });
   }
 
+  createForumForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const forumTitle = document.getElementById("forumTitle").value.trim();
+    const forumMessage = document.getElementById("forumMessage").value.trim();
+    const forumTheme = document.getElementById("forumTheme").value;
+
+    if (!forumTitle || !forumMessage || !forumTheme) {
+      alert("All fields are required.");
+      return;
+    }
+
+    const data = {
+      titre: forumTitle,
+      message: forumMessage,
+      user_id: userId,
+      theme_id: forumTheme,
+    };
+
+    const url = "index.php?ctrl=forum&action=createForum";
+    const options = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    };
+
+    fetch(url, options)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.success) {
+          alert("Forum created successfully!");
+          createForumForm.reset();
+          createForumFormContainer.style.display = "none";
+          fetchForumsByTheme(selectedThemeId, currentPage);
+        } else {
+          alert("Error creating forum: " + data.error);
+        }
+      })
+      .catch((error) => {
+        console.error("Error creating forum:", error);
+        alert("An error occurred. Please try again later.");
+      });
+  });
+
   function deleteForum(forumId) {
     const url = `index.php?ctrl=forum&action=deleteForum`;
+    const options = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ forum_id: forumId }),
+    };
+    handleApiResponse(
+      fetchData(url, options),
+      "Forum deleted successfully!",
+      true
+    );
+  }
+
+  function updatePagination(current, total) {
+    currentPage = current;
+    totalPages = total;
+
+    console.log(
+      `Updating pagination: current page = ${currentPage}, total pages = ${totalPages}`
+    );
+
+    currentPageInfo.innerText = `Page ${currentPage} of ${totalPages}`;
+    prevPageButton.disabled = currentPage === 1;
+    nextPageButton.disabled = currentPage === totalPages;
+  }
+
+  function createResponse(forumId, message) {
+    if (!forumId || !message) {
+      console.error("Invalid forum ID or message:", forumId, message);
+      alert("Please enter a valid response.");
+      return;
+    }
+
+    const url = `index.php?ctrl=forum&action=createResponse`;
+    const data = {
+      forum_id: forumId,
+      message: message,
+      user_id: userId,
+    };
+
+    const options = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    };
+
+    fetchData(url, options)
+      .then((data) => {
+        if (data.success) {
+          alert("Response created successfully!");
+          fetchResponses(forumId);
+        } else {
+          console.error("Error creating response:", data.error);
+          alert("Error: " + data.error);
+        }
+      })
+      .catch((error) => {
+        console.error("Error creating response:", error);
+      });
+  }
+
+  function responseForm(forumId) {
+    const form = document.createElement("form");
+    form.className = "new-response-form";
+    form.dataset.forumId = forumId;
+
+    form.innerHTML = `
+      <textarea class="form-control" name="response" placeholder="Enter your response here" required></textarea>
+      <button class="btn btn-primary" type="submit">Submit Response</button>
+    `;
+
+    return form;
+  }
+
+  function deleteResponse(responseId) {
+    const url = `index.php?ctrl=forum&action=deleteResponse`;
+    const options = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ response_id: responseId }),
+    };
+
+    fetchData(url, options)
+      .then((data) => {
+        if (data.success) {
+          alert("Response deleted successfully!");
+          // Remove the response element from the DOM
+          const responseElement = document.querySelector(
+            `.response-card[data-response-id="${responseId}"]`
+          );
+          if (responseElement) {
+            responseElement.remove();
+          }
+        } else {
+          console.error("Error deleting response:", data.error);
+          alert("Error: " + data.error);
+        }
+      })
+      .catch((error) => {
+        console.error("Error deleting response:", error);
+        alert("An error occurred. Please try again later.");
+      });
+  }
+
+  prevPageButton.addEventListener("click", () => {
+    if (currentPage > 1) {
+      console.log(`Going to previous page: ${currentPage - 1}`);
+      fetchForumsByTheme(selectedThemeId, currentPage - 1);
+    }
+  });
+
+  nextPageButton.addEventListener("click", () => {
+    if (currentPage < totalPages) {
+      console.log(`Going to next page: ${currentPage + 1}`);
+      fetchForumsByTheme(selectedThemeId, currentPage + 1);
+    }
+  });
+
+  function deleteTheme(themeId) {
+    const url = `index.php?ctrl=forum&action=deleteTheme`;
     fetch(url, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        forum_id: forumId,
-      }),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ theme_id: themeId }),
     })
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          alert("Forum deleted successfully!");
-          fetchForumsByTheme(currentThemeId, forumsPerPage, currentPage);
+          alert("Theme deleted successfully!");
+          location.reload();
         } else {
           alert("Error: " + data.error);
         }
       })
       .catch((error) => {
-        console.error("Error deleting forum:", error);
+        console.error("Error deleting theme:", error);
       });
   }
 
-  function renderPagination(totalForums, forumsPerPage, currentPage) {
-    const paginationContainer = document.getElementById("pagination-container");
-    if (!paginationContainer) {
-      console.error("Pagination container not found");
-      return;
-    }
-    paginationContainer.innerHTML = "";
-    const totalPages = Math.ceil(totalForums / forumsPerPage);
-    for (let i = 1; i <= totalPages; i++) {
-      const pageButton = document.createElement("button");
-      pageButton.textContent = i;
-      pageButton.classList.add("page-button");
-      if (i === currentPage) {
-        pageButton.classList.add("active");
-      }
-      pageButton.addEventListener("click", function () {
-        fetchForumsByTheme(currentThemeId, forumsPerPage, i);
-      });
-      paginationContainer.appendChild(pageButton);
-    }
-  }
-
-  function getResponses() {
-    const forumItems = document.querySelectorAll(".forum-item");
-    forumItems.forEach((forum) => {
-      forum.addEventListener("click", function (event) {
-        event.preventDefault();
-        const forumId = this.getAttribute("data-forum-id");
-        const url = `index.php?ctrl=forum&action=Forums&forum_id=${forumId}`;
-        fetch(url)
-          .then((response) => response.json())
-          .then((data) => {
-            if (currentOpenForumId !== null && currentOpenForumId !== forumId) {
-              const currentOpenForumElement = document.getElementById(
-                `${currentOpenForumId}_forum_response`
-              );
-              currentOpenForumElement.style.display = "none";
-            }
-
-            const responsesContainer = document.getElementById(
-              `${forumId}_forum_response`
-            );
-            responsesContainer.innerHTML = "";
-            if (data.error) {
-              responsesContainer.innerHTML = `<p>Error: ${data.error}</p>`;
-              return;
-            }
-            if (data.length > 0) {
-              data.forEach((response) => {
-                const formattedDate = formatDate(response.reponse_date);
-                responsesContainer.innerHTML += `
-                  <div class="response-card">
-                    <div class="card-body">
-                      <h5 class="card-title">${response.user_pseudo}</h5>
-                      <p class="card-text">${response.reponse_message}</p>
-                      <small class="text-muted">${formattedDate}</small>
-                    </div>
-                  </div>
-                `;
-              });
-            } else {
-              responsesContainer.innerHTML = "<p>No responses found.</p>";
-            }
-            responsesContainer.style.display = "block";
-            currentOpenForumId = forumId;
-
-            responsesContainer.innerHTML += `
-              <form class="createResponseForm" data-forum-id="${forumId}">
-                <div class="form-group">
-                  <label for="responseMessage">Your Response</label>
-                  <textarea class="form-control responseMessage" rows="3" required></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit Response</button>
-              </form>
-            `;
-            handleResponseForm();
-          })
-          .catch((error) => {
-            const responsesContainer = document.getElementById(
-              `${forumId}_forum_response`
-            );
-            responsesContainer.innerHTML =
-              "<p>Error fetching responses. Please try again.</p>";
-            console.error("Error fetching responses:", error);
-          });
-      });
-    });
-  }
-
-  function handleResponseForm() {
-    const responseForms = document.querySelectorAll(".createResponseForm");
-    responseForms.forEach((form) => {
-      form.addEventListener("submit", function (event) {
-        event.preventDefault();
-        const forumId = this.getAttribute("data-forum-id");
-        const message = this.querySelector(".responseMessage").value;
-
-        const url = `index.php?ctrl=forum&action=createResponse`;
-        fetch(url, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            message: message,
-            user_id: userId,
-            forum_id: forumId,
-          }),
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            if (data.success) {
-              alert("Response created successfully!");
-              this.reset();
-              fetchResponsesForForum(forumId);
-            } else {
-              alert("Error: " + data.error);
-            }
-          })
-          .catch((error) => {
-            console.error("Error creating response:", error);
-          });
-      });
-    });
-  }
-
-  function fetchResponsesForForum(forumId) {
-    const url = `index.php?ctrl=forum&action=Forums&forum_id=${forumId}`;
-    fetch(url)
-      .then((response) => response.json())
+  function fetchResponses(forumId) {
+    const url = `index.php?ctrl=forum&action=getForum&forum_id=${forumId}`;
+    fetchData(url)
       .then((data) => {
-        const responsesContainer = document.getElementById(
-          `${forumId}_forum_response`
-        );
-        responsesContainer.innerHTML = "";
         if (data.error) {
-          responsesContainer.innerHTML = `<p>Error: ${data.error}</p>`;
+          alert("Error fetching responses: " + data.error);
           return;
         }
-        if (data.length > 0) {
-          data.forEach((response) => {
-            const formattedDate = formatDate(response.reponse_date);
-            responsesContainer.innerHTML += `
-              <div class="response-card">
-                <div class="card-body">
-                  <h5 class="card-title">${response.user_pseudo}</h5>
-                  <p class="card-text">${response.reponse_message}</p>
-                  <small class="text-muted">${formattedDate}</small>
-                </div>
-              </div>
-            `;
-          });
-        } else {
-          responsesContainer.innerHTML = "<p>No responses found.</p>";
-        }
-        responsesContainer.style.display = "block";
+        displayResponses(forumId, data);
       })
       .catch((error) => {
-        const responsesContainer = document.getElementById(
-          `${forumId}_forum_response`
-        );
-        responsesContainer.innerHTML =
-          "<p>Error fetching responses. Please try again.</p>";
         console.error("Error fetching responses:", error);
       });
   }
 
-  document
-    .getElementById("showCreateForumForm")
-    .addEventListener("click", function () {
-      document.getElementById("createForumFormContainer").style.display =
-        "block";
-      this.style.display = "none";
-    });
+  function displayResponses(forumId, responses) {
+    const responsesContainer = document.getElementById(`responses-${forumId}`);
+    responsesContainer.innerHTML = ""; // Clear previous responses
+    responsesContainer.style.display = "block"; // Show the responses container
 
-  document
-    .getElementById("hideCreateForumForm")
-    .addEventListener("click", function () {
-      document.getElementById("createForumFormContainer").style.display =
-        "none";
-      document.getElementById("showCreateForumForm").style.display = "block";
-    });
+    if (responses.length === 0) {
+      responsesContainer.innerHTML =
+        "<p>No responses available for this forum.</p>";
+    } else {
+      responses.forEach((response, index) => {
+        const responseCard = document.createElement("div");
+        responseCard.className = "response-card";
+        responseCard.dataset.responseId = response.reponse_id; // Add dataset attribute
+        responseCard.innerHTML = `
+          <p>${response.reponse_message}</p>
+          <small class="response-info">Posted by: ${
+            response.user_pseudo
+          } on ${new Date(response.reponse_date).toLocaleDateString()}</small>
+        `;
 
-  document
-    .getElementById("createForumForm")
-    .addEventListener("submit", function (event) {
-      event.preventDefault();
-      const title = document.getElementById("forumTitle").value;
-      const message = document.getElementById("forumMessage").value;
-      const themeId = document.getElementById("forumTheme").value;
+        responseCard.style.backgroundColor =
+          index % 2 === 0 ? "#f9f9f9" : "#e9e9e9";
 
-      const url = `index.php?ctrl=forum&action=createForum`;
-      fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          titre: title,
-          message: message,
-          user_id: userId, // Use the user ID from session
-          theme_id: themeId,
-        }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.success) {
-            alert("Forum created successfully!");
-            this.reset();
-            fetchForumsByTheme(themeId, forumsPerPage, currentPage);
-            document.getElementById("createForumFormContainer").style.display =
-              "none";
-            document.getElementById("showCreateForumForm").style.display =
-              "block";
-          } else {
-            alert("Error: " + data.error);
-          }
-        })
-        .catch((error) => {
-          console.error("Error creating forum:", error);
-        });
-    });
-
-  document.getElementById("themeSearch").addEventListener("input", function () {
-    const searchValue = this.value.toLowerCase();
-    const themes = document.querySelectorAll(".theme-btn");
-    themes.forEach((theme) => {
-      const themeName = theme.querySelector("h3").innerText.toLowerCase();
-      theme.style.display = themeName.includes(searchValue) ? "block" : "none";
-    });
-  });
-
-  document.getElementById("forumSearch").addEventListener("input", function () {
-    const searchValue = this.value.toLowerCase();
-    const forums = document.querySelectorAll(".forum-item");
-    forums.forEach((forum) => {
-      const forumTitle = forum.querySelector("h5").innerText.toLowerCase();
-      forum.style.display = forumTitle.includes(searchValue) ? "block" : "none";
-    });
-  });
-
-  // Add this code for delete theme functionality
-  if (document.getElementById("delete-theme")) {
-    document
-      .getElementById("delete-theme")
-      .addEventListener("click", function () {
-        document.getElementById("deleteThemeContainer").style.display = "block";
-      });
-
-    document
-      .getElementById("confirmDeleteTheme")
-      .addEventListener("click", function () {
-        const themeId = document.getElementById("themeSelect").value;
-        const url = `index.php?ctrl=forum&action=deleteTheme`;
-        fetch(url, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            theme_id: themeId,
-          }),
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            if (data.success) {
-              alert("Theme deleted successfully!");
-              location.reload();
-            } else {
-              alert("Error: " + data.error);
+        if (droitId === "2" || droitId === "3") {
+          const deleteButton = document.createElement("button");
+          deleteButton.className = "btn btn-danger";
+          deleteButton.innerText = "Delete Response";
+          deleteButton.addEventListener("click", () => {
+            if (confirm("Are you sure you want to delete this response?")) {
+              deleteResponse(response.reponse_id);
             }
-          })
-          .catch((error) => {
-            console.error("Error deleting theme:", error);
           });
+          responseCard.appendChild(deleteButton);
+        }
+
+        responsesContainer.appendChild(responseCard);
       });
+    }
+    const newResponseForm = responseForm(forumId);
+    responsesContainer.appendChild(newResponseForm);
   }
+
+  forumContainer.addEventListener("click", function (event) {
+    const forumCard = event.target.closest(".forum-card");
+    if (
+      forumCard &&
+      event.target.classList.contains("toggle-responses-button")
+    ) {
+      const forumId = forumCard.dataset.forumId;
+      const responsesContainer = document.getElementById(
+        `responses-${forumId}`
+      );
+      if (responsesContainer.style.display === "block") {
+        responsesContainer.style.display = "none";
+        event.target.innerText = "Show Responses";
+      } else {
+        fetchResponses(forumId);
+        responsesContainer.style.display = "block";
+        event.target.innerText = "Close Responses";
+      }
+    }
+  });
+
+  forumContainer.addEventListener("submit", function (event) {
+    const form = event.target.closest(".new-response-form");
+    if (form) {
+      event.preventDefault();
+      const forumId = form.dataset.forumId;
+      const message = form.querySelector("textarea").value.trim();
+      if (message) {
+        createResponse(forumId, message);
+        form.reset();
+      } else {
+        alert("Please enter a response message.");
+      }
+    }
+  });
 });

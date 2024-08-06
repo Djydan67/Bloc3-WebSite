@@ -13,6 +13,7 @@
   --themeBackground: #6aa84f;
   --forumCardBackground: #8f8f8f;
   --forumContainerBackground: #ffffff;
+  --red: #ac0707;
 }
 /* CSS NavBar */
 #nav{
@@ -203,43 +204,77 @@
 
 /*-------------------Forum-------------------*/
 .forum-card {
-  background-color: var(--forumCardBackground);
+  background-color: var(--backgroundGray);
   margin-bottom: 1em;
   padding: 0.4em;
   border-radius: 0.5rem;
+  color: var(--white);
+}
+.forum-card-header{
+  background-color: var(--mediumGray);
+  padding: 0.4em;
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+.forum-card-body{
+  padding: 0.4em;
+  background-color: var(--DarkBlack);
 }
 
 .card-text {
   margin-left: 1em;
+
 }
 
-.response-card {
+.responses-container {
   background-color: var(--white);
-  color: var(--lightGray);
-}
+  color: var(--backgroundGray);
+  /* padding: 1em; */
+  border-radius: 0.5rem;
+  margin-top: 1em;
 
+}
+.response-card{
+  padding: 1em;
+}
+.new-response-form{
+  padding: 1em;
+  background-color: var(--white);
+  border-radius: 0.5rem;
+  margin-top: 1em;
+}
+/* 
 .response-card .card-body {
   padding: 0.4rem;
   background-color: var(--backgroundGray);
   padding: 1.5rem;
   border-top: #ffffff 1px solid;
-}
+  border-bottom: #ffffff 1px solid;
+  border-radius: 0.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 
-.response-card .card-title {
+} */
+
+/* .response-card .card-title {
   font-size: 1.25rem;
   color: var(--lightGray);
   font-weight: bold;
+} */
+.response-info {
+  font-size: 1rem;
+  color: var(--mediumGray);
+  
 }
-
+/* 
 .response-card .card-text,
 .response-card small {
   font-size: 1rem;
-}
+} */
 
 .theme-btn {
+  margin-top: 0.5rem;
   margin-right: 0.5rem;
   margin-bottom: 0.5rem;
-  border-radius: 0.5rem;
 }
 
 .forum-list {
@@ -277,7 +312,6 @@
 }
 
 .forum-container {
-  /* background-image: url('../Images/Forum-bg.jpg'); */
   background-color: var(--greenDofus);
   background-size: cover;
   background-position: center;
@@ -302,7 +336,6 @@
   left: 0;
   width: 100%;
   height: 100%;
-  /* background-image: url('../Images/Forum.jpg'); */
   background-color: var(--backgroundGray);
   background-size: cover;
   background-position: center;
@@ -334,22 +367,39 @@
   flex: 1;
   min-width: 150px;
   text-align: center;
-  border-radius: 5px;
+  /* border-radius: 5px; */
   color: var(--white);
+  margin-top: 1rem;
 }
 
 .theme-btn:hover {
+  /* background-color: var(--greenDofus); */
   color: var(--greenDofus);
-}
-
-.theme-btn h3 {
-  margin: 0;
 }
 
 .deleteForum {
   background-color: var(--red);
-  border-color: var(--white);
+  color: var(--white);
   margin-bottom: 1rem;
   margin-left: 90%;
-  /* float: right; */
+}
+#deleteThemeContainer{
+  background-color: var(--forumCardBackground);
+  padding: 2rem;
+  border: 1px solid var(--lightGray);
+  border-radius: 0.5rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+.admin-theme-btn{
+  /* background-color: var(--red); */
+  color: var(--white);
+  margin-bottom: 1rem;
+  /* margin-left: 90%; */
+}
+.admin-btn
+{
+  margin-left: 90%;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
