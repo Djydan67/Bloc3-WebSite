@@ -40,7 +40,6 @@ $token = trim(str_replace('Bearer', '', $token));
 class auth_controller {
     
     public function verifValidationToken($token, $secret) {
-        include("../Model/jwt_model.php");
         include("../Includes/config.php");
         $jwt = new Jwt();
 

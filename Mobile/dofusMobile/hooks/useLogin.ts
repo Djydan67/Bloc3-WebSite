@@ -1,16 +1,44 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export const useLogin = () => {
-  const [login, setLogin] = useState<any>();
-  //console.log(piecesId)
-  useEffect(() => {
-    fetch(
-      "http://172.20.10.10:8082/Bloc3-WebSite/index.php/?ctrl=Jwt&action=Jwt"
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        setLogin(data);
-      });
-  }, []);
-  return login;
+  const [token, setToken] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const login = async (email: string, password: string) => {
+    try {
+      const response = await fetch(
+        "http://192.168.56.1:8082/Bloc3-WebSite/index.php/?ctrl=User&action=loginMobile",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: `mail=${encodeURIComponent(email)}&mdp=${encodeURIComponent(
+            password
+          )}`,
+        }
+      );
+
+      const textResponse = await response.text(); // Get raw response
+      console.log("Raw response:", textResponse); // Log raw response
+
+      // Try to parse JSON
+      const data = JSON.parse(textResponse);
+      console.log("Parsed response data:", data);
+
+      if (data.status === "success") {
+        setToken(data.token);
+        setError(null);
+      } else {
+        setError(data.message);
+        setToken(null);
+      }
+    } catch (err) {
+      console.error("Login error:", err.message); // Log the error message
+      setError("Erreur de connexion. Veuillez réessayer.");
+      setToken(null);
+    }
+  };
+
+  return { token, error, login };
 };

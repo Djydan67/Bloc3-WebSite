@@ -57,7 +57,7 @@
 
         public function getByMail(string $strMail) {
         try {
-            $strQuery = "SELECT user_id, user_mdp, user_nom, user_prenom, user_isactif, user_pseudo, u.droit_id, droit_description
+            $strQuery = "SELECT user_id, user_mail, user_mdp, user_nom, user_prenom, user_isactif, user_pseudo, u.droit_id, droit_description
                          FROM T_user u 
                          INNER JOIN T_droit d ON d.droit_id = u.droit_id
                          WHERE user_mail = :mail";
