@@ -13,8 +13,7 @@ class User_Ctrl extends Ctrl
      */
     public function login()
     {
-        
-        include("Model/user_model.php");
+        require_once("Model/user_model.php");
         $objUserModel = new user_model();
         $arrErrors = array();
 
@@ -54,6 +53,74 @@ class User_Ctrl extends Ctrl
         }
         
         $this->display('login');
+    }
+
+     /**
+     * login Mobile
+     * @return void
+     */
+    public function loginMobile()
+    {
+        require_once("Model/user_model.php");
+        require_once("jwt_controller.php");
+    
+        $objUserModel = new user_model();
+        $objJwt = new Jwt();
+        $arrErrors = array();
+    
+        if (count($_POST) > 0) {
+            // Récupérer le mail et le mot de passe
+            $strMail = trim($_POST['mail']);
+            $strPassword = $_POST['mdp'];
+    
+            if ($strMail == "" || $strPassword == "") {
+                $arrErrors[] = "Le mail et le mot de passe sont obligatoires";
+            }
+            if (count($arrErrors) == 0) {
+                // Rechercher l'utilisateur en fonction du mail
+                $arrUser = $objUserModel->getByMail($strMail);
+                if ($arrUser === false) {
+                    $arrErrors[] = "Erreur de connexion";
+                } else {
+                    // Comparer le mot de passe
+                    if (password_verify($strPassword, $arrUser['user_mdp'])) {
+                        unset($arrUser['user_mdp']);
+    
+                        // Générer le token JWT
+                        $jwtToken = $objJwt->SessionJwt($arrUser);
+    
+                        if ($jwtToken !== false) {
+                            $response = [
+                                "status" => "success",
+                                "message" => "Vous êtes bien connecté",
+                                "token" => $jwtToken
+                            ];
+                            echo json_encode($response);
+                            return;
+                        } else {
+                            $arrErrors[] = "Erreur lors de la génération du token";
+                        }
+                    } else {
+                        $arrErrors[] = "Le mail ou le mot de passe est incorrect";
+                    }
+                }
+            }
+        }
+    
+        if (count($arrErrors) > 0) {
+            $response = [
+                "status" => "error",
+                "message" => $arrErrors
+            ];
+            echo json_encode($response);
+        } else {
+            // Handle the case where no errors are present but no response is sent
+            $response = [
+                "status" => "error",
+                "message" => "Une erreur inconnue s'est produite."
+            ];
+            echo json_encode($response);
+        }
     }
 
     /**
@@ -124,12 +191,9 @@ class User_Ctrl extends Ctrl
     public function logout()
     {
         session_destroy();
-
-        // on recréé la session pour le message
         session_start();
         $_SESSION['valid'] = "Vous êtes bien déconnecté";
 
-        // on redirige
         header("Location:index.php");
     }
 
@@ -142,7 +206,6 @@ class User_Ctrl extends Ctrl
         include("models/user_model.php");
         $objUserModel = new user_model();
 
-        // Récupérer le premier utilisateur
         $arrUser = $objUserModel->getFirstUser();
 
         if ($arrUser === false) {
@@ -150,11 +213,7 @@ class User_Ctrl extends Ctrl
             exit();
         }
 
-        // Déterminer le niveau de droit de l'utilisateur
         $userLevel = $arrUser['droit_id'];
-
-        var_dump($arrUser); // Debug
-        var_dump($userLevel); // Debug
 
         $this->_arrData['arrUser']      = $arrUser;
         $this->_arrData['userLevel']    = $userLevel;
