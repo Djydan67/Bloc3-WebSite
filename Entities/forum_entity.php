@@ -165,6 +165,7 @@ class Theme extends Entity
     private string $_theme_description = '';
     private string $_theme_update = '';
     private string $_theme_color = '';
+    private int $_theme_isActive = 1;
 
     public function __construct()
     {
@@ -182,7 +183,8 @@ class Theme extends Entity
         $this->setThemeName($data['theme_nom'] ?? null);
         $this->setThemeDescription($data['theme_description'] ?? null);
         $this->setDate($data['theme_update'] ?? null);
-        $this->setColor($data['theme_color'] ?? null); // Added this line
+        $this->setColor($data['theme_color'] ?? null);
+        $this->setIsActive($data['theme_isActive'] ?? null);
     }
 
     // Getters & Setters
@@ -280,5 +282,24 @@ class Theme extends Entity
     public function getColor(): string
     {
         return $this->_theme_color;
+    }
+
+    /**
+     * Setter for theme is active
+     * @param int $intIsActive = Theme is active or not
+     * @return void
+     */
+    public function setIsActive(int $intIsActive): void
+    {
+        $this->_theme_isActive = $intIsActive;
+    }
+
+    /**
+     * Getter for theme is active
+     * @return int Is active or not
+     */
+    public function getIsActive(): int
+    {
+        return $this->_theme_isActive;
     }
 }

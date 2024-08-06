@@ -5,7 +5,7 @@
  * 
  * This class handles interactions with the forum and theme database tables.
  * 
- * @author Salar
+ * @autor Salar
  */
 
 include("bdd.php");
@@ -13,24 +13,43 @@ include("bdd.php");
 class Forum_model extends Bdd
 {
     /**
-     * Retrieve all forums by a specific theme.
+     * Retrieve all forums by a specific theme with pagination.
      * 
      * @param int $themeId The ID of the theme.
-     * @return array The list of forums associated with the theme.
+     * @param int $limit The number of forums to return.
+     * @param int $page The page number to return.
+     * @return array The list of forums associated with the theme and pagination details.
      */
-    public function getAllForumsByTheme($themeId)
+    public function getAllForumsByTheme($themeId, $limit = 10, $page = 1)
     {
-        // SQL query to select the messages of a specific theme
-        $strQuery =
-            "   SELECT forum_id, forum_titre, forum_message, forum_date, forum_isvalide, forum_isclose, fo.user_id
-                    FROM T_forum fo 
-                    INNER JOIN T_user us ON us.user_id = fo.user_id 
-                    WHERE theme_id = :theme;
-            ";
+        $offset = ($page - 1) * $limit;
+
+        // SQL query to select the messages of a specific theme with pagination
+        $strQuery = "
+             SELECT SQL_CALC_FOUND_ROWS forum_id, forum_titre, forum_message, forum_date, forum_isvalide, forum_isclose, fo.user_id
+             FROM T_forum fo 
+             INNER JOIN T_user us ON us.user_id = fo.user_id 
+             WHERE theme_id = :theme AND forum_isClose = 0
+             LIMIT :limit OFFSET :offset;
+         ";
         $strPrepare = $this->_db->prepare($strQuery);
         $strPrepare->bindValue(":theme", $themeId, PDO::PARAM_INT);
+        $strPrepare->bindValue(":limit", $limit, PDO::PARAM_INT);
+        $strPrepare->bindValue(":offset", $offset, PDO::PARAM_INT);
         $strPrepare->execute();
-        return $strPrepare->fetchAll(PDO::FETCH_ASSOC);
+        $forums = $strPrepare->fetchAll(PDO::FETCH_ASSOC);
+
+        // Get the total number of forums
+        $totalQuery = "SELECT FOUND_ROWS() as total";
+        $totalStmt = $this->_db->query($totalQuery);
+        $totalForums = $totalStmt->fetchColumn();
+
+        return [
+            'forums' => $forums,
+            'totalForums' => $totalForums,
+            'currentPage' => $page,
+            'totalPages' => ceil($totalForums / $limit)
+        ];
     }
 
     /**
@@ -40,32 +59,33 @@ class Forum_model extends Bdd
      */
     public function getAllThemes()
     {
-        $strQuery =
-            "   SELECT theme_id, theme_nom, theme_description, theme_update, theme_color
-                    FROM T_theme;
-                ";
+        $strQuery = "
+             SELECT theme_id, theme_nom, theme_description, theme_update, theme_color, theme_isActive
+             FROM T_theme where theme_isActive = 1;
+         ";
         $strPrepare = $this->_db->prepare($strQuery);
         $strPrepare->execute();
         return $strPrepare->fetchAll(PDO::FETCH_ASSOC);
     }
+
     public function getForumResponses($forumId)
     {
-        $strQuery =
-            "   SELECT 
-                r.reponse_id, 
-                r.reponse_message, 
-                r.user_id, 
-                r.reponse_date,
-                u.user_pseudo
-            FROM 
-                T_reponse r
-            INNER JOIN 
-                T_forum f ON r.forum_id = f.forum_id
-            INNER JOIN 
-                T_user u ON r.user_id = u.user_id
-            WHERE 
-                r.forum_id = :forum;
-        ";
+        $strQuery = "
+             SELECT 
+                 r.reponse_id, 
+                 r.reponse_message, 
+                 r.user_id, 
+                 r.reponse_date,
+                 u.user_pseudo
+             FROM 
+                 T_reponse r
+             INNER JOIN 
+                 T_forum f ON r.forum_id = f.forum_id
+             INNER JOIN 
+                 T_user u ON r.user_id = u.user_id
+             WHERE 
+                 r.forum_id = :forum;
+         ";
         $strPrepare = $this->_db->prepare($strQuery);
         $strPrepare->bindValue(":forum", $forumId, PDO::PARAM_INT);
         $strPrepare->execute();
@@ -81,12 +101,12 @@ class Forum_model extends Bdd
      * @param int $themeId The ID of the theme.
      * @return bool Whether the forum was created successfully.
      */
-
     public function createForum($titre, $message, $userId, $themeId)
     {
-        $strQuery =
-            "INSERT INTO T_forum (forum_titre, forum_message, forum_date, forum_isvalide, forum_isclose, user_id, theme_id)
-             VALUES (:titre, :message, NOW(), 1, 0, :user_id, :theme_id);";
+        $strQuery = "
+             INSERT INTO T_forum (forum_titre, forum_message, forum_date, forum_isvalide, forum_isclose, user_id, theme_id)
+             VALUES (:titre, :message, NOW(), 1, 0, :user_id, :theme_id);
+         ";
         $strPrepare = $this->_db->prepare($strQuery);
         $strPrepare->bindValue(":titre", $titre, PDO::PARAM_STR);
         $strPrepare->bindValue(":message", $message, PDO::PARAM_STR);
@@ -94,6 +114,7 @@ class Forum_model extends Bdd
         $strPrepare->bindValue(":theme_id", $themeId, PDO::PARAM_INT);
         return $strPrepare->execute();
     }
+
     /**
      * Create a new response for a forum.
      * 
@@ -104,13 +125,125 @@ class Forum_model extends Bdd
      */
     public function createResponse($message, $userId, $forumId)
     {
-        $strQuery =
-            "INSERT INTO T_reponse (reponse_message, reponse_date, user_id, forum_id)
-             VALUES (:message, NOW(), :user_id, :forum_id);";
+        $strQuery = "
+             INSERT INTO T_reponse (reponse_message, reponse_date, user_id, forum_id)
+             VALUES (:message, NOW(), :user_id, :forum_id);
+         ";
         $strPrepare = $this->_db->prepare($strQuery);
         $strPrepare->bindValue(":message", $message, PDO::PARAM_STR);
         $strPrepare->bindValue(":user_id", $userId, PDO::PARAM_INT);
         $strPrepare->bindValue(":forum_id", $forumId, PDO::PARAM_INT);
+        return $strPrepare->execute();
+    }
+
+    public function closeForum($forumId)
+    {
+        $strQuery = "
+             UPDATE T_forum
+             SET forum_isclose = 1
+             WHERE forum_id = :forum_id;
+         ";
+        $strPrepare = $this->_db->prepare($strQuery);
+        $strPrepare->bindValue(":forum_id", $forumId, PDO::PARAM_INT);
+        return $strPrepare->execute();
+    }
+
+    public function openForum($forumId)
+    {
+        $strQuery = "
+             UPDATE T_forum
+             SET forum_isclose = 0
+             WHERE forum_id = :forum_id;
+         ";
+        $strPrepare = $this->_db->prepare($strQuery);
+        $strPrepare->bindValue(":forum_id", $forumId, PDO::PARAM_INT);
+        return $strPrepare->execute();
+    }
+
+    public function validateForum($forumId)
+    {
+        $strQuery = "
+             UPDATE T_forum
+             SET forum_isvalide = 1
+             WHERE forum_id = :forum_id;
+         ";
+        $strPrepare = $this->_db->prepare($strQuery);
+        $strPrepare->bindValue(":forum_id", $forumId, PDO::PARAM_INT);
+        return $strPrepare->execute();
+    }
+
+    public function invalidateForum($forumId)
+    {
+        $strQuery = "
+             UPDATE T_forum
+             SET forum_isvalide = 0
+             WHERE forum_id = :forum_id;
+         ";
+        $strPrepare = $this->_db->prepare($strQuery);
+        $strPrepare->bindValue(":forum_id", $forumId, PDO::PARAM_INT);
+        return $strPrepare->execute();
+    }
+
+    public function deleteForum($forumId)
+    {
+        $strQuery = "
+             UPDATE T_forum
+             SET forum_isClose = 1
+             WHERE forum_id = :forum_id;
+         ";
+        $strPrepare = $this->_db->prepare($strQuery);
+        $strPrepare->bindValue(":forum_id", $forumId, PDO::PARAM_INT);
+        return $strPrepare->execute();
+    }
+
+    public function deleteResponse($responseId)
+    {
+        $strQuery = "
+             DELETE FROM T_reponse
+             WHERE reponse_id = :reponse_id;
+         ";
+        $strPrepare = $this->_db->prepare($strQuery);
+        $strPrepare->bindValue(":reponse_id", $responseId, PDO::PARAM_INT);
+        return $strPrepare->execute();
+    }
+
+    public function createTheme($nom, $description, $color)
+    {
+        $strQuery = "
+             INSERT INTO T_theme (theme_nom, theme_description, theme_update, theme_color)
+             VALUES (:nom, :description, NOW(), :color);
+         ";
+        $strPrepare = $this->_db->prepare($strQuery);
+        $strPrepare->bindValue(":nom", $nom, PDO::PARAM_STR);
+        $strPrepare->bindValue(":description", $description, PDO::PARAM_STR);
+        $strPrepare->bindValue(":color", $color, PDO::PARAM_STR);
+        return $strPrepare->execute();
+    }
+
+    public function updateTheme($themeId, $nom, $description, $color)
+    {
+        $strQuery = "
+             UPDATE T_theme
+             SET theme_nom = :nom, theme_description = :description, theme_update = NOW(), theme_color = :color
+             WHERE theme_id = :theme_id;
+         ";
+        $strPrepare = $this->_db->prepare($strQuery);
+        $strPrepare->bindValue(":theme_id", $themeId, PDO::PARAM_INT);
+        $strPrepare->bindValue(":nom", $nom, PDO::PARAM_STR);
+        $strPrepare->bindValue(":description", $description, PDO::PARAM_STR);
+        $strPrepare->bindValue(":color", $color, PDO::PARAM_STR);
+        return $strPrepare->execute();
+    }
+
+    public function deleteTheme($themeId)
+    {
+        $strQuery = "
+             UPDATE T_theme
+             SET theme_isActive = 0
+             WHERE theme_id = :theme_id;
+         ";
+        $strPrepare = $this->_db->prepare($strQuery);
+        $strPrepare->bindValue(":theme_id", $themeId, PDO::PARAM_INT);
         return $strPrepare->execute();
     }
 }
