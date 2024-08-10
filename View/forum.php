@@ -6,11 +6,11 @@ $forumModel = new Forum_model();
 $arrThemes = $forumModel->getAllThemes();
 echo var_dump($_SESSION);
 $user_id = $_SESSION['user']['user_id'];
-$droit_id = $_SESSION['user']['droit_id'];
+$droit_description = $_SESSION['user']['droit_description'];
 ?>
 <script>
     const userId = <?php echo json_encode($user_id); ?>;
-    const droitId = <?php echo json_encode($droit_id); ?>;
+    const droit = <?php echo json_encode($droit_description); ?>;
 </script>
 
 <div id="Index" class="forum">
@@ -21,7 +21,7 @@ $droit_id = $_SESSION['user']['droit_id'];
                 <h2>Choisissez un thème :</h2>
                 <input type="search" class="form-control search-bar" id="themeSearch" placeholder="Search Themes..." aria-label="Search">
             </div>
-            <?php if ($droit_id === '3' || $droit_id === 3) : ?>
+            <?php if ($droit === 'administrateur') : ?>
                 <div id="deleteThemeContainer" class="delete-theme-container">
                     <h2>Admin Only!</h2>
                     <div>
