@@ -21,7 +21,7 @@ $droit_description = $_SESSION['user']['droit_description'];
                 <h2>Choisissez un thème :</h2>
                 <input type="search" class="form-control search-bar" id="themeSearch" placeholder="Search Themes..." aria-label="Search">
             </div>
-            <?php if ($droit === 'administrateur') : ?>
+            <?php if ($droit_description === 'administrateur') : ?>
                 <div id="deleteThemeContainer" class="delete-theme-container">
                     <h2>Admin Only!</h2>
                     <div>
