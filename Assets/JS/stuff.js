@@ -66,7 +66,7 @@ function afficheToutStuff() {
   numeroPage = 0;
   document.getElementById("stuff_listing").innerHTML = "";
   fetch(
-    "http://localhost:8082/Bloc3-WebSite/index.php/?ctrl=stuff&action=getEquipementsJson"
+    "http://localhost/Bloc3-WebSite-main/index.php/?ctrl=stuff&action=getEquipementsJson"
   )
     .then((res) => {
       console.log(res);

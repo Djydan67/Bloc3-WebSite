@@ -1,22 +1,19 @@
-import {
-  Image,
-  Pressable,
-  Text,
-  Touchable,
-  View,
-  FlatList,
-} from "react-native";
-import { Link, useNavigation } from "expo-router";
-import { Drawer } from "expo-router/drawer";
+import { Image, Text, View, FlatList } from "react-native";
+import { useState } from "react";
 import { PresImages } from "@/components/presImages";
 import { useStuff } from "@/hooks/useStuff";
-import { useState } from "react";
+
+// Définir le type pour les items
+interface Item {
+  id: string;
+  image: string;
+}
 
 export function HomeScreen() {
-  const [piecesId, setPieceId] = useState<string>();
+  const [piecesId, setPieceId] = useState<string | undefined>(undefined);
   const stuff = useStuff(piecesId);
 
-  const items = [
+  const items: Item[] = [
     {
       id: "Amulette",
       image: "https://actu-gaming.tech/Assets/Images/logo-amulette.png",
@@ -58,6 +55,7 @@ export function HomeScreen() {
       image: "https://actu-gaming.tech/Assets/Images/logo-arme.png",
     },
   ];
+
   return (
     <View
       style={{
@@ -67,23 +65,23 @@ export function HomeScreen() {
       }}
     >
       <View>
-        {items.map((item) => {
-          return (
-            <PresImages
-              onPress={() => {
-                setPieceId(item.id);
-              }}
-            >
-              <Image
-                source={{ uri: item.image }}
-                style={{ width: 50, height: 50 }}
-              />
-            </PresImages>
-          );
-        })}
+        {items.map((item) => (
+          <PresImages
+            key={item.id} // Ajout de la clé ici
+            onPress={() => {
+              setPieceId(item.id);
+            }}
+          >
+            <Image
+              source={{ uri: item.image }}
+              style={{ width: 50, height: 50 }}
+            />
+          </PresImages>
+        ))}
       </View>
       <FlatList
         data={stuff}
+        keyExtractor={(item, index) => item.stuff_name + index}
         renderItem={({ item }) => (
           <View>
             <Image
