@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
         : color1;
   }
 
-  if (droitId === "2" || droitId === "3") {
+  if (droitId === 3 || droitId === "3") {
     deleteThemeButton.innerText = "Delete Theme";
     createThemeButton.innerText = "Add Theme";
     deleteThemeButton.style.backgroundColor = "#749245";
@@ -234,7 +234,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }">Show Responses</button>
       `;
 
-      if (droitId === "2" || droitId === "3") {
+      if (droitId === 3 || droitId === "3") {
         const deleteButton = document.createElement("button");
         deleteButton.className = "btn btn-danger";
         deleteButton.innerText = "Delete Forum";
@@ -501,7 +501,7 @@ document.addEventListener("DOMContentLoaded", function () {
         responseCard.style.backgroundColor =
           index % 2 === 0 ? "#f9f9f9" : "#e9e9e9";
 
-        if (droitId === "2" || droitId === "3") {
+        if (droitId === 3 || droitId === "3") {
           const deleteButton = document.createElement("button");
           deleteButton.className = "btn btn-danger";
           deleteButton.innerText = "Delete Response";
