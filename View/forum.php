@@ -4,22 +4,22 @@ include("Model/forum_model.php");
 
 $forumModel = new Forum_model();
 $arrThemes = $forumModel->getAllThemes();
-echo var_dump($_SESSION);
-$user_id = $_SESSION['user']['user_id'];
-$droit_description = $_SESSION['user']['droit_description'];
+$userLoggedIn = isset($_SESSION['user']);
+$user_id = $userLoggedIn ? $_SESSION['user']['user_id'] : null;
+$droit_description = $userLoggedIn ? $_SESSION['user']['droit_description'] : null;
 ?>
+
 <script>
     const userId = <?php echo json_encode($user_id); ?>;
     const droit = <?php echo json_encode($droit_description); ?>;
+    const isLoggedIn = <?php echo json_encode($userLoggedIn); ?>;
 </script>
-
 <div id="Index" class="forum">
     <div class="container">
-        <h1 class="my-4" style="color: white;">Bienvenu sur Forum Dofus !</h1>
+        <h1 class="my-4" style="color: white;">Bienvenu dans Forum Dofus !</h1>
         <div class="forum-container">
             <div class="pageHeader">
                 <h2>Choisissez un thème :</h2>
-                <input type="search" class="form-control search-bar" id="themeSearch" placeholder="Search Themes..." aria-label="Search">
             </div>
             <?php if ($droit_description === 'administrateur') : ?>
                 <div id="deleteThemeContainer" class="delete-theme-container">
@@ -101,15 +101,10 @@ $droit_description = $_SESSION['user']['droit_description'];
             <div class="list-group" id="forums-container">
                 <div class="search-forum">
                     <h2>Forums:</h2>
-                    <input type="text" class="form-control search-bar" id="forumSearch" placeholder="Search Forums...">
-                    <p>Select a theme to view forums.</p>
+                    <input type="text" class="form-control search-bar" id="forumSearch" placeholder="rechercher un forum">
+                    <p>Sélectionnez un thème pour afficher les forums.</p>
                 </div>
                 <div id="forumContainer" class="forum-list"></div>
-                <div id="paginationControls" class="pagination-controls">
-                    <button id="prevPageButton" class="btn" disabled>Previous</button>
-                    <span id="currentPageInfo"></span>
-                    <button id="nextPageButton" class="btn" disabled>Next</button>
-                </div>
             </div>
         </div>
     </div>

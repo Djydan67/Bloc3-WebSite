@@ -1,4 +1,19 @@
 document.addEventListener("DOMContentLoaded", function () {
+  if (!isLoggedIn) {
+    const createForumButton = document.getElementById("showCreateForumForm");
+    if (createForumButton) {
+      createForumButton.style.display = "none";
+    }
+
+    const forumContainer = document.getElementById("forumContainer");
+    forumContainer.addEventListener("submit", function (event) {
+      const form = event.target.closest(".new-response-form");
+      if (form) {
+        event.preventDefault();
+        alert("You need to be logged in to post a response.");
+      }
+    });
+  }
   // Element references
   const deleteThemeButton = document.getElementById("deleteThemeButton");
   const themeSelect = document.getElementById("themeSelect");
@@ -10,10 +25,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const createThemeForm = document.getElementById("createThemeForm");
   const themeButtons = document.querySelectorAll(".theme-btn");
   const forumContainer = document.getElementById("forumContainer");
-  const paginationControls = document.getElementById("paginationControls");
-  const prevPageButton = document.getElementById("prevPageButton");
-  const nextPageButton = document.getElementById("nextPageButton");
-  const currentPageInfo = document.getElementById("currentPageInfo");
   const showCreateForumFormButton = document.getElementById(
     "showCreateForumForm"
   );
@@ -26,8 +37,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const createForumForm = document.getElementById("createForumForm");
   const forumSearchInput = document.getElementById("forumSearch");
 
-  let currentPage = 1;
-  let totalPages = 1;
   let selectedThemeId = null;
   let allForums = [];
 
@@ -157,7 +166,7 @@ document.addEventListener("DOMContentLoaded", function () {
   themeButtons.forEach((button) => {
     button.addEventListener("click", function () {
       selectedThemeId = this.dataset.themeId;
-      fetchForumsByTheme(selectedThemeId, 1); // Load first page by default
+      fetchForumsByTheme(selectedThemeId);
     });
   });
 
@@ -179,9 +188,8 @@ document.addEventListener("DOMContentLoaded", function () {
     displayForums(filteredForums);
   });
 
-  function fetchForumsByTheme(themeId, page = 1) {
-    console.log(`Fetching forums for theme ${themeId} on page ${page}`);
-    const url = `index.php?ctrl=forum&action=getForumsByTheme&theme_id=${themeId}&page=${page}`;
+  function fetchForumsByTheme(themeId) {
+    const url = `index.php?ctrl=forum&action=getForumsByTheme&theme_id=${themeId}`;
     fetchData(url)
       .then((data) => {
         if (data.error) {
@@ -192,7 +200,6 @@ document.addEventListener("DOMContentLoaded", function () {
           console.log("Forums fetched: ", data.forums);
           allForums = data.forums; // Store all fetched forums
           displayForums(data.forums);
-          updatePagination(data.currentPage, data.totalPages);
         } else {
           console.error("Unexpected response format:", data);
           alert("Unexpected response format.");
@@ -223,15 +230,15 @@ document.addEventListener("DOMContentLoaded", function () {
       forumCardBody.className = "forum-card-body";
       forumCardBody.innerHTML = `
         <p>${forum.forum_message}</p>
-        <small>Posted on: ${new Date(
+        <small>Publié le : ${new Date(
           forum.forum_date
-        ).toLocaleDateString()}</small>
+        ).toLocaleDateString()} par : ${forum.user_pseudo} </small>
         <div class="responses-container" id="responses-${
           forum.forum_id
         }" style="display: none;"></div>
         <button class="btn btn-secondary toggle-responses-button" id="toggle-responses-${
           forum.forum_id
-        }">Show Responses</button>
+        }">Afficher les reponses</button>
       `;
 
       if (droit === "administrateur" || droit === "moderateur") {
@@ -250,8 +257,6 @@ document.addEventListener("DOMContentLoaded", function () {
       forumCard.appendChild(forumCardBody);
       forumContainer.appendChild(forumCard);
     });
-
-    // Attach event listeners for the "Show Responses" buttons
     const toggleResponseButtons = document.querySelectorAll(
       ".toggle-responses-button"
     );
@@ -264,7 +269,7 @@ document.addEventListener("DOMContentLoaded", function () {
         );
         if (responsesContainer.style.display === "block") {
           responsesContainer.style.display = "none";
-          this.innerText = "Show Responses";
+          this.innerText = "Afficher les reponses";
         } else {
           fetchResponses(forumId); // Fetch responses when opening
           responsesContainer.style.display = "block";
@@ -312,7 +317,7 @@ document.addEventListener("DOMContentLoaded", function () {
           alert("Forum created successfully!");
           createForumForm.reset();
           createForumFormContainer.style.display = "none";
-          fetchForumsByTheme(selectedThemeId, currentPage);
+          fetchForumsByTheme(selectedThemeId);
         } else {
           alert("Error creating forum: " + data.error);
         }
@@ -335,19 +340,6 @@ document.addEventListener("DOMContentLoaded", function () {
       "Forum deleted successfully!",
       true
     );
-  }
-
-  function updatePagination(current, total) {
-    currentPage = current;
-    totalPages = total;
-
-    console.log(
-      `Updating pagination: current page = ${currentPage}, total pages = ${totalPages}`
-    );
-
-    currentPageInfo.innerText = `Page ${currentPage} of ${totalPages}`;
-    prevPageButton.disabled = currentPage === 1;
-    nextPageButton.disabled = currentPage === totalPages;
   }
 
   function createResponse(forumId, message) {
@@ -428,20 +420,6 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
-  prevPageButton.addEventListener("click", () => {
-    if (currentPage > 1) {
-      console.log(`Going to previous page: ${currentPage - 1}`);
-      fetchForumsByTheme(selectedThemeId, currentPage - 1);
-    }
-  });
-
-  nextPageButton.addEventListener("click", () => {
-    if (currentPage < totalPages) {
-      console.log(`Going to next page: ${currentPage + 1}`);
-      fetchForumsByTheme(selectedThemeId, currentPage + 1);
-    }
-  });
-
   function deleteTheme(themeId) {
     const url = `index.php?ctrl=forum&action=deleteTheme`;
     fetch(url, {
@@ -490,12 +468,12 @@ document.addEventListener("DOMContentLoaded", function () {
       responses.forEach((response, index) => {
         const responseCard = document.createElement("div");
         responseCard.className = "response-card";
-        responseCard.dataset.responseId = response.reponse_id; // Add dataset attribute
+        responseCard.dataset.responseId = response.reponse_id;
         responseCard.innerHTML = `
           <p>${response.reponse_message}</p>
-          <small class="response-info">Posted by: ${
-            response.user_pseudo
-          } on ${new Date(response.reponse_date).toLocaleDateString()}</small>
+          <small class="response-info">: ${response.user_pseudo} on ${new Date(
+          response.reponse_date
+        ).toLocaleDateString()}</small>
         `;
 
         responseCard.style.backgroundColor =
@@ -532,7 +510,7 @@ document.addEventListener("DOMContentLoaded", function () {
       );
       if (responsesContainer.style.display === "block") {
         responsesContainer.style.display = "none";
-        event.target.innerText = "Show Responses";
+        event.target.innerText = "Afficher les reponses";
       } else {
         fetchResponses(forumId);
         responsesContainer.style.display = "block";

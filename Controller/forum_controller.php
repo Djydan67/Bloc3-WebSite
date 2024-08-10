@@ -97,9 +97,8 @@ class Forum_Ctrl extends Ctrl
             if (isset($_GET['theme_id'])) {
                 $themeId = intval($_GET['theme_id']);
                 $limit = isset($_GET['limit']) ? intval($_GET['limit']) : 10;
-                $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 
-                $arrForums = $objForumModel->getAllForumsByTheme($themeId, $limit, $page);
+                $arrForums = $objForumModel->getAllForumsByTheme($themeId, $limit,);
                 header('Content-Type: application/json');
 
                 // Checking JSON if is valid
