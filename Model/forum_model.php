@@ -20,35 +20,40 @@ class Forum_model extends Bdd
      * @param int $page The page number to return.
      * @return array The list of forums associated with the theme and pagination details.
      */
-    public function getAllForumsByTheme($themeId, $limit = 10, $page = 1)
+    public function getAllForumsByTheme($themeId, $limit = 0)
     {
-        $offset = ($page - 1) * $limit;
-
-        // SQL query to select the messages of a specific theme with pagination
+        // Adjust the SQL query depending on whether a limit is set or not
         $strQuery = "
-             SELECT SQL_CALC_FOUND_ROWS forum_id, forum_titre, forum_message, forum_date, forum_isvalide, forum_isclose, fo.user_id
+             SELECT 
+                 fo.forum_id, 
+                 fo.forum_titre, 
+                 fo.forum_message, 
+                 fo.forum_date, 
+                 fo.forum_isvalide, 
+                 fo.forum_isclose, 
+                 fo.user_id,
+                 us.user_pseudo  -- Select the user_pseudo from T_user
              FROM T_forum fo 
              INNER JOIN T_user us ON us.user_id = fo.user_id 
-             WHERE theme_id = :theme AND forum_isClose = 0
-             LIMIT :limit OFFSET :offset;
-         ";
+             WHERE fo.theme_id = :theme AND fo.forum_isclose = 0
+        ";
+
+        if ($limit > 0) {
+            $strQuery .= " LIMIT :limit";
+        }
+
         $strPrepare = $this->_db->prepare($strQuery);
         $strPrepare->bindValue(":theme", $themeId, PDO::PARAM_INT);
-        $strPrepare->bindValue(":limit", $limit, PDO::PARAM_INT);
-        $strPrepare->bindValue(":offset", $offset, PDO::PARAM_INT);
+
+        if ($limit > 0) {
+            $strPrepare->bindValue(":limit", $limit, PDO::PARAM_INT);
+        }
+
         $strPrepare->execute();
         $forums = $strPrepare->fetchAll(PDO::FETCH_ASSOC);
 
-        // Get the total number of forums
-        $totalQuery = "SELECT FOUND_ROWS() as total";
-        $totalStmt = $this->_db->query($totalQuery);
-        $totalForums = $totalStmt->fetchColumn();
-
         return [
-            'forums' => $forums,
-            'totalForums' => $totalForums,
-            'currentPage' => $page,
-            'totalPages' => ceil($totalForums / $limit)
+            'forums' => $forums
         ];
     }
 
