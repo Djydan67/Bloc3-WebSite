@@ -13,16 +13,17 @@
   --themeBackground: #6aa84f;
   --forumCardBackground: #8f8f8f;
   --forumContainerBackground: #ffffff;
+  --red: #ac0707;
 }
 /* CSS NavBar */
-#nav{
+#nav {
   color: var(--darkGray);
 }
-#logo-site{
+#logo-site {
   height: 40px;
   width: 40px;
 }
-#user{
+#user {
   margin-left: 57%;
 }
 /* fin CSS NavBar */
@@ -58,7 +59,7 @@
   margin: 10px;
 }
 
- /* Gère la taille des icônes */
+/* Gère la taille des icônes */
 .amulette {
   height: 75px;
   width: 75px;
@@ -92,7 +93,6 @@
   color: var(--antiqueWhite);
 }
 
-
 #Index {
   #IndexText {
     text-align: center;
@@ -107,40 +107,40 @@
     margin-bottom: 20px; /* Espacement sous le titre */
   }
 
-  #IndexText p {  
+  #IndexText p {
     font-size: 1.2em; /* Taille de police pour le paragraphe */
     margin-bottom: 5%;
   }
   .container {
     overflow: hidden; /* Cache les éléments qui dépassent du container */
-}
-/* Définition du carousel */
-.carousel {
+  }
+  /* Définition du carousel */
+  .carousel {
     position: relative; /* Le carousel est positionné relativement à son parent */
-}
-/* Définition de l'élément contenant les diapositives */
-.carousel-inner {
+  }
+  /* Définition de l'élément contenant les diapositives */
+  .carousel-inner {
     display: flex; /* Affiche les éléments en ligne */
     overflow: hidden; /* Cache les éléments qui dépassent */
     height: 100vh; /* Hauteur égale à 100% de la hauteur de la vue */
     flex-wrap: nowrap; /* Empêche les éléments de se placer sur plusieurs lignes */
-}
-/* Définition des diapositives */
-.slide {
+  }
+  /* Définition des diapositives */
+  .slide {
     flex: 0 0 100%; /* Largeur de chaque diapositive est de 100% */
     height: 100%; /* Hauteur de chaque diapositive est de 100% */
-    transition: .5s ease-in-out; /* Ajout d'une animation douce pour la transition entre les diapositives */
-}
-/* Définition de l'affichage de l'image de chaque diapositive */
-.slide img {
+    transition: 0.5s ease-in-out; /* Ajout d'une animation douce pour la transition entre les diapositives */
+  }
+  /* Définition de l'affichage de l'image de chaque diapositive */
+  .slide img {
     width: 34%; /* Largeur de l'image est de 34% */
     height: 34%; /* Hauteur de l'image est de 34% */
     object-fit: cover; /* Couvre tout l'espace disponible */
     margin: auto;
     display: flex;
-}
-/* Définition des boutons de contrôle du carousel */
-.carousel-controls {
+  }
+  /* Définition des boutons de contrôle du carousel */
+  .carousel-controls {
     position: absolute; /* Les boutons sont absolument positionnés */
     z-index: 5; /* Ils sont placés au-dessus des autres éléments */
     left: 40%; /* La distance à gauche est de 40% */
@@ -148,14 +148,14 @@
     top: 37%; /* La distance du haut est de 37% */
     display: flex; /* Affiche les boutons en ligne */
     justify-content: space-between; /* Espacement égal entre les boutons */
-}
-/* Style des boutons de contrôle */
-.carousel-controls button {
+  }
+  /* Style des boutons de contrôle */
+  .carousel-controls button {
     padding: 10px; /* Ajout de padding pour un meilleur contrôle */
     background-color: #6aa84f; /* Couleur de l'arrière-plan */
-}
-/* Définition des points de contrôle */
-.carousel-dots {
+  }
+  /* Définition des points de contrôle */
+  .carousel-dots {
     position: absolute; /* Les points sont absolument positionnés */
     z-index: 5; /* Ils sont placés au-dessus des autres éléments */
     left: 50%; /* La distance à gauche est de 50% */
@@ -163,24 +163,25 @@
     bottom: 58%; /*La distance du bas est de 58% */
     display: flex; /* Affiche les points en ligne */
     justify-content: center; /* Centrage des points */
-}
-/* Style des points de contrôle */
-.carousel-dots .dot {
+  }
+  /* Style des points de contrôle */
+  .carousel-dots .dot {
     border-radius: 50%; /* Les points sont en forme de cercle */
     margin: 5px; /* Ajout d'un margin pour un meilleur contrôle */
     cursor: pointer; /* Curseur en forme de main pour un meilleur contrôle */
-}
-/* Styles pour les points de navigation du carrousel */ 
-.carousel-dots .active {
+  }
+  /* Styles pour les points de navigation du carrousel */
+  .carousel-dots .active {
     /* Border de 10px pour le point actif */
     border: 10px solid #6aa84f !important; /* !important permet de surcharger les autres styles éventuels */
-}
-.carousel-dots .inactive {
+  }
+  .carousel-dots .inactive {
     border: 10px solid #000000; /* Border de 10px pour les points inactifs */
-}
+  }
   #background-container {
     position: absolute;
-    background: lightblue url("../Images/dofushelp_banner.jpg") no-repeat center / cover;
+    background: lightblue url("../Images/dofushelp_banner.jpg") no-repeat center /
+      cover;
     top: 0;
     left: 0;
     width: 100%;
@@ -196,49 +197,86 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.3); /* Couleur d'arrière-plan légèrement assombrie */
+    background-color: rgba(
+      0,
+      0,
+      0,
+      0.3
+    ); /* Couleur d'arrière-plan légèrement assombrie */
     z-index: -2; /* Pour placer le calque derrière l'image */
   }
 }
 
 /*-------------------Forum-------------------*/
 .forum-card {
-  background-color: var(--forumCardBackground);
+  background-color: var(--backgroundGray);
   margin-bottom: 1em;
   padding: 0.4em;
   border-radius: 0.5rem;
+  color: var(--white);
+}
+.forum-card-header {
+  background-color: var(--mediumGray);
+  padding: 0.4em;
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+.forum-card-body {
+  padding: 0.4em;
+  background-color: var(--DarkBlack);
 }
 
 .card-text {
   margin-left: 1em;
 }
 
-.response-card {
+.responses-container {
   background-color: var(--white);
-  color: var(--lightGray);
-  border: 1px solid var(--lightGray);
+  color: var(--backgroundGray);
+  /* padding: 1em; */
+  border-radius: 0.5rem;
+  margin-top: 1em;
 }
-
+.response-card {
+  padding: 1em;
+}
+.new-response-form {
+  padding: 1em;
+  background-color: var(--white);
+  border-radius: 0.5rem;
+  margin-top: 1em;
+}
+/* 
 .response-card .card-body {
   padding: 0.4rem;
-  background-color: var(--responseBackground);
-}
+  background-color: var(--backgroundGray);
+  padding: 1.5rem;
+  border-top: #ffffff 1px solid;
+  border-bottom: #ffffff 1px solid;
+  border-radius: 0.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 
-.response-card .card-title {
+} */
+
+/* .response-card .card-title {
   font-size: 1.25rem;
   color: var(--lightGray);
   font-weight: bold;
+} */
+.response-info {
+  font-size: 1rem;
+  color: var(--mediumGray);
 }
-
+/* 
 .response-card .card-text,
 .response-card small {
   font-size: 1rem;
-}
+} */
 
 .theme-btn {
+  margin-top: 0.5rem;
   margin-right: 0.5rem;
   margin-bottom: 0.5rem;
-  border-radius: 0.5rem;
 }
 
 .forum-list {
@@ -276,11 +314,37 @@
 }
 
 .forum-container {
-  background-image: url('../Images/Forum-bg.jpg');
+  background-color: var(--greenDofus);
   background-size: cover;
   background-position: center;
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+.forum {
+  position: relative;
+  overflow: hidden;
+}
+.create-forum-card {
+  background-color: var(--greenDofus);
+  border-radius: 0 0 0.5rem 0.5rem;
+  margin-bottom: 1rem;
+  padding: 20px;
+  color: var(--DarkBlack);
+}
+.forum::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--backgroundGray);
+  background-size: cover;
+  background-position: center;
+  z-index: -1;
+}
+.search-forum {
+  color: var(--white);
 }
 
 .pageHeader {
@@ -305,11 +369,40 @@
   flex: 1;
   min-width: 150px;
   text-align: center;
-  border-radius: 5px;
+  /* border-radius: 5px; */
+  color: var(--white);
+  margin-top: 1rem;
 }
 
-.theme-btn h3 {
-  margin: 0;
+.theme-btn:hover {
+  /* background-color: var(--greenDofus); */
+  color: var(--greenDofus);
+}
+
+.deleteForum {
+  background-color: var(--red);
+  color: var(--white);
+  margin-bottom: 1rem;
+  margin-left: 90%;
+}
+#deleteThemeContainer {
+  background-color: var(--forumCardBackground);
+  padding: 2rem;
+  border: 1px solid var(--lightGray);
+  border-radius: 0.5rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+.admin-theme-btn {
+  /* background-color: var(--red); */
+  color: var(--white);
+  margin-bottom: 1rem;
+  /* margin-left: 90%; */
+}
+.admin-btn {
+  margin-left: 90%;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 
 

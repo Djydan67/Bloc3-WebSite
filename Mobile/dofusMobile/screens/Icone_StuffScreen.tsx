@@ -1,22 +1,19 @@
-import {
-  Image,
-  Pressable,
-  Text,
-  Touchable,
-  View,
-  FlatList,
-} from "react-native";
-import { Link, useNavigation } from "expo-router";
-import { Drawer } from "expo-router/drawer";
+import { Image, Text, View, FlatList, StyleSheet } from "react-native";
+import { useState } from "react";
 import { PresImages } from "@/components/presImages";
 import { useStuff } from "@/hooks/useStuff";
-import { useState } from "react";
+
+// Définir le type pour les items
+interface Item {
+  id: string;
+  image: string;
+}
 
 export function HomeScreen() {
-  const [piecesId, setPieceId] = useState<string>();
+  const [piecesId, setPieceId] = useState<string | undefined>(undefined);
   const stuff = useStuff(piecesId);
 
-  const items = [
+  const items: Item[] = [
     {
       id: "Amulette",
       image: "https://actu-gaming.tech/Assets/Images/logo-amulette.png",
@@ -58,53 +55,112 @@ export function HomeScreen() {
       image: "https://actu-gaming.tech/Assets/Images/logo-arme.png",
     },
   ];
+
   return (
     <View
       style={{
         flex: 1,
-        marginTop: "25%",
+        //marginTop: "15%",
         flexDirection: "row",
+        backgroundColor: "#2e2924",
       }}
     >
-      <View>
-        {items.map((item) => {
-          return (
-            <PresImages
-              onPress={() => {
-                setPieceId(item.id);
-              }}
-            >
-              <Image
-                source={{ uri: item.image }}
-                style={{ width: 50, height: 50 }}
-              />
-            </PresImages>
-          );
-        })}
+      <View style={styles.background}>
+        {items.map((item) => (
+          <PresImages
+            key={item.id} // Ajout de la clé ici
+            onPress={() => {
+              setPieceId(item.id);
+            }}
+          >
+            <Image
+              source={{ uri: item.image }}
+              style={{ width: 50, height: 50 }}
+            />
+          </PresImages>
+        ))}
       </View>
       <FlatList
         data={stuff}
+        keyExtractor={(item, index) => item.stuff_name + index}
         renderItem={({ item }) => (
-          <View>
-            <Image
-              source={{
-                uri: "http://192.168.151.113/" + item.stuff_imgPathMobile,
-              }}
+          <View style={styles.card}>
+            <View style={styles.cardHeader}>
+              <Text style={styles.cardTitle}>{item.stuff_name}</Text>
+              <Image
+                source={{
+                  uri: "http://192.168.151.113/" + item.stuff_imgPathMobile,
+                }}
+                style={styles.cardImage}
+              />
+            </View>
+            <View style={styles.cardHeader}>
+              <Text style={styles.cardLevel}>
+                Niveau : {item.stuff_setType}
+              </Text>
+              <Text style={styles.cardLevel}>Niveau : {item.stuff_level}</Text>
+            </View>
+            <View
               style={{
-                width: 50,
-                height: 50,
+                borderBottomColor: "#fff",
+                borderBottomWidth: StyleSheet.hairlineWidth,
               }}
             />
-            <Text
-              style={{
-                margin: 10,
-              }}
-            >
-              {item.stuff_name} {item.stuff_setType}
-            </Text>
+            <View>
+              <Text style={styles.cardText}>{item.stuff_description}</Text>
+            </View>
           </View>
         )}
       />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  background: {
+    //backgroundColor: "#2e2924",
+    //flex: 1,
+    paddingTop: 20,
+  },
+  card: {
+    width: "90%",
+    marginLeft: "5%",
+    marginTop: 20,
+    marginBottom: 20,
+    backgroundColor: "#3c3630",
+    borderRadius: 8,
+    overflow: "hidden",
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    elevation: 5,
+  },
+  cardHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  cardImage: {
+    width: 50,
+    height: 50,
+    //flex: 1,
+    alignSelf: "flex-end",
+  },
+  cardTitle: {
+    fontSize: 16,
+    //fontWeight: "bold",
+    marginLeft: 10,
+    //margin: 10,
+    color: "#fff",
+  },
+  cardLevel: {
+    fontSize: 14,
+    marginHorizontal: 10,
+    marginBottom: 10,
+    color: "#fff",
+  },
+  cardText: {
+    margin: 10,
+    color: "#fff",
+  },
+});

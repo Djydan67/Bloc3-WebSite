@@ -13,7 +13,7 @@ class User_Ctrl extends Ctrl
      */
     public function login()
     {
-        include("Model/user_model.php");
+        require_once("Model/user_model.php");
         $objUserModel = new user_model();
         $arrErrors = array();
 
@@ -35,33 +35,15 @@ class User_Ctrl extends Ctrl
                     if (password_verify($strPassword, $arrUser['user_mdp'])) {
                         unset($arrUser['user_mdp']);
                         $_SESSION['user'] = $arrUser;
+                        
                         $_SESSION['valid'] = "Vous êtes bien connecté";
-                        header("Location:");
+                        header("Location:index.php");
                     } else {
-                        // Comparer le mot de passe
-                        if (password_verify($strPassword, $arrUser['user_mdp'])) {
-                            unset($arrUser['user_mdp']);
-                            $_SESSION['user'] = $arrUser;
-                            $_SESSION['valid'] = "Vous êtes bien connecté";
-                             header("Location:index.php");
-                        } else {
-                            $arrErrors[] = "Erreur de connexion";
+                            $arrErrors[] = "le mail ou le mot de passe est incorrect";
                         }
                     }
                 }
             }
-
-            if (count($arrErrors) > 0) {
-                echo "<div class='alert alert-danger'>";
-                foreach ($arrErrors as $strError) {
-                    echo "<p>" . $strError . "</p>";
-                }
-                echo "</div>";
-            }
-
-            $this->display('login');
-        }
-
         if (count($arrErrors) > 0) {
             echo "<div class='alert alert-danger'>";
             foreach ($arrErrors as $strError) {
@@ -69,12 +51,76 @@ class User_Ctrl extends Ctrl
             }
             echo "</div>";
         }
-
-        $this->_arrData['strPage']      = "login";
-        $this->_arrData['strTitleH1']   = "Me connecter";
-        $this->_arrData['strFirstP']    = "Page de connexion";
-
+        
         $this->display('login');
+    }
+
+     /**
+     * login Mobile
+     * @return void
+     */
+    public function loginMobile()
+    {
+        require_once("Model/user_model.php");
+        require_once("jwt_controller.php");
+    
+        $objUserModel = new user_model();
+        $objJwt = new Jwt();
+        $arrErrors = array();
+    
+        if (count($_POST) > 0) {
+            // Récupérer le mail et le mot de passe
+            $strMail = trim($_POST['mail']);
+            $strPassword = $_POST['mdp'];
+    
+            if ($strMail == "" || $strPassword == "") {
+                $arrErrors[] = "Le mail et le mot de passe sont obligatoires";
+            }
+            if (count($arrErrors) == 0) {
+                // Rechercher l'utilisateur en fonction du mail
+                $arrUser = $objUserModel->getByMail($strMail);
+                if ($arrUser === false) {
+                    $arrErrors[] = "Erreur de connexion";
+                } else {
+                    // Comparer le mot de passe
+                    if (password_verify($strPassword, $arrUser['user_mdp'])) {
+                        unset($arrUser['user_mdp']);
+    
+                        // Générer le token JWT
+                        $jwtToken = $objJwt->SessionJwt($arrUser);
+    
+                        if ($jwtToken !== false) {
+                            $response = [
+                                "status" => "success",
+                                "message" => "Vous êtes bien connecté",
+                                "token" => $jwtToken
+                            ];
+                            echo json_encode($response);
+                            return;
+                        } else {
+                            $arrErrors[] = "Erreur lors de la génération du token";
+                        }
+                    } else {
+                        $arrErrors[] = "Le mail ou le mot de passe est incorrect";
+                    }
+                }
+            }
+        }
+    
+        if (count($arrErrors) > 0) {
+            $response = [
+                "status" => "error",
+                "message" => $arrErrors
+            ];
+            echo json_encode($response);
+        } else {
+            // Handle the case where no errors are present but no response is sent
+            $response = [
+                "status" => "error",
+                "message" => "Une erreur inconnue s'est produite."
+            ];
+            echo json_encode($response);
+        }
     }
 
     /**
@@ -91,9 +137,6 @@ class User_Ctrl extends Ctrl
             include("Entities/user_entity.php");
             $objUser = new User();
             $objUser->hydrate($_POST);
-            echo "<pre>";
-            var_dump($objUser);
-            var_dump($_POST);
             $this->_arrData['objUser'] = $objUser;
 
             if ($objUser->getNom() == "") {
@@ -105,9 +148,11 @@ class User_Ctrl extends Ctrl
             if ($objUser->getMail() == "") {
                 $arrErrors['mail'] = "Le mail est obligatoire";
             } elseif (!filter_var($objUser->getMail(), FILTER_VALIDATE_EMAIL)) {
-                $arrErrors['mail'] = "Le mail n'est pas correct";
             } elseif ($objUserModel->verifMail($objUser->getMail()) !== false) {
                 $arrErrors['mail'] = "Le mail existe déjà";
+            }
+            if ($objUser->getPseudonyme() == "") {
+                $arrErrors['pseudonyme'] = "Le pseudonyme est obligatoire";
             }
 
             $regex = '#^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{16,20}$#';
@@ -136,10 +181,6 @@ class User_Ctrl extends Ctrl
             echo "</div>";
         }
 
-        $this->_arrData['strPage']      = "create_account";
-        $this->_arrData['strTitleH1']   = "Créer un compte";
-        $this->_arrData['strFirstP']    = "Page de création de compte";
-
         $this->display('create_account');
     }
 
@@ -150,12 +191,9 @@ class User_Ctrl extends Ctrl
     public function logout()
     {
         session_destroy();
-
-        // on recréé la session pour le message
         session_start();
         $_SESSION['valid'] = "Vous êtes bien déconnecté";
 
-        // on redirige
         header("Location:index.php");
     }
 
@@ -179,7 +217,6 @@ class User_Ctrl extends Ctrl
             exit();
         }
 
-        // Déterminer le niveau de droit de l'utilisateur
         $userLevel = $arrUser['droit_id'];
 
    
