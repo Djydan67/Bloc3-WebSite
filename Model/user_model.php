@@ -88,6 +88,7 @@
 
 	
     public function updateUserRole($email, $newRole) {
+        try{
         $query = $this->_db->prepare("UPDATE T_user SET droit_id = :newRole WHERE email = :email");
         $query = $this->_db->prepare("UPDATE T_user SET droit_id = :newRole WHERE email = :email");
         $query->bindParam(':newRole', $newRole);
@@ -106,6 +107,7 @@
     }
 
     public function createModerateur($userId) {
+        try{
         $query = $this->_db->prepare("UPDATE T_user SET droit_id = 2 WHERE user_id = :userId");
         $query->bindParam(':userId', $userId);
         return $query->execute();
@@ -133,6 +135,7 @@
   
     
         public function getFirstUser(int $user_Id): array|bool {
+            try{
             $strQuery = "SELECT user_id, user_mdp, user_nom, user_prenom, user_mail, user_isactif, droit_id, user_datenaissance, user_datecreation, user_pseudo  
                          FROM T_user 
                          where user_id = :user_id
@@ -151,6 +154,7 @@
 
 
         public function getUsersByDroit($droit) {
+            try{
             
             $strQuery = "SELECT user_id, droit_id, user_pseudo FROM T_user WHERE droit_id = ? and user_isactif = 1" ;
             $strPrepare = $this->_db->prepare($strQuery);
