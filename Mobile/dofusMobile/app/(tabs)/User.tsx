@@ -4,8 +4,10 @@ import { View, Text, TextInput } from "react-native";
 import * as React from "react";
 import { Link } from "expo-router";
 import { useLogin } from "../../hooks/useLogin";
+import { useNavigation } from "@react-navigation/native";
 
 export default function TabTwoScreen() {
+  const navigation = useNavigation();
   const [email, onChangeEmail] = React.useState("");
   const [password, onChangePassword] = React.useState("");
   const { token, error, login } = useLogin();
@@ -17,6 +19,7 @@ export default function TabTwoScreen() {
     } else if (token) {
       Alert.alert("Connexion réussie", "Bienvenue !");
       // Vous pouvez maintenant utiliser le token pour les requêtes futures
+      navigation.navigate("Profil");
       console.log("Token:", token);
     }
   };

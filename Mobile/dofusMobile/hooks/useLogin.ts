@@ -33,7 +33,7 @@ export const useLogin = () => {
         setError(data.message);
         setToken(null);
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error("Login error:", err.message); // Log the error message
       setError("Erreur de connexion. Veuillez réessayer.");
       setToken(null);

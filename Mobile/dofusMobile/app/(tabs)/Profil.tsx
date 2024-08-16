@@ -1,10 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, View, TouchableOpacity, TextInput, FlatList, TouchableWithoutFeedback } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { StyleSheet, View, TouchableOpacity, TextInput, FlatList, ScrollView, TouchableWithoutFeedback, Text } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { Picker } from '@react-native-picker/picker';
 
 const UserProfileScreen = () => {
   const [selectedUser, setSelectedUser] = useState('');
@@ -25,20 +23,17 @@ const UserProfileScreen = () => {
   const usersList = ['frero', 'hiro', 'adamail', 'darksasukedu42', 'ventCodeAudio'];
 
   const handleUserSearch = (text: string) => {
-    const filteredList = usersList.filter((user) => user.toLowerCase().includes(text.toLowerCase()));
-    setFilteredUsers(filteredList.slice(0, 3)); // Afficher uniquement les trois premières propositions
+    const filteredList = usersList.filter((user) =>
+      user.toLowerCase().includes(text.toLowerCase())
+    );
+    setFilteredUsers(filteredList.slice(0, 3)); // Limite à 3 résultats
     setSelectedUser(text);
     setIsError(false);
-    setIsListVisible(true); // Afficher la liste dès que l'utilisateur commence à écrire
+    setIsListVisible(true);
   };
 
   const handleTextInputFocus = () => {
     setIsListVisible(true);
-  };
-
-  const handlePickerValueChange = (itemValue: string | number, itemIndex: number) => {
-    setSelectedUser(itemValue as string);
-    setIsListVisible(false);
   };
 
   const handleOutsidePress = () => {
@@ -53,7 +48,7 @@ const UserProfileScreen = () => {
       setIsError(true);
     } else {
       setIsError(false);
-      // Ajouter ici la logique pour bannir l'utilisateur
+      // Logique pour bannir l'utilisateur
     }
   };
 
@@ -73,20 +68,24 @@ const UserProfileScreen = () => {
                   onChangeText={handleUserSearch}
                   onFocus={handleTextInputFocus}
                 />
-
               </View>
               {isListVisible && (
-                <View style={styles.pickerContainer}>
-                  <Picker
-                    selectedValue={selectedUser}
-                    style={styles.picker}
-                    onValueChange={handlePickerValueChange}
-                  >
-                    {filteredUsers.map((user) => (
-                      <Picker.Item label={user} value={user} key={user} />
-                    ))}
-                  </Picker>
-                </View>
+                <FlatList
+                  data={filteredUsers}
+                  keyExtractor={(item) => item}
+                  renderItem={({ item }) => (
+                    <TouchableOpacity
+                      style={styles.listItem}
+                      onPress={() => {
+                        setSelectedUser(item);
+                        setIsListVisible(false);
+                      }}
+                    >
+                      <Text style={styles.listItemText}>{item}</Text>
+                    </TouchableOpacity>
+                  )}
+                  scrollEnabled={false} // Désactive le défilement de FlatList
+                />
               )}
             </View>
           </TouchableWithoutFeedback>
@@ -112,10 +111,10 @@ const UserProfileScreen = () => {
   };
 
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={<Ionicons size={310} name="person-circle-outline" style={styles.headerImage} />}
-    >
+    <ScrollView>
+      <View style={styles.headerImageContainer}>
+        <Ionicons size={310} name="person-circle-outline" style={styles.headerImage} />
+      </View>
       <ThemedView style={styles.container}>
         <ThemedText type="title" style={styles.title}>Profile</ThemedText>
         <View style={styles.infoContainer}>
@@ -140,16 +139,17 @@ const UserProfileScreen = () => {
         </View>
         {renderAdminActions()}
       </ThemedView>
-    </ParallaxScrollView>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  headerImageContainer: {
+    alignItems: 'center',
+    marginVertical: 20,
+  },
   headerImage: {
     color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
   },
   container: {
     padding: 20,
@@ -211,18 +211,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
   },
-  searchIcon: {
-    marginLeft: 10,
+  listItem: {
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
   },
-  pickerContainer: {
-    position: 'relative',
-    width: '100%',
-  },
-  picker: {
-    height: 40,
-    width: '100%',
-    color: '#fff', // Texte de la liste en blanc
-    backgroundColor: '#000', // Fond de la liste en noir
+  listItemText: {
+    fontSize: 16,
   },
   errorText: {
     color: 'red',
