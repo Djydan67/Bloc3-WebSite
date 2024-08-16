@@ -1,4 +1,13 @@
-import { Image, Text, View, FlatList, StyleSheet } from "react-native";
+import {
+  Image,
+  Text,
+  View,
+  FlatList,
+  StyleSheet,
+  Modal,
+  Button,
+  TouchableOpacity,
+} from "react-native";
 import { useState } from "react";
 import { PresImages } from "@/components/presImages";
 import { useStuff } from "@/hooks/useStuff";
@@ -11,6 +20,7 @@ interface Item {
 
 export function HomeScreen() {
   const [piecesId, setPieceId] = useState<string | undefined>(undefined);
+  const [modalVisible, setModalVisible] = useState(false);
   const stuff = useStuff(piecesId);
 
   const items: Item[] = [
@@ -57,29 +67,46 @@ export function HomeScreen() {
   ];
 
   return (
-    <View
-      style={{
-        flex: 1,
-        //marginTop: "15%",
-        flexDirection: "row",
-        backgroundColor: "#2e2924",
-      }}
-    >
-      <View style={styles.background}>
-        {items.map((item) => (
-          <PresImages
-            key={item.id} // Ajout de la clé ici
-            onPress={() => {
-              setPieceId(item.id);
-            }}
-          >
-            <Image
-              source={{ uri: item.image }}
-              style={{ width: 50, height: 50 }}
+    <View style={styles.container}>
+      <Button
+        color="#3c3630"
+        title="Filtres"
+        onPress={() => setModalVisible(true)}
+      />
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalView}>
+            <Button
+              color="#3c3630"
+              title="Fermer"
+              onPress={() => setModalVisible(false)}
             />
-          </PresImages>
-        ))}
-      </View>
+            {items.map((item) => (
+              <TouchableOpacity
+                key={item.id}
+                onPress={() => {
+                  setPieceId(item.id);
+                  setModalVisible(false);
+                }}
+                style={styles.filterButton}
+              >
+                <Image
+                  source={{ uri: item.image }}
+                  style={{ width: 50, height: 50 }}
+                />
+                <Text style={styles.filterText}>{item.id}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+      </Modal>
       <FlatList
         data={stuff}
         keyExtractor={(item, index) => item.stuff_name + index}
@@ -117,10 +144,44 @@ export function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    //flex: 1,
+    //flexDirection: "row",
+    backgroundColor: "#2e2924",
+  },
   background: {
     //backgroundColor: "#2e2924",
     //flex: 1,
     paddingTop: 20,
+  },
+  modalContainer: {
+    flex: 1,
+    //justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.5)",
+  },
+  modalView: {
+    //margin: 100,
+    width: "50%",
+    marginTop: "10%",
+    //maxHeight: "80%",
+    //flex: 1,
+    //justifyContent: "center",
+    //alignItems: "center",
+    //backgroundColor: "rgba(0,0,0,0.5)",
+  },
+  filterButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 10,
+    backgroundColor: "#749245",
+    marginBottom: 10,
+    borderRadius: 5,
+    height: 60,
+  },
+  filterText: {
+    marginLeft: 10,
+    fontSize: 16,
   },
   card: {
     width: "90%",
