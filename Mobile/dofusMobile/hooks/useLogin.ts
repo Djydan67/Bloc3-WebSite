@@ -1,4 +1,5 @@
 import { useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const useLogin = () => {
   const [token, setToken] = useState<string | null>(null);
@@ -25,10 +26,14 @@ export const useLogin = () => {
       // Try to parse JSON
       const data = JSON.parse(textResponse);
       console.log("Parsed response data:", data);
-
       if (data.status === "success") {
         setToken(data.token);
+
         setError(null);
+
+        // Save token to AsyncStorage
+        await AsyncStorage.setItem("userToken", data.token);
+        console.log("Token saved to AsyncStorage");
       } else {
         setError(data.message);
         setToken(null);

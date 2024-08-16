@@ -292,8 +292,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     const data = {
-      titre: forumTitle,
-      message: forumMessage,
+      forum_titre: forumTitle,
+      forum_message: forumMessage,
       user_id: userId,
       theme_id: forumTheme,
     };
@@ -352,7 +352,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const url = `index.php?ctrl=forum&action=createResponse`;
     const data = {
       forum_id: forumId,
-      message: message,
+      reponse_message: message,
       user_id: userId,
     };
 
