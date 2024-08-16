@@ -11,8 +11,8 @@
 	class user_model extends Bdd{
 		public function insert($objUser){
             try {
-            $strQuery = "	INSERT INTO T_user (user_mdp, user_nom, user_prenom, user_mail, user_isactif, droit_id, user_pseudo, user_datecreation ) 
-                                VALUES (:mdp, :nom, :prenom, :mail, :isactif, :droit, :pseudonyme, NOW());";
+            $strQuery = "	INSERT INTO T_user (user_mdp, user_nom, user_prenom, user_mail, user_isactif, droit_id, user_pseudo, user_datecreation, user_datenaissance) 
+                                VALUES (:mdp, :nom, :prenom, :mail, :isactif, :droit, :pseudonyme, NOW() ,:datenaissance );";
             $strPrepare = $this->_db->prepare($strQuery);
             $strPrepare->bindValue(":nom", $objUser->getNom(), PDO::PARAM_STR);
             $strPrepare->bindValue(":prenom", $objUser->getPrenom(), PDO::PARAM_STR);
@@ -21,6 +21,7 @@
             $strPrepare->bindValue(":isactif", $objUser->getIsActif(), PDO::PARAM_INT);
             $strPrepare->bindValue(":droit", $objUser->getDroit(), PDO::PARAM_INT);
             $strPrepare->bindValue(":pseudonyme", $objUser->getPseudonyme(), PDO::PARAM_STR);
+            $strPrepare->bindValue(":datenaissance", $objUser->getDatenaissance(), PDO::PARAM_STR);
             return $this->execute_requete($strPrepare);
 		} catch (PDOException $e){
             error_log("Insert Error: " . $e->getMessage());

@@ -34,3 +34,5 @@
         unset($_SESSION['error']);
     }
 ?>
+<main>
+<div class="wrapper">

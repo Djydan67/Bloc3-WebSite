@@ -28,6 +28,18 @@
 }
 /* fin CSS NavBar */
 
+/* wrapper main */
+
+.wrapper {
+  min-height: calc(100vh - 210px);
+
+  margin: auto;
+}
+
+.wrapper form[name="login"] {
+  padding-top: calc((100vh - 500px) / 2);
+}
+
 /* Début CSS Page stuff.php crée par Siegel Renaud */
 .stuff_boutton {
   background-color: var(--greenDofus);
@@ -403,4 +415,15 @@
   margin-left: 90%;
   margin-top: 2rem;
   margin-bottom: 2rem;
+}
+
+/* create Account */
+
+#tooltip {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
