@@ -94,35 +94,13 @@ class Forum_Ctrl extends Ctrl
         $objForumModel = new Forum_model();
 
         try {
-            if (isset($_GET['theme_id'])) {
-                $themeId = intval($_GET['theme_id']);
-                $limit = isset($_GET['limit']) ? intval($_GET['limit']) : 10;
-
-                $arrForums = $objForumModel->getAllForumsByTheme($themeId, $limit,);
-                header('Content-Type: application/json');
-
-                // Checking JSON if is valid
-                $jsonData = json_encode($arrForums);
-                if (json_last_error() !== JSON_ERROR_NONE) {
-                    error_log('JSON encode error: ' . json_last_error_msg());
-                    echo json_encode(['error' => 'Failed to encode JSON']);
-                    return;
-                }
-                echo $jsonData;
-                return;
-            }
-
             $arrThemes = $objForumModel->getAllThemes();
-            $this->_arrData['arrThemes'] = $arrThemes;
-
-            $this->_arrData['strPage'] = "forum";
-            $this->_arrData['strTitleH1'] = "Forums";
-            $this->_arrData['strFirstP'] = "Page affichant les forums";
-            $this->display('forum');
+            header('Content-Type: application/json');
+            echo json_encode($arrThemes);
         } catch (Exception $e) {
-            error_log('Error fetching themes: ' . $e->getMessage());
             header('Content-Type: application/json', true, 500);
             echo json_encode(['error' => $e->getMessage()]);
+            error_log('Error fetching themes: ' . $e->getMessage());
         }
     }
 
@@ -134,10 +112,10 @@ class Forum_Ctrl extends Ctrl
         try {
             $data = json_decode(file_get_contents('php://input'), true);
 
-            if (isset($data['titre'], $data['message'], $data['user_id'], $data['theme_id'])) {
+            if (isset($data['forum_titre'], $data['forum_message'], $data['user_id'], $data['theme_id'])) {
 
-                $titre = $data['titre'];
-                $message = $data['message'];
+                $titre = $data['forum_titre'];
+                $message = $data['forum_message'];
                 $userId = intval($data['user_id']);
                 $themeId = intval($data['theme_id']);
 
@@ -193,8 +171,8 @@ class Forum_Ctrl extends Ctrl
         try {
             $data = json_decode(file_get_contents('php://input'), true);
 
-            if (isset($data['message'], $data['user_id'], $data['forum_id'])) {
-                $message = $data['message'];
+            if (isset($data['reponse_message'], $data['user_id'], $data['forum_id'])) {
+                $message = $data['reponse_message'];
                 $userId = intval($data['user_id']);
                 $forumId = intval($data['forum_id']);
 

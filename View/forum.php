@@ -5,6 +5,7 @@ include("Model/forum_model.php");
 $forumModel = new Forum_model();
 $arrThemes = $forumModel->getAllThemes();
 $userLoggedIn = isset($_SESSION['user']);
+// echo var_dump($_SESSION['user']);
 $user_id = $userLoggedIn ? $_SESSION['user']['user_id'] : null;
 $droit_description = $userLoggedIn ? $_SESSION['user']['droit_description'] : null;
 ?>

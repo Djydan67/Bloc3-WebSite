@@ -1,11 +1,12 @@
 <?php
-	/**
+
+/**
  * Entité des utilisateurs
  * @author Théo Bance
  *
  */
-header ('Access-Control-Allow-Origin: *');
-header ('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
+header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
@@ -15,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-if(isset($_SERVER['Authorization'])) {
+if (isset($_SERVER['Authorization'])) {
     $token = trim($_SERVER['Authorization']);
 } elseif (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     $token = trim($_SERVER['HTTP_AUTHORIZATION']);
@@ -36,36 +37,37 @@ if (!isset($token) || !preg_match('/Bearer\s(|S+)/', $token, $matches)) {
 }
 
 $token = trim(str_replace('Bearer', '', $token));
-    
-class auth_controller {
-    
-    public function verifValidationToken($token, $secret) {
+
+class auth_controller
+{
+
+    public function verifValidationToken($token, $secret)
+    {
         include("../Includes/config.php");
         $jwt = new Jwt();
 
-    if (!$jwt->validToken($token, $secret)) {
-        http_response_code(400);
+        if (!$jwt->validToken($token, $secret)) {
+            http_response_code(400);
 
-        echo json_encode(['error' => 'Token non valide']);
+            echo json_encode(['error' => 'Token non valide']);
 
-        exit;
-    }
+            exit;
+        }
 
-    if (!$jwt->check($token, $secret)) {
-        http_response_code(400);
+        if (!$jwt->check($token, $secret)) {
+            http_response_code(400);
 
-        echo json_encode(['error' => 'Token est invalide']);
+            echo json_encode(['error' => 'Token est invalide']);
 
-        exit;
-    }
+            exit;
+        }
 
-    if ($jwt->isExpired($token)) {
-        http_response_code(403);
+        if ($jwt->isExpired($token)) {
+            http_response_code(403);
 
-        echo json_encode(['error' => 'Le token a expiré']);
+            echo json_encode(['error' => 'Le token a expiré']);
 
-        exit;
-    }
+            exit;
+        }
     }
 }
-
