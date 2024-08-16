@@ -5,7 +5,6 @@
         //include("_partial/header.php");
         ?> -->
 <div id="Index">
-    <main>
         <div id="background-container">
         </div>
         <div id="IndexText">

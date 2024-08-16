@@ -154,6 +154,10 @@ class User_Ctrl extends Ctrl
             if ($objUser->getPseudonyme() == "") {
                 $arrErrors['pseudonyme'] = "Le pseudonyme est obligatoire";
             }
+            
+            if ($objUser->getDatenaissance() == "") {
+                $arrErrors['date_de_naissance'] = "La date de naissance est obligatoire";
+            }
 
             $regex = '#^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{16,20}$#';
             if ($objUser->getMdp() == "") {
@@ -168,7 +172,8 @@ class User_Ctrl extends Ctrl
                 $boolInsert = $objUserModel->insert($objUser);
                 if ($boolInsert) {
                     $_SESSION['valid']  = "Le compte a bien été créé, vous pouvez vous connecter.";
-                    header("Location:index.php?ctrl=user&action=login");
+                    $this->display('login');
+                    // header("Location:index.php?ctrl=user&action=login");
                 }
             }
         }

@@ -5,16 +5,20 @@
                 <form name="create_account" action="index.php?ctrl=user&action=create_account" method="post" class="text-center">
                     <div class="row g-2 justify-content-center">
                         <div class="col-sm-6">
-                            <label for="nom" class="form-label">Nom*</label>
-                            <input type="text" class="form-control mx-auto" id="nom" name="nom" value="<?php echo isset($objUser) ? $objUser->getNom() : ""; ?>">
-                        </div>
-                        <div class="col-sm-6">
                             <label for="prenom" class="form-label">Prénom*</label>
                             <input type="text" class="form-control mx-auto" id="prenom" name="prenom" value="<?php echo isset($objUser) ? $objUser->getPrenom() : ""; ?>">
                         </div>
                         <div class="col-sm-6">
+                            <label for="nom" class="form-label">Nom*</label>
+                            <input type="text" class="form-control mx-auto" id="nom" name="nom" value="<?php echo isset($objUser) ? $objUser->getNom() : ""; ?>">
+                        </div>
+                        <div class="col-sm-6">
                             <label for="pseudo" class="form-label">Pseudonyme*</label>
                             <input type="text" class="form-control mx-auto" id="pseudo" name="pseudonyme" value="<?php echo isset($objUser) ? $objUser->getPseudonyme() : ""; ?>">
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="datenaissance" class="form-label">Date de naissance*</label>
+                            <input type="date" class="form-control mx-auto" id="date_de_naissance" name="datenaissance" value="<?php echo isset($objUser) ? $objUser->getDatenaissance() : ""; ?>">
                         </div>
                         <div class="col-sm-6">
                             <label for="mail" class="form-label">Adresse mail*</label>
