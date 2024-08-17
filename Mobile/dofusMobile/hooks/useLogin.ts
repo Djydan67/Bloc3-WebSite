@@ -7,7 +7,7 @@ export const useLogin = () => {
   const login = async (email: string, password: string) => {
     try {
       const response = await fetch(
-        "http://192.168.56.1:8082/Bloc3-WebSite/index.php/?ctrl=User&action=loginMobile",
+        "http://localhost:8888/blog/dofusweb/Bloc3-WebSite/index.php/?ctrl=User&action=loginmobile",
         {
           method: "POST",
           headers: {
