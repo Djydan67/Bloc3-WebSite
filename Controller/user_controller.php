@@ -277,4 +277,18 @@ class User_Ctrl extends Ctrl
         header("Location:index.php?ctrl=user&action=profil");
     }
 
+    public function getUsersForModeration()
+{
+    include("Model/user_model.php");
+    $UserModel = new user_model();
+
+    // Récupère les utilisateurs ayant un droit spécifique
+    $userList = $UserModel->getUsersByDroit(1);
+
+    // Retourner la liste en JSON
+    header('Content-Type: application/json');
+    echo json_encode($userList);
+}
+
+
 }

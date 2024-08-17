@@ -3,31 +3,25 @@ import { StyleSheet, View, TouchableOpacity, TextInput, FlatList, ScrollView, To
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { useLogin } from "../../hooks/useLogin";
+import { useModerationUsers } from "../../hooks/useProfil"; // Import du nouveau hook
 
 const UserProfileScreen = () => {
-  const [selectedUser, setSelectedUser] = useState('');
-  const [filteredUsers, setFilteredUsers] = useState<string[]>([]);
+  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
+  const [selectedUsername, setSelectedUsername] = useState('');
+  const [filteredUsers, setFilteredUsers] = useState<{ userId: number, username: string }[]>([]);
   const [isListVisible, setIsListVisible] = useState(false);
   const [isError, setIsError] = useState(false);
   const inputRef = useRef<TextInput>(null);
-
-  const user = {
-    username: 'hiro',
-    email: 'blabla@example.com',
-    firstName: 'adrien',
-    lastName: 'cazala',
-    birthDate: '1999-11-21',
-    role: 3, // 1 = utilisateur, 2 = modérateur, 3 = administrateur
-  };
-
-  const usersList = ['frero', 'hiro', 'adamail', 'darksasukedu42', 'ventCodeAudio'];
+  const { token, error: loginError, login } = useLogin();
+  const { users: moderationUsers, error: moderationError } = useModerationUsers(token);
 
   const handleUserSearch = (text: string) => {
-    const filteredList = usersList.filter((user) =>
-      user.toLowerCase().includes(text.toLowerCase())
+    const filteredList = moderationUsers.filter((user) =>
+      user.username.toLowerCase().includes(text.toLowerCase())
     );
     setFilteredUsers(filteredList.slice(0, 3)); // Limite à 3 résultats
-    setSelectedUser(text);
+    setSelectedUsername(text);
     setIsError(false);
     setIsListVisible(true);
   };
@@ -43,20 +37,52 @@ const UserProfileScreen = () => {
     setIsListVisible(false);
   };
 
-  const handleBanClick = () => {
-    if (!usersList.includes(selectedUser)) {
+  const handleUserSelect = (user: { userId: number, username: string }) => {
+    setSelectedUserId(user.userId);
+    setSelectedUsername(user.username);
+    setIsListVisible(false);
+  };
+
+  const handleActionClick = async (action: 'ban' | 'addModerator') => {
+    if (!selectedUserId) {
       setIsError(true);
-    } else {
-      setIsError(false);
-      // Logique pour bannir l'utilisateur
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        "http://localhost:8888/blog/dofusweb/Bloc3-WebSite/index.php/?ctrl=User&action=panneauModeration",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: `action=${action}&userId=${selectedUserId}`,
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to perform the action");
+      }
+
+      // Optionnel : gestion des retours après l'action
+      const result = await response.json();
+      console.log(result);
+    } catch (error) {
+      console.error(error);
     }
   };
 
   const renderAdminActions = () => {
-    if (user.role >= 2) {
+    if (moderationError) {
+      return <Text style={styles.errorText}>Erreur: {moderationError}</Text>;
+    }
+
+    if (moderationUsers.length > 0) {
       return (
         <View style={styles.adminActionsContainer}>
-          <ThemedText style={styles.adminActionTitle}>Admin Actions</ThemedText>
+          <Text style={styles.adminActionTitle}>Admin Actions</Text>
           <TouchableWithoutFeedback onPress={handleOutsidePress}>
             <View>
               <View style={styles.inputContainer}>
@@ -64,7 +90,7 @@ const UserProfileScreen = () => {
                   ref={inputRef}
                   style={styles.textInput}
                   placeholder="Select or type a username"
-                  value={selectedUser}
+                  value={selectedUsername}
                   onChangeText={handleUserSearch}
                   onFocus={handleTextInputFocus}
                 />
@@ -72,16 +98,13 @@ const UserProfileScreen = () => {
               {isListVisible && (
                 <FlatList
                   data={filteredUsers}
-                  keyExtractor={(item) => item}
+                  keyExtractor={(item) => item.userId.toString()}
                   renderItem={({ item }) => (
                     <TouchableOpacity
                       style={styles.listItem}
-                      onPress={() => {
-                        setSelectedUser(item);
-                        setIsListVisible(false);
-                      }}
+                      onPress={() => handleUserSelect(item)}
                     >
-                      <Text style={styles.listItemText}>{item}</Text>
+                      <Text style={styles.listItemText}>{item.username}</Text>
                     </TouchableOpacity>
                   )}
                   scrollEnabled={false} // Désactive le défilement de FlatList
@@ -90,19 +113,17 @@ const UserProfileScreen = () => {
             </View>
           </TouchableWithoutFeedback>
           <View style={styles.adminAction}>
-            <TouchableOpacity style={styles.button} onPress={handleBanClick}>
-              <ThemedText style={styles.buttonText}>Ban for 7 days</ThemedText>
+            <TouchableOpacity style={styles.button} onPress={() => handleActionClick('ban')}>
+              <Text style={styles.buttonText}>Ban for 7 days</Text>
             </TouchableOpacity>
           </View>
-          {user.role >= 3 && (
-            <View style={styles.adminAction}>
-              <TouchableOpacity style={styles.button} onPress={handleBanClick}>
-                <ThemedText style={styles.buttonText}>Ban permanently</ThemedText>
-              </TouchableOpacity>
-            </View>
-          )}
+          <View style={styles.adminAction}>
+            <TouchableOpacity style={styles.button} onPress={() => handleActionClick('addModerator')}>
+              <Text style={styles.buttonText}>Add as Moderator</Text>
+            </TouchableOpacity>
+          </View>
           {isError && (
-            <ThemedText style={styles.errorText}>User does not exist</ThemedText>
+            <Text style={styles.errorText}>Please select a user before performing an action</Text>
           )}
         </View>
       );
@@ -112,112 +133,56 @@ const UserProfileScreen = () => {
 
   return (
     <ScrollView>
-      <View style={styles.headerImageContainer}>
-        <Ionicons size={310} name="person-circle-outline" style={styles.headerImage} />
-      </View>
-      <ThemedView style={styles.container}>
-        <ThemedText type="title" style={styles.title}>Profile</ThemedText>
-        <View style={styles.infoContainer}>
-          <ThemedText style={styles.label}>Username:</ThemedText>
-          <ThemedText style={styles.value}>{user.username}</ThemedText>
-        </View>
-        <View style={styles.infoContainer}>
-          <ThemedText style={styles.label}>Email:</ThemedText>
-          <ThemedText style={styles.value}>{user.email}</ThemedText>
-        </View>
-        <View style={styles.infoContainer}>
-          <ThemedText style={styles.label}>First Name:</ThemedText>
-          <ThemedText style={styles.value}>{user.firstName}</ThemedText>
-        </View>
-        <View style={styles.infoContainer}>
-          <ThemedText style={styles.label}>Last Name:</ThemedText>
-          <ThemedText style={styles.value}>{user.lastName}</ThemedText>
-        </View>
-        <View style={styles.infoContainer}>
-          <ThemedText style={styles.label}>Date of Birth:</ThemedText>
-          <ThemedText style={styles.value}>{user.birthDate}</ThemedText>
-        </View>
-        {renderAdminActions()}
-      </ThemedView>
+      {/* Reste de votre interface */}
+      {renderAdminActions()}
     </ScrollView>
   );
 };
 
+// Définition des styles
 const styles = StyleSheet.create({
-  headerImageContainer: {
-    alignItems: 'center',
-    marginVertical: 20,
-  },
-  headerImage: {
-    color: '#808080',
-  },
-  container: {
-    padding: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  infoContainer: {
-    flexDirection: 'row',
-    marginBottom: 10,
-  },
-  label: {
-    fontWeight: 'bold',
-    marginRight: 10,
-  },
-  value: {
-    flex: 1,
-    flexWrap: 'wrap',
-  },
   adminActionsContainer: {
-    marginTop: 20,
+    padding: 16,
+    backgroundColor: '#f5f5f5',
+    borderRadius: 8,
+    marginVertical: 10,
   },
   adminActionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 10,
   },
-  adminAction: {
-    flexDirection: 'column',
-    alignItems: 'flex-start',
+  inputContainer: {
     marginBottom: 10,
-  },
-  button: {
-    backgroundColor: '#fff',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
+    borderColor: '#ccc',
     borderWidth: 1,
-    borderColor: '#000',
-    marginTop: 10,
-  },
-  buttonText: {
-    color: '#000',
-    fontWeight: 'bold',
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
   },
   textInput: {
-    height: 40,
-    borderColor: '#000',
-    borderWidth: 1,
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    marginBottom: 10,
-    width: '90%',
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
+    fontSize: 16,
+    padding: 8,
   },
   listItem: {
-    paddingVertical: 10,
-    paddingHorizontal: 15,
+    padding: 8,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
   },
   listItemText: {
+    fontSize: 16,
+  },
+  adminAction: {
+    marginVertical: 5,
+  },
+  button: {
+    backgroundColor: '#007BFF',
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#fff',
     fontSize: 16,
   },
   errorText: {
