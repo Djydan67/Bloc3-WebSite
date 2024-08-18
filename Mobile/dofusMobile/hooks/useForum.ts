@@ -37,13 +37,10 @@ const fetchWithTryCatch = async <T>(
     const responseBody = await response.text(); // Get the raw response body as text
 
     if (!response.ok) {
-      console.error(`Failed Request to ${url}`);
-      console.error(`Status: ${response.status}`);
-      console.error(`Response Body: ${responseBody}`);
       throw new Error(`${errorMessage}: ${response.statusText}`);
     }
 
-    const data = JSON.parse(responseBody); // Parse the response body as JSON
+    const data = JSON.parse(responseBody);
     return data;
   } catch (error: any) {
     console.error(`${errorMessage}:`, error);
