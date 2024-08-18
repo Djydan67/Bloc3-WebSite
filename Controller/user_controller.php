@@ -243,6 +243,26 @@ class User_Ctrl extends Ctrl
         $this->_arrData['strFirstP'] = "";
         $this->display('profil');
     }
+
+    public function InfoUserMobile(){
+        $user_id = $_GET['user_id'] ?? null;
+
+        if (!$user_id) {
+            echo json_encode(['status' => 'error', 'message' => 'User ID is missing']);
+            return;
+        }
+
+        include("Model/user_model.php");
+        $UserModel = new user_model();
+        $arrUser = $UserModel->getFirstUser($user_id);
+
+        if ($arrUser) {
+            echo json_encode($arrUser);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'User not found']);
+        }
+
+    }
   
     public function PanneauModeration() {
         $message = "";
@@ -277,18 +297,9 @@ class User_Ctrl extends Ctrl
         header("Location:index.php?ctrl=user&action=profil");
     }
 
-    public function getUsersForModeration()
-{
-    include("Model/user_model.php");
-    $UserModel = new user_model();
 
-    // Récupère les utilisateurs ayant un droit spécifique
-    $userList = $UserModel->getUsersByDroit(1);
 
-    // Retourner la liste en JSON
-    header('Content-Type: application/json');
-    echo json_encode($userList);
-}
+
 
 
 }

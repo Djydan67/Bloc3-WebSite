@@ -1,188 +1,153 @@
-import React, { useState, useRef } from 'react';
-import { StyleSheet, View, TouchableOpacity, TextInput, FlatList, ScrollView, TouchableWithoutFeedback, Text } from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import { StyleSheet, View, ScrollView } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { useLogin } from "../../hooks/useLogin";
-import { useModerationUsers } from "../../hooks/useProfil"; // Import du nouveau hook
+import { jwtDecode} from "jwt-decode";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useProfil } from '../../hooks/useProfil';
 
 const UserProfileScreen = () => {
-  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
-  const [selectedUsername, setSelectedUsername] = useState('');
-  const [filteredUsers, setFilteredUsers] = useState<{ userId: number, username: string }[]>([]);
-  const [isListVisible, setIsListVisible] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const inputRef = useRef<TextInput>(null);
-  const { token, error: loginError, login } = useLogin();
-  const { users: moderationUsers, error: moderationError } = useModerationUsers(token);
+  const [userId, setUserId] = useState<string | undefined>(undefined);
+  const [token, setToken] = useState<string | null>(null);
 
-  const handleUserSearch = (text: string) => {
-    const filteredList = moderationUsers.filter((user) =>
-      user.username.toLowerCase().includes(text.toLowerCase())
-    );
-    setFilteredUsers(filteredList.slice(0, 3)); // Limite à 3 résultats
-    setSelectedUsername(text);
-    setIsError(false);
-    setIsListVisible(true);
-  };
-
-  const handleTextInputFocus = () => {
-    setIsListVisible(true);
-  };
-
-  const handleOutsidePress = () => {
-    if (inputRef.current) {
-      inputRef.current.blur();
-    }
-    setIsListVisible(false);
-  };
-
-  const handleUserSelect = (user: { userId: number, username: string }) => {
-    setSelectedUserId(user.userId);
-    setSelectedUsername(user.username);
-    setIsListVisible(false);
-  };
-
-  const handleActionClick = async (action: 'ban' | 'addModerator') => {
-    if (!selectedUserId) {
-      setIsError(true);
-      return;
-    }
-
-    try {
-      const response = await fetch(
-        "http://localhost:8888/blog/dofusweb/Bloc3-WebSite/index.php/?ctrl=User&action=panneauModeration",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          body: `action=${action}&userId=${selectedUserId}`,
+  useEffect(() => {
+    const fetchTokenAndSetUser = async () => {
+      try {
+        const storedToken = await AsyncStorage.getItem('userToken');
+        if (storedToken) {
+          const decodedToken = jwtDecode<{ sub: string }>(storedToken);
+          setUserId(decodedToken.sub);
+          setToken(storedToken);
         }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to perform the action");
+      } catch (e) {
+        console.error('Failed to retrieve or decode the token:', e);
       }
+    };
+    fetchTokenAndSetUser();
+  }, []);
 
-      // Optionnel : gestion des retours après l'action
-      const result = await response.json();
-      console.log(result);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // Utilisation du hook pour récupérer les informations de l'utilisateur
+  const { user, error } = useProfil(token, userId || "");
 
-  const renderAdminActions = () => {
-    if (moderationError) {
-      return <Text style={styles.errorText}>Erreur: {moderationError}</Text>;
-    }
-
-    if (moderationUsers.length > 0) {
-      return (
-        <View style={styles.adminActionsContainer}>
-          <Text style={styles.adminActionTitle}>Admin Actions</Text>
-          <TouchableWithoutFeedback onPress={handleOutsidePress}>
-            <View>
-              <View style={styles.inputContainer}>
-                <TextInput
-                  ref={inputRef}
-                  style={styles.textInput}
-                  placeholder="Select or type a username"
-                  value={selectedUsername}
-                  onChangeText={handleUserSearch}
-                  onFocus={handleTextInputFocus}
-                />
-              </View>
-              {isListVisible && (
-                <FlatList
-                  data={filteredUsers}
-                  keyExtractor={(item) => item.userId.toString()}
-                  renderItem={({ item }) => (
-                    <TouchableOpacity
-                      style={styles.listItem}
-                      onPress={() => handleUserSelect(item)}
-                    >
-                      <Text style={styles.listItemText}>{item.username}</Text>
-                    </TouchableOpacity>
-                  )}
-                  scrollEnabled={false} // Désactive le défilement de FlatList
-                />
-              )}
-            </View>
-          </TouchableWithoutFeedback>
-          <View style={styles.adminAction}>
-            <TouchableOpacity style={styles.button} onPress={() => handleActionClick('ban')}>
-              <Text style={styles.buttonText}>Ban for 7 days</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.adminAction}>
-            <TouchableOpacity style={styles.button} onPress={() => handleActionClick('addModerator')}>
-              <Text style={styles.buttonText}>Add as Moderator</Text>
-            </TouchableOpacity>
-          </View>
-          {isError && (
-            <Text style={styles.errorText}>Please select a user before performing an action</Text>
-          )}
-        </View>
-      );
-    }
-    return null;
-  };
+  if (error) {
+    return <ThemedText style={styles.errorText}>{error}</ThemedText>;
+  }
 
   return (
     <ScrollView>
-      {/* Reste de votre interface */}
-      {renderAdminActions()}
+      <View style={styles.headerImageContainer}>
+        <Ionicons size={310} name="person-circle-outline" style={styles.headerImage} />
+      </View>
+      <ThemedView style={styles.container}>
+        <ThemedText type="title" style={styles.title}>Profile</ThemedText>
+        {user ? (
+          <>
+            <View style={styles.infoContainer}>
+              <ThemedText style={styles.label}>Pseudo:</ThemedText>
+              <ThemedText style={styles.value}>{user.userPseudo}</ThemedText>
+            </View>
+            <View style={styles.infoContainer}>
+              <ThemedText style={styles.label}>Email:</ThemedText>
+              <ThemedText style={styles.value}>{user.userMail}</ThemedText>
+            </View>
+            <View style={styles.infoContainer}>
+              <ThemedText style={styles.label}>Prenom:</ThemedText>
+              <ThemedText style={styles.value}>{user.userPrenom}</ThemedText>
+            </View>
+            <View style={styles.infoContainer}>
+              <ThemedText style={styles.label}>Nom de famille:</ThemedText>
+              <ThemedText style={styles.value}>{user.userNom}</ThemedText>
+            </View>
+            <View style={styles.infoContainer}>
+              <ThemedText style={styles.label}>Date de création:</ThemedText>
+              <ThemedText style={styles.value}>{user.userCreation}</ThemedText>
+            </View>
+          </>
+        ) : (
+          <ThemedText>Loading...</ThemedText>
+        )}
+      </ThemedView>
     </ScrollView>
   );
 };
 
-// Définition des styles
+
 const styles = StyleSheet.create({
+  headerImageContainer: {
+    alignItems: 'center',
+    marginVertical: 20,
+  },
+  headerImage: {
+    color: '#808080',
+  },
+  container: {
+    padding: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  infoContainer: {
+    flexDirection: 'row',
+    marginBottom: 10,
+  },
+  label: {
+    fontWeight: 'bold',
+    marginRight: 10,
+  },
+  value: {
+    flex: 1,
+    flexWrap: 'wrap',
+  },
   adminActionsContainer: {
-    padding: 16,
-    backgroundColor: '#f5f5f5',
-    borderRadius: 8,
-    marginVertical: 10,
+    marginTop: 20,
   },
   adminActionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 10,
   },
-  inputContainer: {
+  adminAction: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
     marginBottom: 10,
-    borderColor: '#ccc',
+  },
+  button: {
+    backgroundColor: '#fff',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
     borderWidth: 1,
-    borderRadius: 8,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
+    borderColor: '#000',
+    marginTop: 10,
+  },
+  buttonText: {
+    color: '#000',
+    fontWeight: 'bold',
   },
   textInput: {
-    fontSize: 16,
-    padding: 8,
+    height: 40,
+    borderColor: '#000',
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 10,
+    width: '90%',
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
   },
   listItem: {
-    padding: 8,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
   },
   listItemText: {
-    fontSize: 16,
-  },
-  adminAction: {
-    marginVertical: 5,
-  },
-  button: {
-    backgroundColor: '#007BFF',
-    padding: 10,
-    borderRadius: 5,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#fff',
     fontSize: 16,
   },
   errorText: {
