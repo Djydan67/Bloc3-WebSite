@@ -5,7 +5,8 @@ export const useStuff = (piecesId: string | undefined) => {
   const [filteredStuff, setFilteredStuff] = useState<any[]>([]); // Stocker le tableau filtré
 
   useEffect(() => {
-    const url = "http://192.168.1.90/Bloc3-WebSite/index.php/?ctrl=stuff&action=getEquipementsJson";
+    const url =
+      "http://192.168.1.88/Bloc3-WebSite/index.php/?ctrl=stuff&action=getEquipementsJson";
     console.log("Fetching data from:", url);
 
     fetch(url)
