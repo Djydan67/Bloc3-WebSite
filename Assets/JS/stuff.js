@@ -63,27 +63,25 @@ document.addEventListener("DOMContentLoaded", afficheToutStuff);
 
 // Récupère les données des équipements
 function afficheToutStuff() {
-  numeroPage = 0;
-  document.getElementById("stuff_listing").innerHTML = "";
-  fetch(
-    "http://localhost:80/Bloc3-WebSite/index.php/?ctrl=stuff&action=getEquipementsJson"
-  )
-    .then((res) => {
-      console.log(res);
-      if (!res.ok) {
-        throw new Error("Erreur de réseau");
-      }
-      return res.json();
-    })
-    .then((data) => {
-      console.log(data);
-      equipements = data;
-      equipementsAfficher = [...equipements];
-      affichePage();
-    })
-    .catch((error) => {
-      console.error("Erreur lors de la récupération des données:", error);
-    });
+    numeroPage = 0;
+    document.getElementById('stuff_listing').innerHTML = '';
+    fetch('http://localhost:8080/bloc-3/Bloc3-WebSite/index.php/?ctrl=stuff&action=getEquipementsJson')
+        .then(res => {
+            console.log(res)
+            if (!res.ok) {
+                throw new Error('Erreur de réseau');
+            }
+            return res.json();
+        })
+        .then(data => {
+            console.log(data);
+            equipements = data;
+            equipementsAfficher = [...equipements];
+            affichePage();
+        })
+        .catch(error => {
+            console.error('Erreur lors de la récupération des données:', error);
+        });
 }
 
 // Affiche les équipements en fonction de la pièce sélectionnée

@@ -34,4 +34,5 @@
 
 <!-- Create account -->
 <script src="\Bloc3-WebSite\Assets\JS\create_account.js"></script>
+
 </html>

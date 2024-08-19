@@ -42,7 +42,18 @@ export default function TabLayout() {
           ),
         }}
       />
-
+      <Tabs.Screen
+        name="explore"
+        options={{
+          title: "Explore",
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon
+              name={focused ? "code-slash" : "code-slash-outline"}
+              color={color}
+            />
+          ),
+        }}
+      />
       <Tabs.Screen
         name="Profil"
         options={{
@@ -59,6 +70,15 @@ export default function TabLayout() {
           title: "Forum",
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={"chatbubbles"} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="news"
+        options={{
+          title: "news",
+          tabBarIcon: ({ color, focused }) => (
+            <FontAwesome6 name="newspaper" size={24} color="green" />
           ),
         }}
       />
