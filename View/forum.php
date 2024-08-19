@@ -1,7 +1,6 @@
 <?php
 include("Entities/forum_entity.php");
 include("Model/forum_model.php");
-echo var_dump($_SESSION['user']);
 $forumModel = new Forum_model();
 $arrThemes = $forumModel->getAllThemes();
 $userLoggedIn = isset($_SESSION['user']);
