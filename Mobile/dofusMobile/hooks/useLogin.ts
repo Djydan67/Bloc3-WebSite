@@ -1,5 +1,5 @@
 import { useState } from "react";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const useLogin = () => {
   const [token, setToken] = useState<string | null>(null);
@@ -24,7 +24,7 @@ export const useLogin = () => {
       const data = JSON.parse(textResponse);
       console.log("Parsed response data:", data);
       if (data.status === "success") {
-        await AsyncStorage.setItem('userToken', data.token); // Stocke le token
+        await AsyncStorage.setItem("userToken", data.token); // Stocke le token
         setToken(data.token);
 
         setError(null);
@@ -42,5 +42,17 @@ export const useLogin = () => {
     }
   };
 
-  return { token, error, login };
+  const logout = async () => {
+    try {
+      await AsyncStorage.removeItem("userToken"); // Supprime le token
+      setToken(null); // Réinitialise l'état du token
+      setError(null);
+      console.log("Déconnexion réussie et token supprimé");
+    } catch (err: any) {
+      setError("Erreur lors de la déconnexion. Veuillez réessayer.");
+      console.error("Erreur lors de la déconnexion:", err);
+    }
+  };
+
+  return { token, error, login, logout };
 };

@@ -1,27 +1,31 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { jwtDecode} from "jwt-decode";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useProfil } from '../../hooks/useProfil';
+import React, { useState, useEffect } from "react";
+import { StyleSheet, View, ScrollView, Pressable, Alert } from "react-native";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { ThemedText } from "@/components/ThemedText";
+import { ThemedView } from "@/components/ThemedView";
+import { jwtDecode } from "jwt-decode";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useProfil } from "../../hooks/useProfil";
+import { useLogin } from "../../hooks/useLogin";
+import { useNavigation } from "@react-navigation/native";
 
 const UserProfileScreen = () => {
   const [userId, setUserId] = useState<string | undefined>(undefined);
   const [token, setToken] = useState<string | null>(null);
+  const { logout } = useLogin(); // Importez la fonction logout
+  const navigation = useNavigation(); // Pour naviguer après déconnexion
 
   useEffect(() => {
     const fetchTokenAndSetUser = async () => {
       try {
-        const storedToken = await AsyncStorage.getItem('userToken');
+        const storedToken = await AsyncStorage.getItem("userToken");
         if (storedToken) {
           const decodedToken = jwtDecode<{ sub: string }>(storedToken);
           setUserId(decodedToken.sub);
           setToken(storedToken);
         }
       } catch (e) {
-        console.error('Failed to retrieve or decode the token:', e);
+        console.error("Failed to retrieve or decode the token:", e);
       }
     };
     fetchTokenAndSetUser();
@@ -30,17 +34,29 @@ const UserProfileScreen = () => {
   // Utilisation du hook pour récupérer les informations de l'utilisateur
   const { user, error } = useProfil(token, userId || "");
 
+  const handleLogout = async () => {
+    await logout();
+    Alert.alert("Déconnexion réussie", "Vous avez été déconnecté.");
+    navigation.navigate("LoginScreen" as never); // Redirigez vers l'écran de connexion ou autre
+  };
+
   if (error) {
     return <ThemedText style={styles.errorText}>{error}</ThemedText>;
   }
 
   return (
-    <ScrollView>
+    <ScrollView style={styles.scrollContainer}>
       <View style={styles.headerImageContainer}>
-        <Ionicons size={310} name="person-circle-outline" style={styles.headerImage} />
+        <Ionicons
+          size={310}
+          name="person-circle-outline"
+          style={styles.headerImage}
+        />
       </View>
-      <ThemedView style={styles.container}>
-        <ThemedText type="title" style={styles.title}>Profile</ThemedText>
+      <ThemedView style={styles.card}>
+        <ThemedText type="title" style={styles.title}>
+          Profil
+        </ThemedText>
         {user ? (
           <>
             <View style={styles.infoContainer}>
@@ -52,7 +68,7 @@ const UserProfileScreen = () => {
               <ThemedText style={styles.value}>{user.userMail}</ThemedText>
             </View>
             <View style={styles.infoContainer}>
-              <ThemedText style={styles.label}>Prenom:</ThemedText>
+              <ThemedText style={styles.label}>Prénom:</ThemedText>
               <ThemedText style={styles.value}>{user.userPrenom}</ThemedText>
             </View>
             <View style={styles.infoContainer}>
@@ -63,95 +79,75 @@ const UserProfileScreen = () => {
               <ThemedText style={styles.label}>Date de création:</ThemedText>
               <ThemedText style={styles.value}>{user.userCreation}</ThemedText>
             </View>
+            <Pressable style={styles.button} onPress={handleLogout}>
+              <ThemedText style={styles.buttonText}>Déconnexion</ThemedText>
+            </Pressable>
           </>
         ) : (
-          <ThemedText>Loading...</ThemedText>
+          <ThemedText>Chargement...</ThemedText>
         )}
       </ThemedView>
     </ScrollView>
   );
 };
 
-
 const styles = StyleSheet.create({
+  scrollContainer: {
+    backgroundColor: "#2e2924",
+  },
   headerImageContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     marginVertical: 20,
   },
   headerImage: {
-    color: '#808080',
+    color: "#808080",
   },
-  container: {
+  card: {
+    backgroundColor: "#749245",
+    borderRadius: 10,
     padding: 20,
+    margin: 20,
+    alignItems: "center",
   },
   title: {
+    color: "white",
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 20,
   },
   infoContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginBottom: 10,
+    width: "100%",
   },
   label: {
-    fontWeight: 'bold',
+    color: "white",
+    fontWeight: "bold",
     marginRight: 10,
+    flex: 1,
   },
   value: {
-    flex: 1,
-    flexWrap: 'wrap',
-  },
-  adminActionsContainer: {
-    marginTop: 20,
-  },
-  adminActionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  adminAction: {
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    marginBottom: 10,
+    color: "white",
+    flex: 2,
+    flexWrap: "wrap",
   },
   button: {
-    backgroundColor: '#fff',
-    paddingVertical: 10,
+    backgroundColor: "#2e2924",
+    paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 5,
-    borderWidth: 1,
-    borderColor: '#000',
-    marginTop: 10,
+    marginTop: 20,
+    width: "100%",
+    maxWidth: 400,
+    alignItems: "center",
   },
   buttonText: {
-    color: '#000',
-    fontWeight: 'bold',
-  },
-  textInput: {
-    height: 40,
-    borderColor: '#000',
-    borderWidth: 1,
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    marginBottom: 10,
-    width: '90%',
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-  },
-  listItem: {
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-  },
-  listItemText: {
+    color: "white",
     fontSize: 16,
+    fontWeight: "bold",
   },
   errorText: {
-    color: 'red',
+    color: "red",
     marginTop: 10,
   },
 });
