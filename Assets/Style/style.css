@@ -20,7 +20,6 @@
 #nav {
   color: var(--darkGray);
 }
-#logo-site {
 
 #logo-site{
   height: 40px;
@@ -149,9 +148,6 @@
     overflow: hidden; /* Cache les éléments qui dépassent du container */
   }
   /* Définition du carousel */
-  .carousel {
-}
-}
 /* Définition du carousel */
 .carousel {
     position: relative; /* Le carousel est positionné relativement à son parent */
@@ -243,8 +239,6 @@
     ); /* Couleur d'arrière-plan légèrement assombrie */
     z-index: -2; /* Pour placer le calque derrière l'image */
   }
-}
-}
 
 #articles_index
 { 
@@ -261,6 +255,9 @@
   top: -260px; /* Déplace la boîte vers le haut */ 
   margin: 0 auto; /* Center the box horizontally */
   font-size: 40%;
+  display: flex;
+  justify-content: center;
+}
 }
 /*-------------------Articles-------------------*/
 #article_page
