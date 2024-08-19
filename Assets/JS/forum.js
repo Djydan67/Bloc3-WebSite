@@ -471,7 +471,7 @@ document.addEventListener("DOMContentLoaded", function () {
         responseCard.dataset.responseId = response.reponse_id;
         responseCard.innerHTML = `
           <p>${response.reponse_message}</p>
-          <small class="response-info">: ${response.user_pseudo} on ${new Date(
+          <small class="response-info"> ${response.user_pseudo} on ${new Date(
           response.reponse_date
         ).toLocaleDateString()}</small>
         `;
