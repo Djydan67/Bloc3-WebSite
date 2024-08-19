@@ -32,12 +32,24 @@
 
 .wrapper {
   min-height: calc(100vh - 210px);
-
+  color: var(--white);
+  background-color: var(--backgroundGray);
   margin: auto;
 }
 
-.wrapper form[name="login"] {
+.wrapper form[name="login"],
+.wrapper form[name="createAccount"] {
   padding-top: calc((100vh - 500px) / 2);
+}
+
+.card-color {
+  background-color: var(--greenDofus);
+  color: var(--white);
+}
+
+.btn-create {
+  background-color: var(--backgroundGray) !important;
+  color: var(--white);
 }
 
 /* Début CSS Page stuff.php crée par Siegel Renaud */
