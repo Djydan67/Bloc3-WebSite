@@ -7,67 +7,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="../Assets/Style/style.css">
     <title>Profil Utilisateur</title>
-    <style>
-        body {
-            background-color: #f2f6c3;
-        }
-
-        .container {
-            margin-top: 50px;
-        }
-
-        .profil-container {
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-        }
-
-        .profil-container h2 {
-            color: #68c4af;
-        }
-
-        .profil-container ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .profil-container ul li {
-            padding: 8px 0;
-            
-            margin-bottom: 5px;
-            border-radius: 4px;
-            padding-left: 10px;
-            color : #4f7f74;
-        }
-
-        .moderation-panel {
-            margin-top: 30px;
-        }
-
-        .moderation-panel h2 {
-            color: #42a5f5;
-        }
-
-        .success-message {
-            color: #66bb6a;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-
-        .btn-custom {
-            background-color: #68c4af;
-            color: #ffffff;
-        }
-
-        .btn-custom:hover {
-            background-color: #5aa39c;
-            color: #ffffff;
-        }
-    </style>
 </head>
 
-<body>
+<body class="profil-page">
     <main>
         <div class="container">
             <div class="profil-container">

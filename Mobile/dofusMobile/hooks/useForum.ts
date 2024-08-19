@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 
-const IP = `http://192.168.1.90/Bloc3-WebSite/index.php`;
+const IP = `http://192.168.1.88/Bloc3-WebSite/index.php`;
 
 type Theme = {
   theme_id: string;
@@ -37,13 +37,10 @@ const fetchWithTryCatch = async <T>(
     const responseBody = await response.text(); // Get the raw response body as text
 
     if (!response.ok) {
-      console.error(`Failed Request to ${url}`);
-      console.error(`Status: ${response.status}`);
-      console.error(`Response Body: ${responseBody}`);
       throw new Error(`${errorMessage}: ${response.statusText}`);
     }
 
-    const data = JSON.parse(responseBody); // Parse the response body as JSON
+    const data = JSON.parse(responseBody);
     return data;
   } catch (error: any) {
     console.error(`${errorMessage}:`, error);

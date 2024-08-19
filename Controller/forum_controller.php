@@ -142,6 +142,7 @@ class Forum_Ctrl extends Ctrl
         try {
             // Check if user has moderator or admin rights
             checkPermission(2);
+            checkPermission(3);
 
             $data = json_decode(file_get_contents('php://input'), true);
 
@@ -273,6 +274,7 @@ class Forum_Ctrl extends Ctrl
         try {
             // Check if user has admin rights
             checkPermission(3);
+            checkPermission(2);
 
             $data = json_decode(file_get_contents('php://input'), true);
 

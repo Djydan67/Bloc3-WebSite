@@ -37,18 +37,17 @@ export const ForumScreen = () => {
     const [forumMessage, setForumMessage] = useState('');
     const [responseMessage, setResponseMessage] = useState('');
     const [selectedTheme, setSelectedTheme] = useState(themes.length > 0 ? themes[0].theme_id : '');
-    const [userId, setUserId] = useState<string | undefined>(undefined);
     const [createForumtext, setCreateForumText] = useState('Create Forum');
     const [createResponseText, setCreateResponseText] = useState('Create Response');
     const [selectedForumId, setSelectedForumId] = useState<string>();
 
 
+    const [userId, setUserId] = useState<string | undefined>(undefined);
     useEffect(() => {
         const fetchTokenAndSetUser = async () => {
             try {
                 const token = await AsyncStorage.getItem('userToken');
                 if (token) {
-                    console.log('Retrieved token:', token);
                     const decodedToken = jwtDecode<{ sub: string }>(token);
                     console.log('Decoded token:', decodedToken);
                     setUserId(decodedToken.sub);

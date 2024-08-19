@@ -22,7 +22,7 @@ $droit_description = $userLoggedIn ? $_SESSION['user']['droit_description'] : nu
             <div class="pageHeader">
                 <h2>Choisissez un thème :</h2>
             </div>
-            <?php if ($droit_description === 'administrateur') : ?>
+            <?php if ($droit_description === 'administrateur' || $droit_description === 'moderateur') : ?>
                 <div id="deleteThemeContainer" class="delete-theme-container">
                     <h2>Admin Only!</h2>
                     <div>
