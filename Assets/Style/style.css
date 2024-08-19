@@ -234,29 +234,34 @@ h1 {
 #articles_index
 { 
   border-color:#6aa84f ;  
-  background-color: #ffffff;
+  background-color: #222421;
   width: 40%; 
   position: relative; /* Permet d'utiliser top */
-  top: -150px; /* Déplace la boîte vers le haut */ 
+  top: -210px; /* Déplace la boîte vers le haut */ 
   margin: 0 auto; /* Center the box horizontally */
 }
 #title_article
 {
   position: relative; /* Permet d'utiliser top */
-  top: -180px; /* Déplace la boîte vers le haut */ 
+  top: -260px; /* Déplace la boîte vers le haut */ 
   margin: 0 auto; /* Center the box horizontally */
   font-size: 40%;
 }
 /*-------------------Articles-------------------*/
 #article_page
 {
-  background-color: #ffffff;
+  background-color: #222421;
 }
 #articles
 {
   border-color:#222421 ;
   width: 55%; 
   margin: 0 auto; /* Center the box horizontally */
+}
+#art_info
+{
+  margin-top: 15px;
+  color: #ffffff;
 }
 /*-------------------News (détail article)-------------------*/
 #news
