@@ -1,7 +1,13 @@
 <?php
-    session_start();
+session_start();
+$inactivityDuration = 1200; // 20 minutes
 
-    // Allow from any origin
+if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > $inactivityDuration)) {
+    session_unset(); // supprime toutes les variables de session
+    session_destroy();
+}
+
+// Allow from any origin
 header("Access-Control-Allow-Origin: *");
 
 // Allow specific methods
@@ -17,17 +23,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit();
 }
 
-    $strCtrl    = $_GET['ctrl'] ?? "index";
-    $strAction  = $_GET['action'] ?? "index";
+$strCtrl    = $_GET['ctrl'] ?? "index";
+$strAction  = $_GET['action'] ?? "index";
 
-    include("Controller/mother_controller.php");
+include("Controller/mother_controller.php");
 
-    //Fait un test de verificaiton
-    if(file_exists("Controller/".$strCtrl."_controller.php")){
-        require("Controller/" . $strCtrl . "_controller.php");
-        $strClassName   = ucfirst($strCtrl) . "_Ctrl";
-        $objCtrl        = new $strClassName;
-        $objCtrl->$strAction();
-    }else{
-        header("Location:index.php?ctrl=error&action=error_404");
-    }
+//Fait un test de verificaiton
+if (file_exists("Controller/" . $strCtrl . "_controller.php")) {
+    require("Controller/" . $strCtrl . "_controller.php");
+    $strClassName   = ucfirst($strCtrl) . "_Ctrl";
+    $objCtrl        = new $strClassName;
+    $objCtrl->$strAction();
+} else {
+    header("Location:index.php?ctrl=error&action=error_404");
+}
