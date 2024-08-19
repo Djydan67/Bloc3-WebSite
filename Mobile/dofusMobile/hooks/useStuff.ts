@@ -6,7 +6,7 @@ export const useStuff = (piecesId: string | undefined) => {
 
   useEffect(() => {
     const url =
-      "http://192.168.1.88/Bloc3-WebSite/index.php/?ctrl=stuff&action=getEquipementsJson";
+      "http://192.168.177.113/Bloc3-WebSite/index.php/?ctrl=stuff&action=getEquipementsJson";
     console.log("Fetching data from:", url);
 
     fetch(url)
