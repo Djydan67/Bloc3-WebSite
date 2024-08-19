@@ -8,7 +8,7 @@ export const useLogin = () => {
   const login = async (email: string, password: string) => {
     try {
       const response = await fetch(
-        "http://10.167.128.128/Bloc3-WebSite/index.php/?ctrl=User&action=loginMobile",
+        "http://192.168.177.113/Bloc3-WebSite/index.php/?ctrl=User&action=loginMobile",
         {
           method: "POST",
           headers: {
@@ -42,5 +42,17 @@ export const useLogin = () => {
     }
   };
 
-  return { token, error, login };
+  const logout = async () => {
+    try {
+      await AsyncStorage.removeItem("userToken"); // Supprime le token
+      setToken(null); // Réinitialise l'état du token
+      setError(null);
+      console.log("Déconnexion réussie et token supprimé");
+    } catch (err: any) {
+      setError("Erreur lors de la déconnexion. Veuillez réessayer.");
+      console.error("Erreur lors de la déconnexion:", err);
+    }
+  };
+
+  return { token, error, login, logout };
 };
