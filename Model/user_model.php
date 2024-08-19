@@ -89,7 +89,8 @@
 
 	
     public function updateUserRole($email, $newRole) {
-        try {
+        try{
+        $query = $this->_db->prepare("UPDATE T_user SET droit_id = :newRole WHERE email = :email");
         $query = $this->_db->prepare("UPDATE T_user SET droit_id = :newRole WHERE email = :email");
         $query->bindParam(':newRole', $newRole);
         $query->bindParam(':email', $email);
@@ -100,10 +101,16 @@
         }
     }
     
-    public function banUser($email) {
-        try {
-        $query = $this->_db->prepare("UPDATE T_user SET user_isactif = 0 WHERE email = :email");
-        $query->bindParam(':email', $email);
+    public function banUser($userId) {
+        $query = $this->_db->prepare("UPDATE T_user SET user_isactif = 0 WHERE user_id = :userId");
+        $query->bindParam(':userId', $userId);
+        return $query->execute();
+    }
+
+    public function createModerateur($userId) {
+        try{
+        $query = $this->_db->prepare("UPDATE T_user SET droit_id = 2 WHERE user_id = :userId");
+        $query->bindParam(':userId', $userId);
         return $query->execute();
         } catch (PDOException $e) {
             error_log("Ban User Error: " . $e->getMessage());
@@ -128,13 +135,15 @@
     }
   
     
-        public function getFirstUser(){
-            try {
+        public function getFirstUser(int $user_Id): array|bool {
+            try{
             $strQuery = "SELECT user_id, user_mdp, user_nom, user_prenom, user_mail, user_isactif, droit_id, user_datenaissance, user_datecreation, user_pseudo  
                          FROM T_user 
+                         where user_id = :user_id
                          ORDER BY user_id ASC 
                          LIMIT 1";
             $strPrepare = $this->_db->prepare($strQuery);
+            $strPrepare->bindValue(":user_id", $user_Id, PDO::PARAM_INT);
             $strPrepare->execute();
     
             return $strPrepare->fetch(PDO::FETCH_ASSOC);
@@ -146,8 +155,9 @@
 
 
         public function getUsersByDroit($droit) {
-            try {
-            $strQuery = "SELECT * FROM T_user WHERE droit_id = ?";
+            try{
+            
+            $strQuery = "SELECT user_id, droit_id, user_pseudo FROM T_user WHERE droit_id = ? and user_isactif = 1" ;
             $strPrepare = $this->_db->prepare($strQuery);
             $strPrepare->execute([$droit]);
             return $strPrepare->fetchAll(PDO::FETCH_ASSOC);

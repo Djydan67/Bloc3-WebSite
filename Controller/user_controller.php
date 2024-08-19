@@ -202,17 +202,21 @@ class User_Ctrl extends Ctrl
         header("Location:index.php");
     }
 
-    /**
-     * Page de profil du premier utilisateur trouvé
-     * @return void
-     */
-    public function profileFirstUser()
-    {
-        include("models/user_model.php");
-        $objUserModel = new user_model();
 
-        $arrUser = $objUserModel->getFirstUser();
+    public function profil()
+    {            
+        include("Model/user_model.php");
+        $UserModel = new user_model();
+        $user_id = $_SESSION['user']['user_id'];
 
+     
+      
+        $arrUser = $UserModel->getFirstUser($user_id);
+        $userLevel = $arrUser['user_droit'] ?? 1; 
+  
+        // Retrieve list of users with droit = 1
+        $userList = $UserModel->getUsersByDroit(1);
+      
         if ($arrUser === false) {
             echo "Erreur : aucun utilisateur trouvé.";
             exit();
@@ -220,13 +224,87 @@ class User_Ctrl extends Ctrl
 
         $userLevel = $arrUser['droit_id'];
 
+   
+
+      
+        $messageModo = '';
+        if (isset($_SESSION['messagemodo'])) {
+            if ($_SESSION['messagemodo'] == "HAMMER TIME") {
+                $messageModo = '<img src="Assets/Images/HAMMERTIME.gif" alt="hammertime">';
+            } elseif ($_SESSION['messagemodo'] == "GO TAKE SHOWER") {
+                $messageModo = '<img src="Assets/Images/MODO.webp" alt="modo">';
+            }
+            unset($_SESSION['messagemodo']);
+        }
         $this->_arrData['arrUser']      = $arrUser;
         $this->_arrData['userLevel']    = $userLevel;
+        $this->_arrData['userList'] = $userList;
+        $this->_arrData['messageModo'] = $messageModo; 
 
-        $this->_arrData['strPage']      = "profile";
-        $this->_arrData['strTitleH1']   = "Profil Utilisateur";
-        $this->_arrData['strFirstP']    = "Page de profil du premier utilisateur";
-
-        $this->display('profile');
+    
+      
+        $this->_arrData['strPage'] = "profil";
+        $this->_arrData['strTitleH1'] = "profil utilisateur";
+        $this->_arrData['strFirstP'] = "";
+        $this->display('profil');
     }
+
+    public function InfoUserMobile(){
+        $user_id = $_GET['user_id'] ?? null;
+
+        if (!$user_id) {
+            echo json_encode(['status' => 'error', 'message' => 'User ID is missing']);
+            return;
+        }
+
+        include("Model/user_model.php");
+        $UserModel = new user_model();
+        $arrUser = $UserModel->getFirstUser($user_id);
+
+        if ($arrUser) {
+            echo json_encode($arrUser);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'User not found']);
+        }
+
+    }
+  
+    public function PanneauModeration() {
+        $message = "";
+        include("Model/user_model.php");
+        $objUserModel = new user_model();
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $action = $_POST['action'] ?? '';
+            $userId = $_POST['userId'] ?? '';
+            
+            if ($action && $userId) {
+                switch ($action) {
+                    case 'ban':
+                       
+                    $objUserModel->banUser($userId);
+                    $_SESSION['messagemodo'] = 'HAMMER TIME';
+
+                        
+                        break;
+                    case 'addModerator':
+                        $objUserModel->createModerateur($userId);
+                        $_SESSION['messagemodo'] = 'GO TAKE SHOWER';
+                      
+
+                        break;
+                    default:
+                        $message = "Action non reconnue.";
+                        break;
+                }
+            } 
+        }
+        header("Location:index.php?ctrl=user&action=profil");
+    }
+
+
+
+
+
+
 }
