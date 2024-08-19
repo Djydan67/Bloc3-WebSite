@@ -14,6 +14,7 @@
   --forumCardBackground: #8f8f8f;
   --forumContainerBackground: #ffffff;
   --red: #ac0707;
+  --bluepastel: #68c4af;
 }
 /* CSS NavBar */
 #nav {
@@ -426,4 +427,61 @@
   border: 1px solid #ccc;
   padding: 10px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+/* ADRIEN */
+/* Styles pour la page de profil utilisateur */
+body.profil-page {
+  background-color: var(--backgroundGray);
+}
+
+.profil-page .profil-container {
+  background-color: var(--greenDofus);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-top: 30px;
+}
+
+.profil-page .profil-container h2 {
+  color: var(--antiqueWhite);
+}
+
+.profil-page .profil-container ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.profil-page .profil-container ul li {
+  padding: 8px 0;
+  margin-bottom: 5px;
+  border-radius: 4px;
+  padding-left: 10px;
+  color:  var(--antiqueWhite);
+}
+
+.profil-page .moderation-panel {
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+.profil-page .moderation-panel h2 {
+  color:  var(--antiqueWhite);
+}
+
+.profil-page .success-message {
+  color: var(--backgroundGray);
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.profil-page .btn-custom {
+  background-color: var(--bluepastel);
+  color: #ffffff;
+}
+
+.profil-page .btn-custom:hover {
+  background-color: var(--bluepastel) ;
+  color: #ffffff;
 }
