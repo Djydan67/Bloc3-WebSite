@@ -1,15 +1,17 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, ScrollView } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { jwtDecode} from "jwt-decode";
+import {jwtDecode} from 'jwt-decode';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useProfil } from '../../hooks/useProfil';
+import { useNavigation } from '@react-navigation/native'; // Importer le hook de navigation
 
 const UserProfileScreen = () => {
   const [userId, setUserId] = useState<string | undefined>(undefined);
   const [token, setToken] = useState<string | null>(null);
+  const navigation = useNavigation(); // Initialiser la navigation
 
   useEffect(() => {
     const fetchTokenAndSetUser = async () => {
@@ -19,9 +21,15 @@ const UserProfileScreen = () => {
           const decodedToken = jwtDecode<{ sub: string }>(storedToken);
           setUserId(decodedToken.sub);
           setToken(storedToken);
+          console.log(userId);
+        } else {
+          // Si le token n'existe pas, rediriger vers la page de connexion
+          navigation.navigate('User'); // Redirection vers User.tsx
         }
       } catch (e) {
         console.error('Failed to retrieve or decode the token:', e);
+        // En cas d'erreur, rediriger également vers la page de connexion
+        navigation.navigate('User');
       }
     };
     fetchTokenAndSetUser();
@@ -29,6 +37,11 @@ const UserProfileScreen = () => {
 
   // Utilisation du hook pour récupérer les informations de l'utilisateur
   const { user, error } = useProfil(token, userId || "");
+
+  if (!token) {
+    // Ne pas rendre l'affichage si le token n'est pas encore disponible
+    return null;
+  }
 
   if (error) {
     return <ThemedText style={styles.errorText}>{error}</ThemedText>;
@@ -72,7 +85,6 @@ const UserProfileScreen = () => {
   );
 };
 
-
 const styles = StyleSheet.create({
   headerImageContainer: {
     alignItems: 'center',
@@ -100,55 +112,6 @@ const styles = StyleSheet.create({
   value: {
     flex: 1,
     flexWrap: 'wrap',
-  },
-  adminActionsContainer: {
-    marginTop: 20,
-  },
-  adminActionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  adminAction: {
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    marginBottom: 10,
-  },
-  button: {
-    backgroundColor: '#fff',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: '#000',
-    marginTop: 10,
-  },
-  buttonText: {
-    color: '#000',
-    fontWeight: 'bold',
-  },
-  textInput: {
-    height: 40,
-    borderColor: '#000',
-    borderWidth: 1,
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    marginBottom: 10,
-    width: '90%',
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-  },
-  listItem: {
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-  },
-  listItemText: {
-    fontSize: 16,
   },
   errorText: {
     color: 'red',
