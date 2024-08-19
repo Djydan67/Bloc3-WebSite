@@ -1,155 +1,85 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, View, TouchableOpacity, TextInput, FlatList, TouchableWithoutFeedback } from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import { StyleSheet, View, ScrollView } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { Picker } from '@react-native-picker/picker';
+import { jwtDecode} from "jwt-decode";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useProfil } from '../../hooks/useProfil';
 
 const UserProfileScreen = () => {
-  const [selectedUser, setSelectedUser] = useState('');
-  const [filteredUsers, setFilteredUsers] = useState<string[]>([]);
-  const [isListVisible, setIsListVisible] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const inputRef = useRef<TextInput>(null);
+  const [userId, setUserId] = useState<string | undefined>(undefined);
+  const [token, setToken] = useState<string | null>(null);
 
-  const user = {
-    username: 'hiro',
-    email: 'blabla@example.com',
-    firstName: 'adrien',
-    lastName: 'cazala',
-    birthDate: '1999-11-21',
-    role: 3, // 1 = utilisateur, 2 = modérateur, 3 = administrateur
-  };
+  useEffect(() => {
+    const fetchTokenAndSetUser = async () => {
+      try {
+        const storedToken = await AsyncStorage.getItem('userToken');
+        if (storedToken) {
+          const decodedToken = jwtDecode<{ sub: string }>(storedToken);
+          setUserId(decodedToken.sub);
+          setToken(storedToken);
+        }
+      } catch (e) {
+        console.error('Failed to retrieve or decode the token:', e);
+      }
+    };
+    fetchTokenAndSetUser();
+  }, []);
 
-  const usersList = ['frero', 'hiro', 'adamail', 'darksasukedu42', 'ventCodeAudio'];
+  // Utilisation du hook pour récupérer les informations de l'utilisateur
+  const { user, error } = useProfil(token, userId || "");
 
-  const handleUserSearch = (text: string) => {
-    const filteredList = usersList.filter((user) => user.toLowerCase().includes(text.toLowerCase()));
-    setFilteredUsers(filteredList.slice(0, 3)); // Afficher uniquement les trois premières propositions
-    setSelectedUser(text);
-    setIsError(false);
-    setIsListVisible(true); // Afficher la liste dès que l'utilisateur commence à écrire
-  };
-
-  const handleTextInputFocus = () => {
-    setIsListVisible(true);
-  };
-
-  const handlePickerValueChange = (itemValue: string | number, itemIndex: number) => {
-    setSelectedUser(itemValue as string);
-    setIsListVisible(false);
-  };
-
-  const handleOutsidePress = () => {
-    if (inputRef.current) {
-      inputRef.current.blur();
-    }
-    setIsListVisible(false);
-  };
-
-  const handleBanClick = () => {
-    if (!usersList.includes(selectedUser)) {
-      setIsError(true);
-    } else {
-      setIsError(false);
-      // Ajouter ici la logique pour bannir l'utilisateur
-    }
-  };
-
-  const renderAdminActions = () => {
-    if (user.role >= 2) {
-      return (
-        <View style={styles.adminActionsContainer}>
-          <ThemedText style={styles.adminActionTitle}>Admin Actions</ThemedText>
-          <TouchableWithoutFeedback onPress={handleOutsidePress}>
-            <View>
-              <View style={styles.inputContainer}>
-                <TextInput
-                  ref={inputRef}
-                  style={styles.textInput}
-                  placeholder="Select or type a username"
-                  value={selectedUser}
-                  onChangeText={handleUserSearch}
-                  onFocus={handleTextInputFocus}
-                />
-
-              </View>
-              {isListVisible && (
-                <View style={styles.pickerContainer}>
-                  <Picker
-                    selectedValue={selectedUser}
-                    style={styles.picker}
-                    onValueChange={handlePickerValueChange}
-                  >
-                    {filteredUsers.map((user) => (
-                      <Picker.Item label={user} value={user} key={user} />
-                    ))}
-                  </Picker>
-                </View>
-              )}
-            </View>
-          </TouchableWithoutFeedback>
-          <View style={styles.adminAction}>
-            <TouchableOpacity style={styles.button} onPress={handleBanClick}>
-              <ThemedText style={styles.buttonText}>Ban for 7 days</ThemedText>
-            </TouchableOpacity>
-          </View>
-          {user.role >= 3 && (
-            <View style={styles.adminAction}>
-              <TouchableOpacity style={styles.button} onPress={handleBanClick}>
-                <ThemedText style={styles.buttonText}>Ban permanently</ThemedText>
-              </TouchableOpacity>
-            </View>
-          )}
-          {isError && (
-            <ThemedText style={styles.errorText}>User does not exist</ThemedText>
-          )}
-        </View>
-      );
-    }
-    return null;
-  };
+  if (error) {
+    return <ThemedText style={styles.errorText}>{error}</ThemedText>;
+  }
 
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={<Ionicons size={310} name="person-circle-outline" style={styles.headerImage} />}
-    >
+    <ScrollView>
+      <View style={styles.headerImageContainer}>
+        <Ionicons size={310} name="person-circle-outline" style={styles.headerImage} />
+      </View>
       <ThemedView style={styles.container}>
         <ThemedText type="title" style={styles.title}>Profile</ThemedText>
-        <View style={styles.infoContainer}>
-          <ThemedText style={styles.label}>Username:</ThemedText>
-          <ThemedText style={styles.value}>{user.username}</ThemedText>
-        </View>
-        <View style={styles.infoContainer}>
-          <ThemedText style={styles.label}>Email:</ThemedText>
-          <ThemedText style={styles.value}>{user.email}</ThemedText>
-        </View>
-        <View style={styles.infoContainer}>
-          <ThemedText style={styles.label}>First Name:</ThemedText>
-          <ThemedText style={styles.value}>{user.firstName}</ThemedText>
-        </View>
-        <View style={styles.infoContainer}>
-          <ThemedText style={styles.label}>Last Name:</ThemedText>
-          <ThemedText style={styles.value}>{user.lastName}</ThemedText>
-        </View>
-        <View style={styles.infoContainer}>
-          <ThemedText style={styles.label}>Date of Birth:</ThemedText>
-          <ThemedText style={styles.value}>{user.birthDate}</ThemedText>
-        </View>
-        {renderAdminActions()}
+        {user ? (
+          <>
+            <View style={styles.infoContainer}>
+              <ThemedText style={styles.label}>Pseudo:</ThemedText>
+              <ThemedText style={styles.value}>{user.userPseudo}</ThemedText>
+            </View>
+            <View style={styles.infoContainer}>
+              <ThemedText style={styles.label}>Email:</ThemedText>
+              <ThemedText style={styles.value}>{user.userMail}</ThemedText>
+            </View>
+            <View style={styles.infoContainer}>
+              <ThemedText style={styles.label}>Prenom:</ThemedText>
+              <ThemedText style={styles.value}>{user.userPrenom}</ThemedText>
+            </View>
+            <View style={styles.infoContainer}>
+              <ThemedText style={styles.label}>Nom de famille:</ThemedText>
+              <ThemedText style={styles.value}>{user.userNom}</ThemedText>
+            </View>
+            <View style={styles.infoContainer}>
+              <ThemedText style={styles.label}>Date de création:</ThemedText>
+              <ThemedText style={styles.value}>{user.userCreation}</ThemedText>
+            </View>
+          </>
+        ) : (
+          <ThemedText>Loading...</ThemedText>
+        )}
       </ThemedView>
-    </ParallaxScrollView>
+    </ScrollView>
   );
 };
 
+
 const styles = StyleSheet.create({
+  headerImageContainer: {
+    alignItems: 'center',
+    marginVertical: 20,
+  },
   headerImage: {
     color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
   },
   container: {
     padding: 20,
@@ -211,18 +141,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
   },
-  searchIcon: {
-    marginLeft: 10,
+  listItem: {
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
   },
-  pickerContainer: {
-    position: 'relative',
-    width: '100%',
-  },
-  picker: {
-    height: 40,
-    width: '100%',
-    color: '#fff', // Texte de la liste en blanc
-    backgroundColor: '#000', // Fond de la liste en noir
+  listItemText: {
+    fontSize: 16,
   },
   errorText: {
     color: 'red',

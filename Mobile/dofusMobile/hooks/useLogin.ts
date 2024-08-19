@@ -1,5 +1,5 @@
 import { useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const useLogin = () => {
   const [token, setToken] = useState<string | null>(null);
@@ -20,13 +20,11 @@ export const useLogin = () => {
         }
       );
 
-      const textResponse = await response.text(); // Get raw response
-      console.log("Raw response:", textResponse); // Log raw response
-
-      // Try to parse JSON
+      const textResponse = await response.text();
       const data = JSON.parse(textResponse);
       console.log("Parsed response data:", data);
       if (data.status === "success") {
+        await AsyncStorage.setItem('userToken', data.token); // Stocke le token
         setToken(data.token);
 
         setError(null);
@@ -39,7 +37,6 @@ export const useLogin = () => {
         setToken(null);
       }
     } catch (err: any) {
-      console.error("Login error:", err.message); // Log the error message
       setError("Erreur de connexion. Veuillez réessayer.");
       setToken(null);
     }
