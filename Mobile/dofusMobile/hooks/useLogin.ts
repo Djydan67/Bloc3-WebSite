@@ -1,5 +1,5 @@
 import { useState } from "react";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const useLogin = () => {
   const [token, setToken] = useState<string | null>(null);
@@ -8,7 +8,7 @@ export const useLogin = () => {
   const login = async (email: string, password: string) => {
     try {
       const response = await fetch(
-        "http://192.168.1.88/Bloc3-WebSite/index.php/?ctrl=User&action=loginMobile",
+        "http://10.167.128.128/Bloc3-WebSite/index.php/?ctrl=User&action=loginMobile",
         {
           method: "POST",
           headers: {
@@ -24,7 +24,7 @@ export const useLogin = () => {
       const data = JSON.parse(textResponse);
       console.log("Parsed response data:", data);
       if (data.status === "success") {
-        await AsyncStorage.setItem('userToken', data.token); // Stocke le token
+        await AsyncStorage.setItem("userToken", data.token); // Stocke le token
         setToken(data.token);
 
         setError(null);
