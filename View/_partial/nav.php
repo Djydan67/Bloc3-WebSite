@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Navbar
  * @Creator files Renaud
@@ -13,8 +12,8 @@
         </a>
         <div id="user" class="col-4 d-flex justify-content-end align-items-center">
             <?php if (isset($_SESSION['user'])) { ?>
-                <a class="btn btn-sm" href="index.php?ctrl=user&action=login" title="Se connecter">
-                    <i class="fa-solid fa-user"></i> <?php echo $_SESSION['user']['user_nom']; ?>
+                <a class="btn btn-sm" href="index.php?ctrl=user&action=profil" title="Profil">
+                    <i class="fa-solid fa-user"></i></i> <?php echo $_SESSION['user']['user_pseudo'];?>
                 </a>
                 |
                 <a class="btn btn-sm" href="index.php?ctrl=user&action=logout" title="Se déconnecter">

@@ -26,10 +26,12 @@ class Bdd
 	protected function execute_requete($strRq)
 	{
 		try {
+			// echo "<pre>";
+			// var_dump($strRq->debugDumpParams());
 			$strRq->execute();
 			return $strRq;
 		} catch (PDOException $e) {
-			$_SESSION['error']  = "Erreur - Veuillez contacter l'administrateur";
+			$_SESSION['error']  = var_dump($e->getMessage());//"Erreur - Veuillez contacter l'administrateur";
 			return false;
 		}
 	}

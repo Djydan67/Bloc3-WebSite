@@ -4,7 +4,7 @@
  * @author Théo Bance
  *
  */
-    include("Entities\mother_entity.php");
+    include("mother_entity.php");
 
     class User extends Entity{
 		private string $_nom;
@@ -13,8 +13,8 @@
         private string $_mdp;
         private int $_isactif = 1;
         private int $_droit = 1;
-        private string $_date_de_naissance; 
-        private string $_date_de_creation;  
+        private string $_date_de_creation;
+        private string $_datenaissance = '';
         private string $_pseudonyme;
 
         public function __construct(){
@@ -105,15 +105,20 @@
          * @param string $dateDeNaissance Date de naissance de l'utilisateur
          * @return void
          */
-        public function setDateDeNaissance($dateDeNaissance){
-            $this->_date_de_naissance = trim($dateDeNaissance);
+        public function setDatenaissance($dateDeNaissance) {
+            $dateTime = DateTime::createFromFormat('Y-m-d', trim($dateDeNaissance));
+            if ($dateTime) {
+                $this->_datenaissance = $dateTime->format('Y-m-d H:i:s');
+            } else {
+                $this->_datenaissance = '1970-01-01 00:00:00'; 
+            }
         }
 
         /**
          * @return string Date de naissance
          */
-        public function getDateDeNaissance(){
-            return $this->_date_de_naissance;
+        public function getDatenaissance(){
+            return $this->_datenaissance;
         }
 
         /**
