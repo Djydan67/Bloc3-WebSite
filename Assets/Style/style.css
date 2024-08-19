@@ -226,11 +226,46 @@ h1 {
 .carousel-dots .active {
     /* Border de 10px pour le point actif */
     border: 10px solid #6aa84f !important; /* !important permet de surcharger les autres styles éventuels */
-}
+} 
 .carousel-dots .inactive {
     border: 10px solid #000000; /* Border de 10px pour les points inactifs */
 }
 
+#articles_index
+{ 
+  border-color:#6aa84f ;  
+  background-color: #ffffff;
+  width: 40%; 
+  position: relative; /* Permet d'utiliser top */
+  top: -150px; /* Déplace la boîte vers le haut */ 
+  margin: 0 auto; /* Center the box horizontally */
+}
+#title_article
+{
+  position: relative; /* Permet d'utiliser top */
+  top: -180px; /* Déplace la boîte vers le haut */ 
+  margin: 0 auto; /* Center the box horizontally */
+  font-size: 40%;
+}
+/*-------------------Articles-------------------*/
+#article_page
+{
+  background-color: #ffffff;
+}
+#articles
+{
+  border-color:#222421 ;
+  width: 55%; 
+  margin: 0 auto; /* Center the box horizontally */
+}
+/*-------------------News (détail article)-------------------*/
+#news
+{
+  border-color:#6aa84f ; 
+  width: 100%;
+   width: 80%; 
+  margin: 0 auto; /* Center the box horizontally */
+}
 
 /*-------------------Forum-------------------*/
 .forum-card {
@@ -342,3 +377,4 @@ h1 {
 .theme-btn h3 {
   margin: 0;
 }
+

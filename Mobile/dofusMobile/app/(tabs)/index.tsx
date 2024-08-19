@@ -17,8 +17,8 @@ import {
 const carousel = [
   {
     id: "image_del",
-    openinapp: false,
-    source: require("AssetsImagesdldofus.png"),
+    openinapp: true,
+    source: require("@/assets/images/dldofus.png"),
     href: "https://www.dofus.com/fr/mmorpg/telecharger",
   },
   {
