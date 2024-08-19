@@ -157,7 +157,7 @@
         public function getUsersByDroit($droit) {
             try{
             
-            $strQuery = "SELECT user_id, droit_id, user_pseudo FROM T_user WHERE droit_id = ? and user_isactif = 1" ;
+            $strQuery = "SELECT user_id, droit_id, user_pseudo FROM T_user WHERE droit_id <= ? and user_isactif = 1" ;
             $strPrepare = $this->_db->prepare($strQuery);
             $strPrepare->execute([$droit]);
             return $strPrepare->fetchAll(PDO::FETCH_ASSOC);

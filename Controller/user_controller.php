@@ -215,7 +215,7 @@ class User_Ctrl extends Ctrl
         $userLevel = $arrUser['user_droit'] ?? 1; 
   
         // Retrieve list of users with droit = 1
-        $userList = $UserModel->getUsersByDroit(1);
+        $userList = $UserModel->getUsersByDroit(2);
       
         if ($arrUser === false) {
             echo "Erreur : aucun utilisateur trouvé.";
