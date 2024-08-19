@@ -22,7 +22,7 @@ export const useProfil = (token: string | null, user_id: string) => {
 
       try {
         const response = await fetch(
-          `http://10.167.128.128/blog/dofusweb/Bloc3-WebSite/index.php/?ctrl=User&action=InfoUserMobile&user_id=${user_id}`,
+          `http://10.167.128.128/Bloc3-WebSite/index.php/?ctrl=User&action=InfoUserMobile&user_id=${user_id}`,
           {
             method: "GET",
             headers: {
