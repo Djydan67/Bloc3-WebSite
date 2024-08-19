@@ -4,7 +4,7 @@
  * @author Théo Bance
  *
  */
-    include("Entities\mother_entity.php");
+    include("mother_entity.php");
 
     class User extends Entity{
 		private string $_nom;

@@ -54,8 +54,7 @@ export default function TabLayout() {
           ),
         }}
       />
-
-      <Tabs.Screen
+     <Tabs.Screen
         name="Profil"
         options={{
           title: "Profil",
@@ -64,6 +63,7 @@ export default function TabLayout() {
           ),
         }}
       />
+      
       <Tabs.Screen
         name="forum"
         options={{
