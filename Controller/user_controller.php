@@ -203,7 +203,7 @@ class User_Ctrl extends Ctrl
         include("Model/user_model.php");
         $UserModel = new user_model();
         $user_id = $_SESSION['user']['user_id'];
-        var_dump($_SESSION);
+
      
       
         $arrUser = $UserModel->getFirstUser($user_id);
