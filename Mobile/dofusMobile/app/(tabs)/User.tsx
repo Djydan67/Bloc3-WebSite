@@ -1,12 +1,28 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { Button, Pressable, StyleSheet } from "react-native";
+import { Button, Pressable, StyleSheet, Alert } from "react-native";
 import { View, Text, TextInput } from "react-native";
 import * as React from "react";
 import { Link } from "expo-router";
+import { useLogin } from "../../hooks/useLogin";
+import { useNavigation } from "@react-navigation/native";
 
 export default function TabTwoScreen() {
+  const navigation = useNavigation();
   const [email, onChangeEmail] = React.useState("");
   const [password, onChangePassword] = React.useState("");
+  const { token, error, login } = useLogin();
+
+  const handleLogin = async () => {
+    await login(email, password);
+    if (error) {
+      Alert.alert("Erreur de connexion", error);
+    } else if (token) {
+      Alert.alert("Connexion réussie", "Bienvenue !");
+      // Vous pouvez maintenant utiliser le token pour les requêtes futures
+      navigation.navigate("Profil");
+      console.log("Token:", token);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -32,7 +48,7 @@ export default function TabTwoScreen() {
           styles.button,
           pressed && styles.buttonPressed,
         ]}
-        onPress={() => alert("welcome to the futur !")}
+        onPress={handleLogin}
       >
         <Text style={styles.buttonText}>Connexion</Text>
       </Pressable>
@@ -44,6 +60,7 @@ export default function TabTwoScreen() {
       >
         Inscription
       </Link>
+      {token && <Text style={styles.tokenText}>Token: {token}</Text>}
     </View>
   );
 }
@@ -78,5 +95,9 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 16,
     textAlign: "center",
+  },
+  tokenText: {
+    marginTop: 20,
+    color: "white",
   },
 });

@@ -13,115 +13,99 @@
   --themeBackground: #6aa84f;
   --forumCardBackground: #8f8f8f;
   --forumContainerBackground: #ffffff;
+  --red: #ac0707;
+  --bluepastel: #68c4af;
 }
 /* CSS NavBar */
+#nav {
+  color: var(--darkGray);
+}
+#logo-site {
 
 #logo-site{
   height: 40px;
   width: 40px;
 }
-#user{
+#user {
   margin-left: 57%;
 }
 /* fin CSS NavBar */
 
+/* wrapper main */
 
+.wrapper {
+  min-height: calc(100vh - 210px);
+  color: var(--white);
+  background-color: var(--backgroundGray);
+  margin: auto;
+}
+
+.wrapper form[name="createAccount"] {
+  padding-top: calc((100vh - 500px) / 2);
+}
+
+.card-color {
+  background-color: var(--greenDofus);
+  color: var(--white);
+}
+
+.card-login {
+  width: 100%;
+  max-width: 400px;
+  background-color: var(--greenDofus);
+  color: var(--white);
+}
+
+.btn-create,
+.btn-login {
+  background-color: var(--backgroundGray) !important;
+  color: var(--white);
+}
+
+/* Début CSS Page stuff.php crée par Siegel Renaud */
 .stuff_boutton {
   background-color: var(--greenDofus);
 }
 
-#corps {
-  position: relative;
-  display: flex;
-  background-color: var(--bodyGreen);
-}
-
-#stuff_filtreNom {
-  display: flex;
-  color: var(--white);
-}
-
-#Stuff_Nom {
-  margin-left: 10px;
-}
-
-#Stuff {
-  background-color: var(--DarkBlack); /* Fond noir */
-}
-
-/* #stuff_filtre {
-  position: absolute;
-  top: 20px;
-  left: 10px;
-} */
-
+/* Affiche le titre de la page en blanc */
 #stuff_title {
   color: var(--white);
+  text-align: center;
 }
 
-#stuff_filtre {
-  position: sticky;
-}
-
-#filtre {
-  /* position: absolute; */
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-
-.fond {
+/* Affiche la couleur de fond du site */
+.stuff_fond {
   background-color: var(--backgroundGray);
 }
 
-h1 {
-  text-align: center;
-  color: var(--white);
-}
-
-#logo {
-  height: 50px;
-  width: 50px;
-}
-
-#listing {
+/* Organise les cartes 3 part 3 */
+#stuff_listing {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   margin: 50px;
   /* margin-left:300px */
 }
 
+/* Gère le style visuel des cartes */
 #card-stuff {
   background-color: var(--mediumGray);
   color: var(--white);
   margin: 10px;
 }
 
-#titre {
-  display: flex;
-  justify-content: space-between;
-}
-
+/* Gère la taille des icônes */
 .amulette {
   height: 75px;
   width: 75px;
 }
 
-#sous-titre {
-  display: flex;
-  justify-content: space-between;
-}
-
-#stuff-corps {
-  display: flex;
-  justify-content: space-between;
-}
-
+/* Tronque la description des objets */
 .short-text {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+/* Fin CSS Page stuff.php crée par Siegel Renaud */
 
 /* début CSS de Ilian (footer + index) */
 
@@ -143,7 +127,6 @@ h1 {
   color: var(--antiqueWhite);
 }
 
-
 #Index {
   background-color:#313131; ;
   #IndexText {
@@ -158,41 +141,44 @@ h1 {
     margin-bottom: 20px; /* Espacement sous le titre */
   }
 
-  #IndexText p {  
+  #IndexText p {
     font-size: 1.2em; /* Taille de police pour le paragraphe */
     margin-bottom: 5%;
   }
   .container {
     overflow: hidden; /* Cache les éléments qui dépassent du container */
+  }
+  /* Définition du carousel */
+  .carousel {
 }
 }
 /* Définition du carousel */
 .carousel {
     position: relative; /* Le carousel est positionné relativement à son parent */
-}
-/* Définition de l'élément contenant les diapositives */
-.carousel-inner {
+  }
+  /* Définition de l'élément contenant les diapositives */
+  .carousel-inner {
     display: flex; /* Affiche les éléments en ligne */
     overflow: hidden; /* Cache les éléments qui dépassent */
     height: 100vh; /* Hauteur égale à 100% de la hauteur de la vue */
     flex-wrap: nowrap; /* Empêche les éléments de se placer sur plusieurs lignes */
-}
-/* Définition des diapositives */
-.slide {
+  }
+  /* Définition des diapositives */
+  .slide {
     flex: 0 0 100%; /* Largeur de chaque diapositive est de 100% */
     height: 100%; /* Hauteur de chaque diapositive est de 100% */
-    transition: .5s ease-in-out; /* Ajout d'une animation douce pour la transition entre les diapositives */
-}
-/* Définition de l'affichage de l'image de chaque diapositive */
-.slide img {
+    transition: 0.5s ease-in-out; /* Ajout d'une animation douce pour la transition entre les diapositives */
+  }
+  /* Définition de l'affichage de l'image de chaque diapositive */
+  .slide img {
     width: 34%; /* Largeur de l'image est de 34% */
     height: 34%; /* Hauteur de l'image est de 34% */
     object-fit: cover; /* Couvre tout l'espace disponible */
     margin: auto;
     display: flex;
-}
-/* Définition des boutons de contrôle du carousel */
-.carousel-controls {
+  }
+  /* Définition des boutons de contrôle du carousel */
+  .carousel-controls {
     position: absolute; /* Les boutons sont absolument positionnés */
     z-index: 5; /* Ils sont placés au-dessus des autres éléments */
     left: 40%; /* La distance à gauche est de 40% */
@@ -200,14 +186,14 @@ h1 {
     top: 37%; /* La distance du haut est de 37% */
     display: flex; /* Affiche les boutons en ligne */
     justify-content: space-between; /* Espacement égal entre les boutons */
-}
-/* Style des boutons de contrôle */
-.carousel-controls button {
+  }
+  /* Style des boutons de contrôle */
+  .carousel-controls button {
     padding: 10px; /* Ajout de padding pour un meilleur contrôle */
     background-color: #6aa84f; /* Couleur de l'arrière-plan */
-}
-/* Définition des points de contrôle */
-.carousel-dots {
+  }
+  /* Définition des points de contrôle */
+  .carousel-dots {
     position: absolute; /* Les points sont absolument positionnés */
     z-index: 5; /* Ils sont placés au-dessus des autres éléments */
     left: 50%; /* La distance à gauche est de 50% */
@@ -215,20 +201,49 @@ h1 {
     bottom: 58%; /*La distance du bas est de 58% */
     display: flex; /* Affiche les points en ligne */
     justify-content: center; /* Centrage des points */
-}
-/* Style des points de contrôle */
-.carousel-dots .dot {
+  }
+  /* Style des points de contrôle */
+  .carousel-dots .dot {
     border-radius: 50%; /* Les points sont en forme de cercle */
     margin: 5px; /* Ajout d'un margin pour un meilleur contrôle */
     cursor: pointer; /* Curseur en forme de main pour un meilleur contrôle */
-}
-/* Styles pour les points de navigation du carrousel */ 
-.carousel-dots .active {
+  }
+  /* Styles pour les points de navigation du carrousel */
+  .carousel-dots .active {
     /* Border de 10px pour le point actif */
     border: 10px solid #6aa84f !important; /* !important permet de surcharger les autres styles éventuels */
-} 
-.carousel-dots .inactive {
+  }
+  .carousel-dots .inactive {
     border: 10px solid #000000; /* Border de 10px pour les points inactifs */
+  }
+  #background-container {
+    position: absolute;
+    background: lightblue url("../Images/dofushelp_banner.jpg") no-repeat center /
+      cover;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Pour placer l'image derrière le texte */
+  }
+
+  /* Style du calque d'arrière-plan */
+  #background-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(
+      0,
+      0,
+      0,
+      0.3
+    ); /* Couleur d'arrière-plan légèrement assombrie */
+    z-index: -2; /* Pour placer le calque derrière l'image */
+  }
+}
 }
 
 #articles_index
@@ -274,42 +289,74 @@ h1 {
 
 /*-------------------Forum-------------------*/
 .forum-card {
-  background-color: var(--forumCardBackground);
+  background-color: var(--backgroundGray);
   margin-bottom: 1em;
   padding: 0.4em;
   border-radius: 0.5rem;
+  color: var(--white);
+}
+.forum-card-header {
+  background-color: var(--mediumGray);
+  padding: 0.4em;
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+.forum-card-body {
+  padding: 0.4em;
+  background-color: var(--DarkBlack);
 }
 
 .card-text {
   margin-left: 1em;
 }
 
-.response-card {
+.responses-container {
   background-color: var(--white);
-  color: var(--lightGray);
-  border: 1px solid var(--lightGray);
+  color: var(--backgroundGray);
+  /* padding: 1em; */
+  border-radius: 0.5rem;
+  margin-top: 1em;
 }
-
+.response-card {
+  padding: 1em;
+}
+.new-response-form {
+  padding: 1em;
+  background-color: var(--white);
+  border-radius: 0.5rem;
+  margin-top: 1em;
+}
+/* 
 .response-card .card-body {
   padding: 0.4rem;
-  background-color: var(--responseBackground);
-}
+  background-color: var(--backgroundGray);
+  padding: 1.5rem;
+  border-top: #ffffff 1px solid;
+  border-bottom: #ffffff 1px solid;
+  border-radius: 0.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 
-.response-card .card-title {
+} */
+
+/* .response-card .card-title {
   font-size: 1.25rem;
   color: var(--lightGray);
   font-weight: bold;
+} */
+.response-info {
+  font-size: 1rem;
+  color: var(--mediumGray);
 }
-
+/* 
 .response-card .card-text,
 .response-card small {
   font-size: 1rem;
-}
+} */
 
 .theme-btn {
+  margin-top: 0.5rem;
   margin-right: 0.5rem;
   margin-bottom: 0.5rem;
-  border-radius: 0.5rem;
 }
 
 .forum-list {
@@ -347,11 +394,37 @@ h1 {
 }
 
 .forum-container {
-  background-image: url('../Images/Forum-bg.jpg');
+  background-color: var(--greenDofus);
   background-size: cover;
   background-position: center;
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+.forum {
+  position: relative;
+  overflow: hidden;
+}
+.create-forum-card {
+  background-color: var(--greenDofus);
+  border-radius: 0 0 0.5rem 0.5rem;
+  margin-bottom: 1rem;
+  padding: 20px;
+  color: var(--DarkBlack);
+}
+.forum::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--backgroundGray);
+  background-size: cover;
+  background-position: center;
+  z-index: -1;
+}
+.search-forum {
+  color: var(--white);
 }
 
 .pageHeader {
@@ -376,10 +449,107 @@ h1 {
   flex: 1;
   min-width: 150px;
   text-align: center;
-  border-radius: 5px;
+  /* border-radius: 5px; */
+  color: var(--white);
+  margin-top: 1rem;
 }
 
-.theme-btn h3 {
-  margin: 0;
+.theme-btn:hover {
+  /* background-color: var(--greenDofus); */
+  color: var(--greenDofus);
+}
+
+.deleteForum {
+  background-color: var(--red);
+  color: var(--white);
+  margin-bottom: 1rem;
+  margin-left: 90%;
+}
+#deleteThemeContainer {
+  background-color: var(--forumCardBackground);
+  padding: 2rem;
+  border: 1px solid var(--lightGray);
+  border-radius: 0.5rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+.admin-theme-btn {
+  /* background-color: var(--red); */
+  color: var(--white);
+  margin-bottom: 1rem;
+  /* margin-left: 90%; */
+}
+.admin-btn {
+  margin-left: 90%;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* create Account */
+
+#tooltip {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+/* ADRIEN */
+/* Styles pour la page de profil utilisateur */
+body.profil-page {
+  background-color: var(--backgroundGray);
+}
+
+.profil-page .profil-container {
+  background-color: var(--greenDofus);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-top: 30px;
+}
+
+.profil-page .profil-container h2 {
+  color: var(--antiqueWhite);
+}
+
+.profil-page .profil-container ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.profil-page .profil-container ul li {
+  padding: 8px 0;
+  margin-bottom: 5px;
+  border-radius: 4px;
+  padding-left: 10px;
+  color:  var(--antiqueWhite);
+}
+
+.profil-page .moderation-panel {
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+.profil-page .moderation-panel h2 {
+  color:  var(--antiqueWhite);
+}
+
+.profil-page .success-message {
+  color: var(--backgroundGray);
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.profil-page .btn-custom {
+  background-color: var(--bluepastel);
+  color: #ffffff;
+}
+
+.profil-page .btn-custom:hover {
+  background-color: var(--bluepastel) ;
+  color: #ffffff;
 }
 
