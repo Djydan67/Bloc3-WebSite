@@ -38,7 +38,7 @@
                     <!-- Troisième diapositive -->
                     <div class="slide">
                         <!-- Image de la troisième diapositive -->
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="index.php?ctrl=article&action=Articles">
                             <img src="Assets\Images\articles-slide.png" alt="Image 3">
                         </a>
                     </div>
@@ -57,7 +57,7 @@
         <script>
             (function() {
                 "use stict"
-                const slideTimeout = 5000; // Récupère les boutons de navigation
+                const slideTimeout = 4000; // Récupère les boutons de navigation
                 const prev = document.querySelector('#prev');
                 const next = document.querySelector('#next'); // Récupère tous les éléments de type "slide"
                 const $slides = document.querySelectorAll('.slide'); // Initialisation de la variable pour les "dots"
@@ -108,5 +108,31 @@
                 })
             })()
         </script>
+        <?php
+        include("Entities/article_entity.php");
+        foreach ($arrArticles as $arrDetArticle) {
+            // Utilisation des objets
+            $objArticle = new Article();
+            $objArticle->hydrate_arr($arrDetArticle);
+        ?>
+            <div id="title_article">
+                <h1>Venez lire notre dernière article en date ! :</h1>
+            </div>
+            <article class="col-md-6" id="articles_index">
+                <div id="art_info" class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <h3 class="mb-0"><?php echo $objArticle->getTitle(); ?></h3>
+                        <div class="mb-1 text-body-secondary"><?php echo $objArticle->getCreatedate(); ?> (<?php echo $objArticle->getCreator(); ?>)</div>
+                        <p class="mb-auto"><?php echo $objArticle->getResume(); ?></p>
+                        <a href="index.php?ctrl=news&action=News&id=<?php echo $objArticle->getId(); ?>" class="icon-link gap-1 icon-link-hover stretched-link">Lire la suite</a>
+                    </div>
+                    <div class="col-auto d-none d-lg-block">
+                        <img class="bd-placeholder-img" width="200" height="250" alt="<?php echo $objArticle->getTitle(); ?>" src="assets/images/<?php echo $objArticle->getImg(); ?>">
+                    </div>
+                </div>
+            </article>
+        <?php
+        }
+        ?>
 </div>
 </div>
