@@ -1,11 +1,10 @@
 <?php
 include("Entities/forum_entity.php");
 include("Model/forum_model.php");
-
+echo var_dump($_SESSION['user']);
 $forumModel = new Forum_model();
 $arrThemes = $forumModel->getAllThemes();
 $userLoggedIn = isset($_SESSION['user']);
-// echo var_dump($_SESSION['user']);
 $user_id = $userLoggedIn ? $_SESSION['user']['user_id'] : null;
 $droit_description = $userLoggedIn ? $_SESSION['user']['droit_description'] : null;
 ?>
@@ -22,7 +21,7 @@ $droit_description = $userLoggedIn ? $_SESSION['user']['droit_description'] : nu
             <div class="pageHeader">
                 <h2>Choisissez un thème :</h2>
             </div>
-            <?php if ($droit_description === 'administrateur' || $droit_description === 'moderateur') : ?>
+            <?php if ($droit_description === 'administrateur') : ?>
                 <div id="deleteThemeContainer" class="delete-theme-container">
                     <h2>Admin Only!</h2>
                     <div>
