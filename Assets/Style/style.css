@@ -37,7 +37,6 @@
   margin: auto;
 }
 
-.wrapper form[name="login"],
 .wrapper form[name="createAccount"] {
   padding-top: calc((100vh - 500px) / 2);
 }
@@ -47,7 +46,15 @@
   color: var(--white);
 }
 
-.btn-create {
+.card-login {
+  width: 100%;
+  max-width: 400px;
+  background-color: var(--greenDofus);
+  color: var(--white);
+}
+
+.btn-create,
+.btn-login {
   background-color: var(--backgroundGray) !important;
   color: var(--white);
 }
