@@ -52,6 +52,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="index.php?ctrl=forum&action=allForums">Forum</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php?ctrl=article&action=Articles">Articles</a>
+                    </li>
                 </ul>
             </div>
         </div>

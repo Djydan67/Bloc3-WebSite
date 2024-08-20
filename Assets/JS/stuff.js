@@ -66,7 +66,7 @@ function afficheToutStuff() {
   numeroPage = 0;
   document.getElementById("stuff_listing").innerHTML = "";
   fetch(
-    "http://localhost:80/Bloc3-WebSite/index.php/?ctrl=stuff&action=getEquipementsJson"
+    "http://localhost/Bloc3-WebSite/index.php/?ctrl=stuff&action=getEquipementsJson"
   )
     .then((res) => {
       console.log(res);
@@ -110,27 +110,24 @@ function affichePage() {
     let item = equipementsAfficher[i];
     container.innerHTML +=
       '<div id="card-stuff" class="card col-11">' +
-      '<div class="card-title d-flex justify-content-between">' +
-      "<p>" +
-      item.stuff_name +
-      "</p>" +
-      '<img class="amulette" src="' +
-      item.stuff_imgPath +
-      '" alt="Image"/>' +
-      "</div>" +
-      '<div class="d-flex justify-content-between">' +
-      "<p>Niveau " +
-      item.stuff_level +
-      "</p>" +
-      (item.stuff_setType === null ? "" : "<p>Ilevel : " + item.stuff_setType) +
-      "<p>" +
-      "</div>" +
-      "<hr />" +
-      '<div class="card-body">' +
-      '<p class="stuff_description short-text"><span>' +
-      item.stuff_description +
-      "</span><p>" +
-      "</div>" +
+        '<div class="card-title d-flex justify-content-between">' +
+          '<p>' +
+            item.stuff_name +
+          '</p>' +
+          '<img class="amulette" src="' + item.stuff_imgPath + '" alt="Image"/>' +
+        '</div>' +
+        '<div class="d-flex justify-content-between">' +
+          '<p>Niveau ' +
+            item.stuff_level +
+          '</p>' +
+          (item.stuff_setType === null ? "" : "<p>Ilevel : " + item.stuff_setType) + '<p>' +
+        "</div>" +
+        "<hr />" +
+        '<div class="card-body">' +
+          '<p class="stuff_description short-text"><span>' +
+            item.stuff_description +
+          "</span><p>" +
+        "</div>" +
       "</div>";
   }
   affichePagination();

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 
-const IP = `http://10.167.128.128/Bloc3-WebSite/index.php`;
+const IP = `http://192.168.177.113/Bloc3-WebSite/index.php`;
 
 type Theme = {
   theme_id: string;

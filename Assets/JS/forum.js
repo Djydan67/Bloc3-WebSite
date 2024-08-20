@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
         : color1;
   }
 
-  if (droit === "administrateur" || droit === "moderateur") {
+  if (droit === "administrateur") {
     deleteThemeButton.innerText = "Delete Theme";
     createThemeButton.innerText = "Add Theme";
     deleteThemeButton.style.backgroundColor = "#749245";
@@ -262,7 +262,7 @@ document.addEventListener("DOMContentLoaded", function () {
     );
     toggleResponseButtons.forEach((button) => {
       button.addEventListener("click", function (event) {
-        event.stopPropagation(); // Prevent event from bubbling up to parent elements
+        event.stopPropagation();
         const forumId = this.id.replace("toggle-responses-", "");
         const responsesContainer = document.getElementById(
           `responses-${forumId}`
@@ -271,7 +271,7 @@ document.addEventListener("DOMContentLoaded", function () {
           responsesContainer.style.display = "none";
           this.innerText = "Afficher les reponses";
         } else {
-          fetchResponses(forumId); // Fetch responses when opening
+          fetchResponses(forumId);
           responsesContainer.style.display = "block";
           this.innerText = "Close Responses";
         }
@@ -281,7 +281,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   createForumForm.addEventListener("submit", function (event) {
     event.preventDefault();
-
     const forumTitle = document.getElementById("forumTitle").value.trim();
     const forumMessage = document.getElementById("forumMessage").value.trim();
     const forumTheme = document.getElementById("forumTheme").value;
@@ -458,8 +457,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function displayResponses(forumId, responses) {
     const responsesContainer = document.getElementById(`responses-${forumId}`);
-    responsesContainer.innerHTML = ""; // Clear previous responses
-    responsesContainer.style.display = "block"; // Show the responses container
+    responsesContainer.innerHTML = "";
+    responsesContainer.style.display = "block";
 
     if (responses.length === 0) {
       responsesContainer.innerHTML =

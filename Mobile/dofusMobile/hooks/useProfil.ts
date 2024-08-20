@@ -22,7 +22,7 @@ export const useProfil = (token: string | null, user_id: string) => {
 
       try {
         const response = await fetch(
-          `http://192.168.56.1:8082/Bloc3-WebSite/index.php/?ctrl=User&action=InfoUserMobile&user_id=${user_id}`,
+          `http://192.168.177.113//Bloc3-WebSite/index.php/?ctrl=User&action=InfoUserMobile&user_id=${user_id}`,
           {
             method: "GET",
             headers: {

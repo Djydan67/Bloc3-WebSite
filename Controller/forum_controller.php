@@ -1,23 +1,23 @@
 <?php
 
 /**
- * Forum Controller
- * 
- * This class handles interactions with the forum and theme database tables.
- * 
  * @author Salar
  */
 
-function checkPermission($requiredRole)
+function checkPermission($requiredRolesList)
 {
-    if (!isset($_SESSION['user']['droit_id'])) {
+    if (!isset($_SESSION['user']['droit_description'])) {
         throw new Exception('User is not authenticated');
     }
 
-    $userRole = $_SESSION['user']['droit_id'];
-    if ($userRole < $requiredRole) {
-        throw new Exception('User does not have permission for this action');
+    $userRole = $_SESSION['user']['droit_description'];
+
+    foreach ($requiredRolesList as $requiredRole) {
+        if ($userRole === $requiredRole) {
+            return;
+        }
     }
+    throw new Exception('User does not have the required permissions');
 }
 class Forum_Ctrl extends Ctrl
 {
@@ -140,9 +140,7 @@ class Forum_Ctrl extends Ctrl
         $objForumModel = new Forum_model();
 
         try {
-            // Check if user has moderator or admin rights
-            checkPermission(2);
-            checkPermission(3);
+            checkPermission(['administrateur', 'moderateur']);
 
             $data = json_decode(file_get_contents('php://input'), true);
 
@@ -191,12 +189,15 @@ class Forum_Ctrl extends Ctrl
             echo json_encode(['error' => $e->getMessage()]);
         }
     }
+
     public function deleteResponse()
     {
         include(__DIR__ . "/../Model/forum_model.php");
         $objForumModel = new Forum_model();
 
         try {
+            checkPermission(['administrateur', 'moderateur']);
+
             $data = json_decode(file_get_contents('php://input'), true);
 
             if (isset($data['response_id'])) {
@@ -272,9 +273,7 @@ class Forum_Ctrl extends Ctrl
         $objForumModel = new Forum_model();
 
         try {
-            // Check if user has admin rights
-            checkPermission(3);
-            checkPermission(2);
+            checkPermission('administrateur');
 
             $data = json_decode(file_get_contents('php://input'), true);
 
@@ -303,6 +302,8 @@ class Forum_Ctrl extends Ctrl
         $objForumModel = new Forum_model();
 
         try {
+            checkPermission(['administrateur']);
+
             $data = json_decode(file_get_contents('php://input'), true);
 
             if (isset($data['theme_id'])) {

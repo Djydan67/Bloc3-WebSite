@@ -20,7 +20,8 @@
 #nav {
   color: var(--darkGray);
 }
-#logo-site {
+
+#logo-site{
   height: 40px;
   width: 40px;
 }
@@ -126,9 +127,9 @@
 }
 
 #Index {
+  background-color:#313131; ;
   #IndexText {
     text-align: center;
-    margin-top: 100px; /* Espacement depuis le haut de la page */
     position: relative; /* Positionnement relatif pour que z-index fonctionne */
     z-index: 1; /* Pour placer le texte au-dessus de l'image de fond */
     color: var(--aliceBlue); /* Couleur du texte */
@@ -147,7 +148,8 @@
     overflow: hidden; /* Cache les éléments qui dépassent du container */
   }
   /* Définition du carousel */
-  .carousel {
+/* Définition du carousel */
+.carousel {
     position: relative; /* Le carousel est positionné relativement à son parent */
   }
   /* Définition de l'élément contenant les diapositives */
@@ -237,6 +239,49 @@
     ); /* Couleur d'arrière-plan légèrement assombrie */
     z-index: -2; /* Pour placer le calque derrière l'image */
   }
+
+#articles_index
+{ 
+  border-color:#6aa84f ;  
+  background-color: #222421;
+  width: 40%; 
+  position: relative; /* Permet d'utiliser top */
+  top: -210px; /* Déplace la boîte vers le haut */ 
+  margin: 0 auto; /* Center the box horizontally */
+}
+#title_article
+{
+  position: relative; /* Permet d'utiliser top */
+  top: -260px; /* Déplace la boîte vers le haut */ 
+  margin: 0 auto; /* Center the box horizontally */
+  font-size: 40%;
+  display: flex;
+  justify-content: center;
+}
+}
+/*-------------------Articles-------------------*/
+#article_page
+{
+  background-color: #222421;
+}
+#articles
+{
+  border-color:#222421 ;
+  width: 55%; 
+  margin: 0 auto; /* Center the box horizontally */
+}
+#art_info
+{
+  margin-top: 15px;
+  color: #ffffff;
+}
+/*-------------------News (détail article)-------------------*/
+#news
+{
+  border-color:#6aa84f ; 
+  width: 100%;
+   width: 80%; 
+  margin: 0 auto; /* Center the box horizontally */
 }
 
 /*-------------------Forum-------------------*/
@@ -504,3 +549,4 @@ body.profil-page {
   background-color: var(--bluepastel) ;
   color: #ffffff;
 }
+
