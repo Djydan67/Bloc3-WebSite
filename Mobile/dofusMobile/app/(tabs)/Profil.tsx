@@ -12,8 +12,8 @@ import { useNavigation } from "@react-navigation/native";
 const UserProfileScreen = () => {
   const [userId, setUserId] = useState<string | undefined>(undefined);
   const [token, setToken] = useState<string | null>(null);
-  const { logout } = useLogin(); // Importez la fonction logout
-  const navigation = useNavigation(); // Pour naviguer après déconnexion
+  const { logout } = useLogin();
+  const navigation = useNavigation();
 
   useEffect(() => {
     const fetchTokenAndSetUser = async () => {
@@ -23,6 +23,8 @@ const UserProfileScreen = () => {
           const decodedToken = jwtDecode<{ sub: string }>(storedToken);
           setUserId(decodedToken.sub);
           setToken(storedToken);
+        } else {
+          navigation.navigate("Connexion" as never);
         }
       } catch (e) {
         console.error("Failed to retrieve or decode the token:", e);
@@ -37,7 +39,7 @@ const UserProfileScreen = () => {
   const handleLogout = async () => {
     await logout();
     Alert.alert("Déconnexion réussie", "Vous avez été déconnecté.");
-    navigation.navigate("LoginScreen" as never); // Redirigez vers l'écran de connexion ou autre
+    navigation.navigate("Connexion" as never);
   };
 
   if (error) {

@@ -18,7 +18,7 @@ export default function TabTwoScreen() {
       Alert.alert("Erreur de connexion", error);
     } else if (token) {
       Alert.alert("Connexion réussie", "Bienvenue !");
-      navigation.navigate("Profil" as never);
+      navigation.navigate("index" as never);
       console.log("Token:", token);
     }
   };
@@ -52,7 +52,7 @@ export default function TabTwoScreen() {
         >
           <Text style={styles.buttonText}>Connexion</Text>
         </Pressable>
-        {token && <Text style={styles.tokenText}>Token: {token}</Text>}
+        {token && <Text style={styles.tokenText}>Vous êtes connecter</Text>}
       </View>
     </View>
   );

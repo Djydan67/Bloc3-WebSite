@@ -48,7 +48,7 @@ export default function TabLayout() {
         options={{
           title: "Profil",
           tabBarIcon: ({ color, focused }) => (
-            <FontAwesome6 name="circle-user" size={24} color="green" />
+            <FontAwesome6 name="circle-user" size={24} color={color} />
           ),
         }}
       />
@@ -59,6 +59,16 @@ export default function TabLayout() {
           title: "Forum",
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={"chatbubbles"} color={color} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="Connexion"
+        options={{
+          title: "Connexion",
+          tabBarIcon: ({ color, focused }) => (
+            <FontAwesome6 name="user" size={24} color={color} />
           ),
         }}
       />

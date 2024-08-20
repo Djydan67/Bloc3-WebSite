@@ -16,7 +16,7 @@ export const useProfil = (token: string | null, user_id: string) => {
   useEffect(() => {
     const fetchUser = async () => {
       if (!token) {
-        setError("Token is missing");
+        setError("Vous devez être connecté pour voir votre profil");
         return;
       }
 
