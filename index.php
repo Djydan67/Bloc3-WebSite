@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 
 // Allow from any origin
 header("Access-Control-Allow-Origin: *");
