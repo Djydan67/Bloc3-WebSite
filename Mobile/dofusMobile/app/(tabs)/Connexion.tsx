@@ -52,7 +52,7 @@ export default function TabTwoScreen() {
         >
           <Text style={styles.buttonText}>Connexion</Text>
         </Pressable>
-        {token && <Text style={styles.tokenText}>Token: {token}</Text>}
+        {token && <Text style={styles.tokenText}>Vous êtes connecté</Text>}
       </View>
     </View>
   );

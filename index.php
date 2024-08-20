@@ -1,11 +1,5 @@
 <?php
-session_start();
-$inactivityDuration = 1200; // 20 minutes
 
-if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > $inactivityDuration)) {
-    session_unset(); // supprime toutes les variables de session
-    session_destroy();
-}
 
 // Allow from any origin
 header("Access-Control-Allow-Origin: *");

@@ -20,7 +20,7 @@ const NewsScreen: React.FC = () => {
     const fetchArticles = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8080/bloc-3/Bloc3-WebSite/index.php?ctrl=article&action=Articles"
+          "http://192.168.177.113/Bloc3-WebSite/index.php?ctrl=article&action=Articles"
         );
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
